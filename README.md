@@ -1,2 +1,2 @@
 # Sysmon Resources
-Consolidation of various resources related to Microsoft Sysmon
+Consolidation of various resources related to Microsoft Sysmon.
