@@ -25,7 +25,7 @@ I termed it as "symptomatic" because it is very much like medical diagnostics, y
 
 In complex system event logging, similarly there's the tendency (especially the earlier generation of SIEMs) to record events that are related to the sypmtoms, that are emitted from security controls like Endpoint Protection (aka Anti-Virus), Windows Audit events like account logout, network IDS, firewalls & so on. 
 
-If we look at it as a Cause-to-Effect "spectrum", such events are closer to the effect(s). There's alot of in-betweens going on that is unknown that are not captured thus making it difficult to work backwards to find out the root-cause even if the security controls were to be effective in alerting.
+If we look at it as a Cause-to-Effect "spectrum", such events are closer to the effect(s). There's alot of in-betweens going on that are not captured thus making it difficult to work backwards to find out the root-cause even if the security controls were to be effective in alerting.
 
 Of course, there are more mature organisation that goes to the extend of recording those "in-betweens" for endpoint & network (eg. using EDR, Sysmon + Powershell + WMIC + Windows Audit, linux auditd/osquery/grr & netflow/network forensics). This brings us to the next topic; linking the data-points together.
 
