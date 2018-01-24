@@ -48,3 +48,4 @@ I will not go into the other features & benefits of Black-Computer but will focu
 ![](D20ECC51-E132-4C25-ABEE-C3A4AF7548EF.png)
 Using the "Assumed Breach" mentality, I would assume the adversary would be able to disable Windows Event, the user-tracking OS module & even the hardware instrumentation. By having the redundancy, we can detect the anomalies whenever one signal goes missing. The detection of the last case would be having no HID signals but still seeing network traffic from the endpoint in question (eg. netflow).
 
+To be continued.
