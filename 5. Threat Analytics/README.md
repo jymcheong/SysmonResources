@@ -15,9 +15,9 @@ A viable approach is to learn what are known good/benign within a given environm
 
 2. Do we even have the "right" data to feed into the machine for learning? 
 
-For the first question, analytics product vendors would have to "teach" their analytic engines with a representative environment (eg. a Cyber Range) that simulates typical user-applications & emulates offensive sequences. It then further begs the question of how close this representative environment is to the actual production ones. So it is common that such products to use "learning" period to close the gap between the products' baselines & actual production environment.
+For the first question, analytics product vendors would have to "teach" their analytic engines with a representative environment (eg. a Cyber Range) that simulates typical user-applications & emulates offensive sequences. It then further begs the question of how close this representative environment is to the actual production ones. So it is common to have "learning" period to close the gap between the products' baselines & actual production environment.
 
-I will delve more on the second question since putting in garbage will to garbage-in-garbage-out & also the typical flaws of sending events from security controls into a programmable IDS known as SIEM. The whole idea of threat hunting is a more dynamic & agile querying (think of it as fast [OODA](https://en.wikipedia.org/wiki/OODA_loop)) compared to the rather static rules/contents within a SIEM, which honestly is hard/painful to program & let alone scale cost-effectively.
+I will delve more on the second question since putting in garbage will result to garbage-in-garbage-out & also the gaps of sending events from security controls into a programmable IDS known as SIEM. The whole idea of threat hunting is a more dynamic & agile querying (think of it as fast [OODA](https://en.wikipedia.org/wiki/OODA_loop)) compared to the rather static rules/contents within a SIEM, which honestly is hard/painful to program & let alone scale cost-effectively.
 
 ## "Symptomatic" Logging
 ![](symptomaticLogging.png)
