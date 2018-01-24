@@ -1,0 +1,2 @@
+# Threat Analytics
+Threat hunting is good but requires prior knowledge of offensive techniques & observables so as to know what to 'hunt'. How to deal with what you don't know? This is will require some form of data analytics.
