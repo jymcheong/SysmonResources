@@ -23,7 +23,7 @@ I will delve more on the second question since putting in garbage will to garbag
 ![](symptomaticLogging.png)
 I termed it as "symptomatic" because it is very much like medical diagnostics, you go to the doctor, talked about the symptoms (eg. sneezing, coughing), the doc measures temperature, blood-pressure & so on to make an assessment. Some of the wearables tech like activity & sleep trackers are providing the "in-between" data, which can help to explain certain symptoms eg. fatigue/tiredness.
 
-For complex system event logging, there's also the tendency (especially for earlier generations of SIEMs) to record events that are related to the sypmtoms. These type of events are typically emitted from security controls like Endpoint Protection (aka Anti-Virus), Windows Audit events like account logout, network IDS, firewalls & so on. 
+For complex system event logging, there's also the tendency (especially for earlier generations of SIEMs) to record events that are related to symptoms. These type of events are typically emitted from security controls like Endpoint Protection (aka Anti-Virus), Windows Audit events like account logout, network IDS, firewalls & so on. 
 
 If we look at it as a Cause-to-Effect "spectrum", such events are closer to the Effect side. There's alot of in-betweens going on that are not captured thus making it difficult to work backwards to find out the root-cause even if the security controls were to be effective in alerting. Sysmon & netflows are those "in-between" data points that can give more insights compared to just recording a binary good or bad event like firewall or IPS.
 
