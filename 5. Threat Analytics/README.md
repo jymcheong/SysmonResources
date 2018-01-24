@@ -11,7 +11,7 @@ Threat hunting is good but requires prior knowledge of offensive techniques & th
 ## Good vs Bad vs "I don't know"  
 A viable approach is to learn what are known good/benign within a given environment so as to sieve out the known-bad & things that we have never seen before. After which, investigate those unknowns & turn them into known (either good or bad). Easier said than done for two main reasons:
 
-1. How do we know if we are not learning the evasive bad stuff that's already running in the environment? I devised something to test EDR & threat analytics, basically an [Outlook backdoor using Microsoft Visual Studio Tool for Office](https://www.youtube.com/watch?v=e-rPstKk8rw).
+1. How do we know if we are not learning the evasive bad stuff that's already running in the environment? I devised something to test EDR & threat analytics, basically an [Outlook backdoor using Microsoft Visual Studio Tool for Office](https://www.youtube.com/watch?v=e-rPstKk8rw). A even simpler backdoor is to just create a BCC forwarding rule as a simulated pre-existing backdoor or a printer scan & forward rule to see if the EDR/analytics can detect such cases.
 
 2. Do we even have the "right" data to feed into the machine for learning? 
 
