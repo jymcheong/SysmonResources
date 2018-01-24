@@ -38,7 +38,7 @@ Client-zones form a large attack surface. By attack surface, I mean the sum of a
 
 # Instead of "working backwards"
 ![](0C3F5E51-29A8-43C3-9B37-A2C15C13083E.png)
-After evaluating several EDRs & looking at some of these threat analytics capabilities, I am still not very satisfied with the timelines generated from these products. It is still not easy to conclude if a certain alert was a direct consequence of user's action & it oftens require time-consuming effort to dig forensics artefacts out. By the time we start digging, some of these 'evidence' may have already been erased or even falsely implanted to thwart investigations.
+After evaluating several EDRs & looking at some of these threat analytics capabilities, I am still not satisfied with the timelines generated from these products. It is still not easy to conclude if a certain alert was a direct consequence of user's action & it oftens require time-consuming effort to dig forensics artefacts out. By the time we start digging, some of these 'evidence' may have already been erased or even falsely implanted to thwart investigations.
 
 Now for some shameless product marketing for my company, we have a specialised PC known as the [Black-Computer](http://www.digisafe.com/products/trusted-workspace/black-computer/) that offers compartmentalised environments for risky activities like Internet surfing & browsing external content (received from external networks) & another VM for Intranet use-cases. It differs from other products like Bromium, Menlo-Security, even QubeOS because we have a dedicated security chip that is monitoring all hardware bus activities, which includes USB storage, IO devices like keyboard & mouse. 
 
