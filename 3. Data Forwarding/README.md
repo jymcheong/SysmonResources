@@ -8,3 +8,5 @@ Once these events get into the centralised **W**indows **E**vent **C**ollector s
 * [Beats](https://www.elastic.co/products/beats) is the platform for single-purpose data shippers. They install as lightweight agents and send data from hundreds or thousands of machines to Logstash or Elasticsearch.
 
 * [NXlog CE](https://nxlog.co/products/nxlog-community-edition) NXLog Community Edition is an open source, high-performance, multi-platform log management solution aimed at solving these tasks and doing it all in one place. [Sample configuration to send Windows Events to ElasticSearch/Graylog with NXlog CE.](https://medium.com/@jym/collecting-windows-events-including-sysmon-2-with-nxlog-ce-graylog-881ccf3db314)
+
+Some may also opt to do away with Windows Event Forwarding altogether & use these agents to forward directly to a centralised log management & analysis backend.
