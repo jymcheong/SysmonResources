@@ -1,5 +1,5 @@
 # Threat Analytics
-Threat hunting is good but requires prior knowledge of offensive techniques & the [corresponding observables](http://stixproject.github.io/documentation/concepts/composition/) so as to know what to 'hunt'. How to deal with what you don't know? We won't know what we don't kno & we may require some form of data analytics. Another approach is the use of deception, which is another topic altogether.
+Threat hunting is good but requires prior knowledge of offensive techniques & the [corresponding observables](http://stixproject.github.io/documentation/concepts/composition/) so as to know what to 'hunt'. How to deal with the unknowns? We won't know what we don't know & we may require some form of data analytics. Another approach is the use of deception, which is another topic altogether.
 
 * [Cyber Analytics Repository](https://car.mitre.org/wiki/Main_Page) (CAR) is a knowledge base of analytics developed by MITRE based on the Adversary Tactics, Techniques, and Common Knowledge (ATT&CK™) adversary model.
 
