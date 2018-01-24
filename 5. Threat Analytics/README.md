@@ -36,12 +36,14 @@ For the sake of limiting the discussion to Sysmon, we will just focus on client 
 
 Client-zones form a large attack surface. By attack surface, I mean the sum of attack vectors. By attack vector, I refer to the means (how) to access/reach the target, in this case the delivery of payloads that run arbitrary codes on the target system. The earlier diagram illustrates the flow from user-actions, to host-processing (code execution regardless good or bad), to let's say some alerts from either endpoint controls &/or network sensors.
 
-# Missing-Link
+# Instead of "working backwards"
 ![](0C3F5E51-29A8-43C3-9B37-A2C15C13083E.png)
 After evaluating several EDRs & looking at some of these threat analytics capabilities, I am still not very satisfied with the way the timeline is being presented. It is not easy to conclude if a certain alert was a direct consequence of user's action & it oftens require time-consuming effort to dig forensics artefacts out. By the time we start digging, some of these 'evidence' may have already been erased or even falsely implanted to thwart investigations.
 
 Now for some shameless product marketing for my company, we have a specialised PC known as the [Black-Computer](http://www.digisafe.com/products/trusted-workspace/black-computer/) that offers compartmentalised environments for risky activities like Internet surfing & browsing external content (received from external networks) & another VM for Intranet use-cases. It differs from other products like Bromium, Menlo-Security, even QubeOS because we have a dedicated security chip that is monitoring all hardware bus activities, which includes USB storage, IO devices like keyboard & mouse. 
 
 I will not go into the other features & benefits of Black-Computer but will focus on the user-action tracking using both at OS (which I designed & implemented) & hardware layers. In doing so, we can be quite certain if the activities that are caught by sensors are directly attributed to user actions or could be a result of lateral movement by let's say network packets, something like EternalBlue exploit or even the abuse legit mechanisms like WMI & Powershell remoting. With this linkage in place, it aids the analysis & time-reconstruction regardless with eye-balls or machine analytics, to discern if it was an insider or remotely controlled.
+
+# 2 is better than 1
 
 
