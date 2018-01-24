@@ -21,7 +21,7 @@ I will delve more on the second question since putting in garbage will to garbag
 
 ## "Symptomatic" Logging
 ![](symptomaticLogging.png)
-I termed it as "symptomatic" because it is very much like medical diagnostics, you go to the doctor, talked about the symptoms (eg. sneezing, coughing), the doc measures temperature, blood-pressure & so on to make an assessment. Some of the wearables tech like activity & sleep trackers are providing the "in-between" data, which can help to explain the symptoms eg. fatigue/tiredness.
+I termed it as "symptomatic" because it is very much like medical diagnostics, you go to the doctor, talked about the symptoms (eg. sneezing, coughing), the doc measures temperature, blood-pressure & so on to make an assessment. Some of the wearables tech like activity & sleep trackers are providing the "in-between" data, which can help to explain certain symptoms eg. fatigue/tiredness.
 
 For complex system event logging, there's also the tendency (especially for earlier generations of SIEMs) to record events that are related to the sypmtoms. These type of events are typically emitted from security controls like Endpoint Protection (aka Anti-Virus), Windows Audit events like account logout, network IDS, firewalls & so on. 
 
