@@ -23,7 +23,7 @@ I will touch more on the second question because garbage-in-garbage-out, also on
 ![](symptomaticLogging.png)
 I termed it as "symptomatic" because it is very much like medical diagnostics, you go to the doctor, talked about the symptoms (eg. sneezing, coughing), the doc measures temperature, blood-pressure & so on to make an assessment. 
 
-In complex system event logging, similarly there's the tendency (especially the earlier generation of SIEMs) to record events that are related to the sypmtoms, that are emitted from security controls like Endpoint Protection (aka Anti-Virus), Windows Audit events like account logout & so on. 
+In complex system event logging, similarly there's the tendency (especially the earlier generation of SIEMs) to record events that are related to the sypmtoms, that are emitted from security controls like Endpoint Protection (aka Anti-Virus), Windows Audit events like account logout, network IDS, firewalls & so on. 
 
 If we look at it as a Cause-to-Effect "spectrum", such events are closer to the effect(s). There's alot of in-betweens going on that is unknown if there not captured. Therefore it is difficult to work backwards to find out the root-cause even if the security controls were to be effective in alerting.
 
