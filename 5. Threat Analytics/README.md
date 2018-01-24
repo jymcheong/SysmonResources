@@ -27,6 +27,6 @@ In complex system event logging, similarly there's the tendency (especially the 
 
 If we look at it as a Cause-to-Effect "spectrum", such events are closer to the effect(s). There's alot of in-betweens going on that are not captured thus making it difficult to work backwards to find out the root-cause even if the security controls were to be effective in alerting.
 
-Of course, there are more mature organisation that goes to the extend of recording those "in-betweens" for endpoint & network (eg. using EDR, Sysmon + Powershell + WMIC + Windows Audit, linux auditd/osquery/grr & netflow/network forensics). This brings us to the next topic; linking the data-points together.
+Of course, there are more mature/advance organisation that goes to the extend of recording those "in-betweens" for endpoint & network (eg. using EDR, Sysmon + Powershell + WMIC + Windows Audit, linux auditd/osquery/grr & netflow/network forensics). This brings us to the next topic; linking the data-points together.
 
 to be continued... 
