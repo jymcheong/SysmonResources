@@ -11,3 +11,15 @@ The file provided should function as a great starting point for system change mo
 Some events are filtered out (eg. Process Termination of programs running from Windows\) but they may be useful for certain [analysis like UAC bypass](https://medium.com/@jym/uac-bypass-analysis-7a1379d21d36), in which the timing between Consent.exe creation & termination is very short. We won't be able to calculate that if such events are filtered away.
 
 If you are running a lab, you may want to simulate the various applications executions within the lab & ingest all events first. These user applications, along with the file-types are likely vectors for code-execution. **Applying template configuration blindly may result to 'blind-spots'.**
+
+### Basic "catch all" without configuration file (as admin):
+
+`sysmon -accepteula -i -h * -n -l`
+
+-h * 	: use all hash algorithm
+
+-n 		: log network connections
+
+-l 		: log loading of modules
+
+More for lab & single machine use/analysis, not suitable for production use due to large volume of events.
