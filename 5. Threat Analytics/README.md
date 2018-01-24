@@ -46,6 +46,6 @@ I will not go into the other features & benefits of Black-Computer but will focu
 
 # Tamper-Detection
 ![](D20ECC51-E132-4C25-ABEE-C3A4AF7548EF.png)
-Using the "Assumed Breach" mentality, I would assume the adversary would be able to disable Windows Event, the user-tracking OS module & even the hardware instrumentation. By having the redundancy, we can detect the anomalies whenever one signal goes missing. The detection of the last case would be having no HID signals but still seeing network traffic from the endpoint in question (eg. netflow).
+"Assumed Breach" in this case would mean I assume the adversary could disable Windows Event, user-tracking & even the hardware instrumentation. By having redundancy in instrumentation, we can detect the anomalies whenever one signal goes missing. The detection of the last case would be having no HID signals but still seeing network traffic from the endpoint in question (eg. netflow).
 
-To be continued.
+Another class of tampering apart from silencing the log-source is to inject fake logs into the log-collection sub-system. Simple Syslog listeners without any network access control are susceptible to log spoofing & even Denial-of-Service. Our Black-PC has an out-of-band instrumentation network channel to a centralised monitoring system. Even with the worst case scenario of log collection being bombarded by one or few machines, we can use the independent Black-PC management to disarm the offending machine(s) remotely.
