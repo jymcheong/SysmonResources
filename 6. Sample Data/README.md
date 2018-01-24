@@ -1,4 +1,4 @@
-# Sysmon Sample Data Sets
+# Sample Data Sets
 
 Will be uploading sample sample Sysmon logs related to various aspects of an **A**ttack **L**ife **C**ycle. MITRE's ATT&CK is really comprehensive but we wanted a model that was more easy to grasp in terms of wording & also to distinct between external & inside threats, & beyond breach of confidentiality:
 
