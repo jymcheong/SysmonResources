@@ -45,5 +45,6 @@ Now for some shameless product marketing for my company, we have a specialised P
 I will not go into the other features & benefits of Black-Computer but will focus on the user-action tracking using both at OS (which I designed & implemented) & hardware layers. In doing so, we can be quite certain if the activities that are caught by sensors are directly attributed to user actions or could be a result of lateral movement by let's say network packets, something like EternalBlue exploit or even the abuse legit mechanisms like WMI & Powershell remoting. With this linkage in place, it aids the analysis & time-reconstruction regardless with eye-balls or machine analytics, to discern if it was an insider or remotely controlled.
 
 # 2 is better than 1
-
+![](D20ECC51-E132-4C25-ABEE-C3A4AF7548EF.png)
+Using the "Assumed Breach" mentality, I would assume the adversary would be able to disable Windows Event, the user-tracking OS module & even the hardware instrumentation. By having the redundancy, we can detect the anomalies whenever one signal goes missing. The detection of the last case would be having no HID signals but still seeing network traffic from the endpoint in question (eg. netflow).
 
