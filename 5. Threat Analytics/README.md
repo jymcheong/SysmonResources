@@ -1,5 +1,5 @@
 # Threat Analytics
-Threat hunting is good but requires prior knowledge of offensive techniques & the [corresponding observables](http://stixproject.github.io/documentation/concepts/composition/) so as to know what to 'hunt'. How to deal with the unknowns? We won't know what we don't know & we may require some form of data analytics. Another approach is the use of deception, which is another topic altogether.
+Threat hunting is good but requires prior knowledge of offensive techniques & the [corresponding observables](http://stixproject.github.io/documentation/concepts/composition/) so as to know what to 'hunt'. How to deal with the unknowns? We won't know what we don't know & may require some form of data analytics. Another approach is the use of deception, which is another topic altogether.
 
 * [Cyber Analytics Repository](https://car.mitre.org/wiki/Main_Page) (CAR) is a knowledge base of analytics developed by MITRE based on the Adversary Tactics, Techniques, and Common Knowledge (ATT&CK™) adversary model.
 
@@ -71,11 +71,11 @@ If the consequent program that ran after UAC consent (elevating to admin rights)
 # Summing it up
 ![](elephantlooklike.jpg)
 
-Before we debate on what algorithms, methods, techniques are better to detect, it is fair to say that what data we capture matters. To sum it up:
+Before we debate on what algorithms, methods, techniques are better & so on, it is fair to say that what data we capture matters. To sum it up:
 
 1. Capturing "symptomatic" alerts is not enough, we need the "in-between" data to make sense of the situation; whether it is an externally controlled or insider act.
 
-2. Instead of working backwards, we want to construct chains-of-events forward starting from user-actions related to foreground process, link any processes that does network communications regardless north-south or east-west traffic with Netflow data.
+2. Instead of working backwards, we want to construct chains-of-events forward starting from user-actions related to foreground process, link any processes that communicate regardless north-south or east-west traffic with Netflow data.
 
 3. Have strategies & implementations to deal with log tampering in an event of privilege escalation on the host.
 
