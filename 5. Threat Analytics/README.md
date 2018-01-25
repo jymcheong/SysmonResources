@@ -6,7 +6,7 @@ Threat hunting is good but requires prior knowledge of offensive techniques & th
 * [Early Threat Warning Analytics](https://coggle.it/diagram/Wi9InZlx9wABS7-3/t/early-threat-warning-analytics/ca532fbf049b71fa2bb88d993e4c2641f87a9edec458c39bf14baca9bc67e682) mind-map was created to journal the various areas to detect.
 
 * [Red Team Techniques for Evading, Bypassing, and Disabling MS
-  Advanced Threat Protection and Advanced Threat Analytics](https://media.defcon.org/DEF%20CON%2025/DEF%20CON%2025%20presentations/DEFCON-25-Chris-Thompson-MS-Just-Gave-The-Blue-Teams-Tactical-Nukes.pdf) Not directly related to Sysmon but more to Microsoft threat analytics.
+  Advanced Threat Protection and Advanced Threat Analytics](https://media.defcon.org/DEF%20CON%2025/DEF%20CON%2025%20presentations/DEFCON-25-Chris-Thompson-MS-Just-Gave-The-Blue-Teams-Tactical-Nukes.pdf) Not directly related to Sysmon but more to Microsoft threat analytics. 
 
 ## Good vs Bad vs "I don't know"  
 A viable approach is to learn what are known good/benign within a given environment so as to sieve out the known-bad & things that we have never seen before. After which, investigate the unknowns & turn them into known (either good or bad). Easier said than done for two main reasons:
@@ -49,7 +49,7 @@ I will not go into the other features & benefits of Black-Computer but will focu
 # Why network monitoring is not enough?
 ![](internalreconn.png)
 
-Consider this internal reconnaisance (post-intrusion) scenario, just by looking/analysing network data, it is difficult to differentiate between legit access & externally controlled reconn. Even without network data like NetFlow, Sysmon network events would provide the info relating the process & network details making it standout if it is uncommon for Powershell to access web in a given environment.
+Consider this internal reconnaisance (post-intrusion) scenario, it is difficult to differentiate between legit access & externally controlled reconn just by looking at network data. Even without network data like NetFlow, Sysmon network events would provide the info relating the process & network details making it standout if it is uncommon for Powershell to access web in a given environment.
 
 To view the Intranet pages on the attacker's terminal, s/he would have to setup port-forwarding on the compromised endpoint, which makes it another indicator to watch for. A careful threat actor may also inject code into a browser process which could be detected with Sysmon events like Event ID 8: CreateRemoteThread & Event ID 10: ProcessAccess. The benefit of linking the process ID to NetFlow is to get volumetric data for further machine analysis.  
 
@@ -71,9 +71,9 @@ If the consequent program that ran after UAC consent (elevating to admin rights)
 # Summing it up
 ![](elephantlooklike.jpg)
 
-Before we debate on what methods, algorithms, products are better & so on, it is fair to say that what data we capture matters. To sum it up:
+Before we debate about which detection methods, algorithms, products are better & so on, it is fair to say that what data we capture matters. To sum it up:
 
-1. Capturing "symptomatic" alerts is not enough, we need the "in-between" data to make sense of the situation; whether it is an externally controlled or insider act.
+1. Capturing "symptomatic" alerts is not enough, we need the "in-between" (the Cause-to-Effect timeline) data to make sense of the situation; whether it is an externally controlled or insider act.
 
 2. Instead of working backwards, we want to construct chains-of-events forward starting from user-actions related to foreground process, link any processes that communicate regardless north-south or east-west traffic with Netflow data.
 
