@@ -36,7 +36,7 @@ Of course, there are more mature/advance organisation that goes to the extend of
 
 For the sake of limiting the discussion to Sysmon, I will just focus on client zones that are made up of largely Windows based machines. Of course there are server-zones & non-windows client-endpoints but regardless of Operating Systems, some forms of payloads have to be delivered. The same can be applied to mobile platforms, instead of mouse-events, we have screen-taps, keyboards still exist in mobile devices.
 
-Client-zones form large attack surfaces. By attack surface, I mean the sum of attack vectors. By attack vector, I refer to the means (how) to access/reach the target, in this case the delivery of payloads that run arbitrary codes on the target system. The earlier diagram illustrates the flow from user-actions, to host-processing (code execution regardless good or bad), to let's say some alerts from either endpoint controls &/or network sensors.
+Client-zones are large attack surfaces. By attack surface, I mean the sum of attack vectors. By attack vector, I refer to the means (how) to access/reach the target, in this case the delivery of payloads that run arbitrary codes on the target system. The earlier diagram illustrates the flow from user-actions, to host-processing (code execution regardless good or bad), to let's say some alerts from either endpoint controls &/or network sensors.
 
 # Instead of "working backwards...
 ![](0C3F5E51-29A8-43C3-9B37-A2C15C13083E.png)
