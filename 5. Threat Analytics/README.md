@@ -49,7 +49,7 @@ I will not go into the other features & benefits of Black-Computer but will focu
 # Why it is necessary to fuse data together?
 ![](internalreconn.png)
 
-Consider this internal reconnaisance scenario, just by looking/analysing network data alone would make it hard to differentiate legit access from an externally controlled access. Even without network data like NetFlow, Sysmon network events would provide the info relating the process & network details making it standout if it is uncommon for Powershell to access web in a given environment.
+Consider this internal reconnaisance scenario, just by looking/analysing network data alone would make it hard to differentiate legit access from an externally controlled reconn. Even without network data like NetFlow, Sysmon network events would provide the info relating the process & network details making it standout if it is uncommon for Powershell to access web in a given environment.
 
 To view the Intranet pages on the attacker's terminal, s/he would have to setup port-forwarding on the compromised endpoint, which makes it another indicator to watch for. A careful threat actor may also inject code into a browser process which could be detected with Sysmon events like Event ID 8: CreateRemoteThread & Event ID 10: ProcessAccess. The benefit of linking the process ID to NetFlow is to get volumetric data for further machine analysis.  
 
