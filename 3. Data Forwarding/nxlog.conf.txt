@@ -1,0 +1,55 @@
+## This is a sample configuration file. See the nxlog reference manual about the
+## configuration options. It should be installed locally and is also available
+## online at http://nxlog.org/docs/
+
+## Please set the ROOT to the folder your nxlog was installed into,
+## otherwise it will not start.
+
+# for 32bit windows
+#define ROOT C:\Program Files\nxlog
+
+# for 64bit windows
+define ROOT C:\Program Files (x86)\nxlog
+
+Moduledir %ROOT%\modules
+CacheDir %ROOT%\data
+Pidfile %ROOT%\data\nxlog.pid
+SpoolDir %ROOT%\data
+LogFile %ROOT%\data\nxlog.log
+
+#<Extension _syslog>
+#    Module      xm_syslog
+#</Extension>
+<Extension json>
+ Module xm_json
+</Extension>
+
+<Input in>
+    Module      im_msvistalog
+
+    Query <QueryList>\
+	<Query Id="0">\
+	<Select Path="Security">*</Select>\
+	<Select Path="System">*</Select>\
+	<Select Path="Application">*</Select>\
+	<Select Path="Setup">*</Select>\
+	<Select Path="Windows PowerShell">*</Select>\
+	<Select Path="Microsoft-Windows-Sysmon/Operational">*</Select>\
+	</Query>\
+	</QueryList>
+
+Exec $DeviceVendor = "Microsoft";
+Exec $DeviceProduct = "EventLog";
+Exec $raw_event = to_json();
+
+</Input>
+
+<Output out>
+    Module      om_file
+    file	"c:\eventlog.txt"
+</Output>
+
+<Route 1>
+    Path        in => out
+</Route>
+
