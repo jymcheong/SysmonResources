@@ -2,7 +2,7 @@
 ## configuration options. It should be installed locally and is also available
 ## online at http://nxlog.org/docs/
 
-## Please set the ROOT to the folder your nxlog was installed into,
+## Step 0: Please set the ROOT to the folder your nxlog was installed into,
 ## otherwise it will not start.
 
 # for 32bit windows
@@ -10,6 +10,10 @@
 
 # for 64bit windows
 define ROOT C:\Program Files (x86)\nxlog
+
+# Step 1: Overwrite existing conf file with this
+
+# Step 2: Launch Windows Services as admin, find Nxlog, start it
 
 Moduledir %ROOT%\modules
 CacheDir %ROOT%\data
