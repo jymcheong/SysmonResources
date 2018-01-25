@@ -17,7 +17,7 @@ A viable approach is to learn what are known good/benign within a given environm
 
 For the first question, analytics product vendors would have to "teach" their analytic engines with a representative environment (eg. a Cyber Range) that simulates typical user-applications & emulates offensive sequences. It then further begs the question of how close this representative environment is to the actual production ones. So it is common to have "learning" period to close the gap between the products' baselines & actual production environment.
 
-I devised something to test EDR & threat analytics, basically an [Outlook backdoor using Microsoft Visual Studio Tool for Office](https://www.youtube.com/watch?v=e-rPstKk8rw). A even simpler backdoor is to just create a BCC forwarding rule or or a printer scan-then-email as a pre-existing problem to see if the EDR/analytics under test can detect such cases. 
+I devised something to test EDR & threat analytics, basically an [Outlook backdoor using Microsoft Visual Studio Tool for Office](https://www.youtube.com/watch?v=e-rPstKk8rw). A even simpler backdoor is to just create a BCC forwarding rule as a pre-existing problem to see if the EDR/analytics under test can detect such cases. 
 
 I will dwell more on the second question since garbage-in-garbage-out & also gaps of sending events only from security controls into a programmable IDS known as SIEM. The whole idea of threat hunting is a more dynamic & agile querying (think of it as fast [OODA](https://en.wikipedia.org/wiki/OODA_loop)) compared to the rather static rules/contents within a SIEM, which honestly is hard & painful to program & let alone scale cost-effectively.
 
