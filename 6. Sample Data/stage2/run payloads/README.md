@@ -8,7 +8,7 @@ I will also include logs from normal application execution so as to help contras
 # Payload Types
 There are various malware taxonomies & so on but I am getting old to remember too much. Instead, I grouped them into 3 types:
 
-![](payloadtypes.jpg)
+![](payloadtypes.png)
 
 There's this hype with 0-day exploits (Type 3) that people overlook the basic things. By basic, I am refering to how a typical OS work. Type 1 (Executables) & 2 (Scripting) are actually the usual & legitimate ways of running instructions/codes on a computer (observable with Sysmon events). Exploits are typically specific to OS types & version.  
 
