@@ -1,5 +1,5 @@
 # Data Forwarding
-Beyond analysing on a single machine, to observe things like Lateral Movement & AD attacks, we will need to forward Sysmon Events to a central log ingestion system since logs staying silo'ed in each host is rather pointless:
+Beyond analysing on a single machine (within host), to observe things like Lateral Movement (between hosts) & AD attacks, we will need to forward Sysmon Events to a central log ingestion system since logs staying silo'ed in each host is rather pointless:
 
 * [https://github.com/palantir/windows-event-forwarding](https://github.com/palantir/windows-event-forwarding) Over the past few years, Palantir has a maintained an internal Windows Event Forwarding (WEF) pipeline for generating and centrally collecting logs of forensic and security value from Microsoft Windows hosts. Once these events are collected and indexed, alerting and detection strategies (ADS) can be constructed not only on high-fidelity security events (e.g. log deletion), but also for deviations from normalcy, such as unusual service account access, access to sensitive filesystem or registry locations, or installation of malware persistence...
 
