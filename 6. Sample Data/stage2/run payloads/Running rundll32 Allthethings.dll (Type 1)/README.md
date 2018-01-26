@@ -27,9 +27,12 @@ So if you were to pay for a **E**ndpoint **D**etection **R**esponse system, **yo
 
 The CommandLine value is  `C:\\Users\\q\\Source\\Repos\\AllTheThings\\AllTheThings\\bin\\x86\\Release\\AllTheThings.dll, EntryPoint` is something to be concerned with. In my case it was rather obvious but **the question becomes "is it common to have such rundll32 loads from user writable paths?".**
 
-Next, even if it is common that such rundll32 loads (which is honestly bad), **how many of such DLLs (we know it is a DLL even if it is named as doc) make network connections?** **So even without the ability to tell true destination, the Sysmon event is still useful.** 
+Next, even if it is common that such rundll32 loads (which is honestly bad), **how many of such DLLs (we know it is a DLL even if it is named as doc) make network connections?** **So even without the ability to tell true destination, the Sysmon network connection events are still useful.** 
 
 ### Hypothesis
 So the focus now becomes (without using analytics jargons or brand specific queries): "**What are the rare rundll32 cmdlines that create process(es) that make outbound network connections?**". 
 
 Think of it another way is we are asking questions that "spans" across two tactical groups (Run payload & External/Internal Command & Control). So instead of writing a specific rule/query for each & every windows tools abuse (of course we should if we can), the machine analytics approach surfaces such unknowns & let's you put a 'label' to it. 
+
+### Other Reference(s)
+[https://car.mitre.org/wiki/CAR-2014-03-006](https://car.mitre.org/wiki/CAR-2014-03-006)
