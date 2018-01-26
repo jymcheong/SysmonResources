@@ -1,7 +1,9 @@
 # Rundll32
 
 ## Background
-The Type 1s that I have highlighted so far are Portable Executables; one managed code (.NET) & the other native code (tainted winscp.exe). Catching unsigned programs that made weird connections out is low-hanging fruit. Rundll32.exe is a **signed** program (part of Windows) that can be called to execute an arbitrary binary... [https://attack.mitre.org/wiki/Technique/T1085](https://attack.mitre.org/wiki/Technique/T1085). Mitigations are in the MITRE link. I picked this as an illustration partly because there are a number of ways in Windows to load DLLs eg. [Search Order Hijacking](https://attack.mitre.org/wiki/Technique/T1038), [Side-loading](https://attack.mitre.org/wiki/Technique/T1073), . 
+The Type 1s that I have highlighted so far are Portable Executables; one managed code (.NET) & the other native code (tainted winscp.exe). Catching unsigned programs that made weird connections out is low-hanging fruit. 
+
+Rundll32.exe however, is a **signed** program (part of Windows) that can be called to execute an arbitrary binary... [https://attack.mitre.org/wiki/Technique/T1085](https://attack.mitre.org/wiki/Technique/T1085) (mitigations are in the MITRE link). I picked this to bring the point across that there are a number of ways in Windows to load DLLs eg. [Search Order Hijacking](https://attack.mitre.org/wiki/Technique/T1038), [Side-loading](https://attack.mitre.org/wiki/Technique/T1073), InstallUtil, Regsvcs, Regasm, regsvr32 & the list goes on. 
 
 ## Payload Used
 I used a LNK (link) file that calls a custom "Allthethings" managed DLL from Casey Smith [@subtee](https://twitter.com/subTee?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor) but integrated with Veil C# Metepreter reverse_https source into it. "Allthethings" DLL is a good test harness (depends on how you see things) to load other stuff like Empire or whatever fancies you, originally for the purpose of testing/evading application-whitelisting (eg. AppLocker). Btw, this was run on a fully patched updated Windows 10x64 VM.
@@ -30,4 +32,4 @@ Next, even if it is common that such rundll32 loads (which is honestly bad), **h
 ### Hypothesis
 So the focus now becomes (without using analytics jargons or brand specific queries): "**What are the rare rundll32 cmdlines that create process(es) that make outbound network connections?**". 
 
-Think of it another way is we are asking questions that "spans" across two tactical groups (Run payload & External/Internal Command & Control).
+Think of it another way is we are asking questions that "spans" across two tactical groups (Run payload & External/Internal Command & Control). So instead of writing a specific rule/query for each & every windows tools abuse (of course we should if we can), the machine analytics approach surfaces such unknowns & let's you put a 'label' to it. 
