@@ -3,7 +3,7 @@ Are you into pen-testing? Or a eager data-science student who is interested in c
 
 So if you are into offensive, you want to see what data that are emitted that get you caught. And if you are into data-science, running a program like Winword isn't rocket science to get data for what is normal. 
 
-I keep hearing that it is hard to get data from various groups of people, so I decided that once and for all, just put it here. 
+I keep hearing that it is hard to get data from various groups of people, so I decided that once and for all, just put it here. I installed Nxlog-CE with the config (nxlog.conf.txt, need to rename) on various test Windows VMs to capture Sysmon events into individual Json lines.  
 
 # Sample Data Sets
 
