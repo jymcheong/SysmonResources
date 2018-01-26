@@ -30,7 +30,13 @@ The CommandLine value is  `C:\\Users\\q\\Source\\Repos\\AllTheThings\\AllTheThin
 Next, even if it is common that such rundll32 loads (which is honestly bad), **how many of such DLLs (we know it is a DLL even if it is named as doc) make network connections?** **So even without the ability to tell true destination, the Sysmon network connection events are still useful.** 
 
 ## Questions
-**What are the rare rundll32 cmdlines that create process(es) that make outbound network connections?**". 
+This is not exhaustive set, just samples:
+
+**What are the rare rundll32 commandlines parameters that create process(es) that make outbound network connections?**". 
+
+**What other system tools that take in commandline parameters that make outbound network connections?**
+
+**Do these parameters from user-writable paths?**
 
 Think of it another way, ask questions that "spans" across two tactical groups (Run payload & External/Internal Command & Control). So instead of writing a specific rule/query for each & every windows tools abuse (of course we should if we can), the machine analyses & highlights unknowns & let's you put a 'label' to it. 
 
