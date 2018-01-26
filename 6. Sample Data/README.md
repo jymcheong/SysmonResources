@@ -9,7 +9,7 @@ MITRE's ATT&CK is a comprehensive enumeration of techniques grouped into tactica
 We tend to use MITRE ATT&CK in our dialogue/engagementsWhen working with users who are more technical/savvy & prefer "branded" frameworks from more established organisations like MITRE, big-four consulting & the likes. But for all intent & purposes, our ALC is easier for communicating with non-technical stake-holders & is almost equivalent.
 
 # Why do u bother?
-Are you into pen-testing? Or a eager data-science student who is interested in cyber security? This idea that one has to be very specialised or a "domain expert" is really an artifical glass-ceiling we put in our heads. 
+Are you into pen-testing? Or a eager data-science student who is interested in cyber security? This idea that one has to be specialised or a "domain expert" to do someting is really an artifical glass-ceiling we put in our heads. You do it to become the domain expert!
 
 So if you are into offensive, you want to see what data that are emitted that get you caught. And if you are into data-science, running a program like Winword isn't rocket science to get data for what is normal. 
 
