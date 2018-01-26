@@ -8,7 +8,7 @@ Rundll32.exe however, is a **signed** program (part of Windows) that can be call
 ## Payload Used
 I used a LNK (link) file that calls a custom "Allthethings" managed DLL from Casey Smith [@subtee](https://twitter.com/subTee?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor) but integrated with Veil C# Metepreter reverse_https source into it. "Allthethings" DLL is a good test harness (depends on how you see things) to load other stuff like [Empire](https://github.com/EmpireProject/Empire) or whatever you fancy. It was shared for testing/evading application-whitelisting (eg. AppLocker) but Casey had since wiped that repository. Btw, this was executed on a fully patched updated (Windows Defender) Windows 10x64 VM.
 
-## Observations from Log
+## Observations
 ### Can't tell it was launch via LNK 
 From log line #1, you can see the ProcessCreate event type with image field as full path to rundll32.exe & parent image being explorer.exe, **one can at best infer the windows explorer was at the foreground when this happened but we can't see or tell that LNK file was used**.
 
@@ -29,10 +29,10 @@ The CommandLine value is  `C:\\Users\\q\\Source\\Repos\\AllTheThings\\AllTheThin
 
 Next, even if it is common that such rundll32 loads (which is honestly bad), **how many of such DLLs (we know it is a DLL even if it is named as doc) make network connections?** **So even without the ability to tell true destination, the Sysmon network connection events are still useful.** 
 
-### Hypothesis
-So the focus now becomes (without using analytics jargons or brand specific queries): "**What are the rare rundll32 cmdlines that create process(es) that make outbound network connections?**". 
+## Questions
+**What are the rare rundll32 cmdlines that create process(es) that make outbound network connections?**". 
 
-Think of it another way is we are asking questions that "spans" across two tactical groups (Run payload & External/Internal Command & Control). So instead of writing a specific rule/query for each & every windows tools abuse (of course we should if we can), the machine analytics approach surfaces such unknowns & let's you put a 'label' to it. 
+Think of it another way, ask questions that "spans" across two tactical groups (Run payload & External/Internal Command & Control). So instead of writing a specific rule/query for each & every windows tools abuse (of course we should if we can), the machine analyses & highlights unknowns & let's you put a 'label' to it. 
 
-### Other Reference(s)
+## Other Reference(s)
 [https://car.mitre.org/wiki/CAR-2014-03-006](https://car.mitre.org/wiki/CAR-2014-03-006)
