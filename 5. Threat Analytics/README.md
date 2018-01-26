@@ -62,7 +62,7 @@ Another class of tampering apart from silencing the log-source is to inject fake
 # Sample Insider Scenario
 ![](launchNotepad.png)
 
-By tracking the user-actions & linking to the foreground application ProcessID without recording the actual keystrokes/mouse-coordinates, we can better understand the entire sequence of events for both humans & machine-learning without compromising privacy & confidentality. In the case above, it seems the user launched Notepad to view log file, or was it really just reading...
+By tracking the user-actions & linking to the foreground application ProcessID without recording which key & mouse-coordinates, we can better understand the entire sequence of events for both humans & machine-learning without compromising privacy & confidentality. In the case above, it seems the user launched Notepad to view log file, or was it really just reading...
 
 ![](invokeuac.png)
 
@@ -73,7 +73,7 @@ If the consequent program that ran after UAC consent (elevating to admin rights)
 
 Before we debate about which detection methods, algorithms, products are better & so on, it is fair to say that what data we capture matters. To sum it up:
 
-1. Capturing "symptomatic" alerts is not enough, we need the "in-between" (the Cause-to-Effect timeline) data to make sense of the situation; whether it is an externally controlled or insider act.
+1. Capturing "symptomatic" alerts is not enough, we need the "in-between" (the Cause-to-Effect timeline) data to make sense of the situation; whether it is an externally controlled or insider actors. In a real-environment, all these can happen together!
 
 2. Instead of working backwards, we want to construct chains-of-events forward starting from user-actions related to foreground process, link any processes that communicate regardless north-south or east-west traffic with Netflow data.
 
