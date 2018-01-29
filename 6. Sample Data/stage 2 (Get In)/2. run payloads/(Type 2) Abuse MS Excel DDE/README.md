@@ -29,7 +29,7 @@ Instead of Outlook (email client), I used a [specially crafted CSV](https://gith
 
 7. Between Excel Process Creation to Terminate, there's only a single pair of Parent -> Child relationship. Keep that in mind & contrast that to the following...
 
-### Popping calc with DDE
+### Popping calculator with DDE
 
 ![](img/excelparent.png)
 
