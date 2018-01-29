@@ -1,5 +1,7 @@
 # Sysmon Resources
-Consolidation of various resources related to [Microsoft Sysmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon). The resources are organised in the various folders above. Much of it is re-organisation of [https://github.com/MHaggis/sysmon-dfir](https://github.com/MHaggis/sysmon-dfir) kudos to MHaggis. My opinions/thoughts/contributions are largely within the [analytics](https://github.com/jymcheong/SysmonResources/tree/master/5.%20Threat%20Analytics) & [sample data folders](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data) (sample logs will be gradually added). Github Desktop app & MacDown made it a pleasure to organise these resources.
+Consolidation of various resources related to [Microsoft Sysmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon). The resources are organised in the various folders above. Much of it is re-organisation of [https://github.com/MHaggis/sysmon-dfir](https://github.com/MHaggis/sysmon-dfir) kudos to [Michael Haag](https://github.com/MHaggis). 
+
+My opinions/thoughts/contributions are largely within the [analytics](https://github.com/jymcheong/SysmonResources/tree/master/5.%20Threat%20Analytics) & [sample data folders](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data) (sample logs will be gradually added). Github Desktop app & MacDown made it a pleasure to organise these resources.
 
 # What is Sysmon?
 System Monitor (Sysmon) is a Windows system service and device driver that, once installed on a system, remains resident across system reboots to monitor and log system activity to the Windows event log. It provides detailed information about process creations, network connections, and changes to file creation time...
