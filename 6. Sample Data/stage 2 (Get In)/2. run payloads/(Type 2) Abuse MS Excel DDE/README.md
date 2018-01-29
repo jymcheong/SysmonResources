@@ -37,7 +37,7 @@ Instead of Outlook (email client), I used a [specially crafted CSV](https://gith
 
 1. When we put them together the Parent -> Child chain: Explorer -> Excel -> CMD -> Conhost & Calc
 
-2. Conhost is typically seen with CMD launch, doesn't matter if via Explorer or Excel.
+2. [Conhost is typically seen with CMD launch](https://www.howtogeek.com/howto/4996/what-is-conhost.exe-and-why-is-it-running/), doesn't matter if via Explorer or Excel.
 
 ## Questions
 Some questions to ask:
