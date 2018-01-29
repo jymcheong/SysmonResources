@@ -42,7 +42,7 @@ Instead of Outlook (email client), I used a [specially crafted CSV](https://gith
 ## Questions
 Some questions to ask:
 
-1. How often is Excel a parent process in your environment?
+1. How often is Excel (or the other Office apps) a parent process in your environment?
 
 2. Is it typical to have is this Parent -> Child process chains with >= 2 edges/links?
 
