@@ -44,6 +44,6 @@ Some questions to ask:
 
 1. How often is Excel (or the other Office apps) a parent process in your environment?
 
-2. Is it typical to have is this Parent -> Child process chains with >= 2 edges/links?
+2. Is it typical to have Parent -> Child process-chains with >= 2 edges/links?
 
 I used a simple example to launch calc.exe but it could have been more complicated in a real attack, which also means possibly longer chains.
