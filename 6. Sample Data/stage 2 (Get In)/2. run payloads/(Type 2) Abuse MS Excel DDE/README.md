@@ -12,16 +12,16 @@ Instead of Outlook (email client), I used an specially crafted CSV that "pops a 
 
 ## Observations
 
-### Normal accessing of a blank Excel file
+### Opening a blank Excel file
 ![](img/normal.png)
 
-1. First line of "opening a blank xlsx eventlog.txt" is a *"Process Create"* event for Excel. We can see the various related fields including ParentImage which is Explorer.exe. We can infer that the user launch it from Windows Explorer.
+1. [First line of "opening a blank xlsx eventlog.txt"](https://github.com/jymcheong/SysmonResources/blob/0d63062cda64217a235be78f246e709734e10c78/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads/(Type%202)%20Abuse%20MS%20Excel%20DDE/opening%20a%20blank%20xlsx%20eventlog.txt#L1) is a *"Process Create"* event for Excel. We can see the various related fields including ParentImage which is Explorer.exe. We can infer that the user launch it from Windows Explorer.
 
 2. From that first log line, we can't tell what file was opened. For certain other Office apps, we may be able to see that from CommandLine, but somehow not for Excel.
 
 3. There can be other events totally not related, which could be hard to eye-ball, especially with lines & lines of text. That's the main reason why Endpoint Detection & Response or whatever Threat Hunting solutions tend to visualise in some forms of graph or timeline. 
 
-4. Since I am not visualising this, I used a text-editor & search with the ProcessGUID value. From the screenshot, we can see there are 6 matches, spanning across lines 1, 3 & 4.
+4. Since I am not visualising this, I used a text-editor & search with the ProcessGUID value. From the screenshot, we can see there are 6 matches, spanning across lines 1, [3](https://github.com/jymcheong/SysmonResources/blob/0d63062cda64217a235be78f246e709734e10c78/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads/(Type%202)%20Abuse%20MS%20Excel%20DDE/opening%20a%20blank%20xlsx%20eventlog.txt#L3) & [4](https://github.com/jymcheong/SysmonResources/blob/0d63062cda64217a235be78f246e709734e10c78/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads/(Type%202)%20Abuse%20MS%20Excel%20DDE/opening%20a%20blank%20xlsx%20eventlog.txt#L4).
 
 5. Line 3 tells us that Excel changed a file's creation time.
 
