@@ -8,7 +8,7 @@ Microsoft Office provides several methods for transferring data between applicat
 In an email attack scenario, an attacker could leverage the DDE protocol by sending a specially crafted file to the user and then convincing the user to open the file, typically by way of an enticement in an email. **The attacker would have to convince the user to disable Protected Mode and click through one or more additional prompts**. As email attachments are a primary method an attacker could use to spread malware, Microsoft strongly recommends that customers exercise caution when opening suspicious file attachments.
 
 ## Payload
-Instead of Outlook (email client), I used an specially crafted CSV that "pops a calculator", which is a popular test-case that some like to do to show arbitrary code execution. I want to use this set of log samples is to contrast the parent-child process chain between normal usage vs code-execution with DDE.
+Instead of Outlook (email client), I used a specially crafted CSV that "pops a calculator", which is a popular test-case that some like to do to show arbitrary code execution. I want to use this set of log samples is to contrast the parent-child process chain between normal usage vs code-execution with DDE.
 
 ## Observations
 
