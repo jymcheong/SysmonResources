@@ -24,7 +24,7 @@ Some may ask: Hey what happened to local/remote exploit & blah... that's under "
 
 As such it makes more sense to de-couple the delivery mechanisms & payload types because there are different treatments/migitations. For instance, we can apply **C**ontent **D**isarming & **R**econstruction for Type 3 (non-EXE/Scripts), Since we can't CDR on installers & system scripts, for larger organisations where there are proper channels for software deployments, we can then use controls that are better at detecting bad programs & scripts than try to expect a silver bullet to solve everything. 
 
-## Abuse of Feature != Exploitation of Bugs
+## Abuse of Features != Exploitation of Bugs but -> Code-Execution
 
 I prefer a clear distinction between **exploiting of bugs** & **abuse of features**. Vulnerabilities can be divided into 3 classes: Design, Implementation & Configuration with the first being the most serious & joked as "It's a feature, not a bug!". **If it were a implementation flaw (bug), we can expect a fix via patching, if it were a configuration issue, we can harden/change**. But if it is a design flaw (feature), good luck or change the product altogether or make a big hoo-ha for negative publicity (eg. Intel Meltdown & Spectre).
 
