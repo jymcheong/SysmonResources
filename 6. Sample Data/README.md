@@ -21,7 +21,7 @@ Our **A**ttack **L**ife **C**ycle model is based on [Dartmouth's 3-Tenets model]
 
 3. And finally depending on the Threat Capabilities & Mission Objectives, s/he may complete the objectives right after gathering enough information or Stay Insider the network for further objectives.
 
-The 4 Stages can be further expanded into related tactical groups: 
+For insider threat, it is very challenging because they already have good knowledge & legit access to the systems to begin with compared to external actors who have to go through more stages. The 4 Stages can be further expanded into related tactical groups: 
 
 ![](img/alcVSattack.png)
 
