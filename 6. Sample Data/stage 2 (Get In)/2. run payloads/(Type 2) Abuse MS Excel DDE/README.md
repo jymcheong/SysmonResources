@@ -1,7 +1,7 @@
 # Microsoft Dynamic Data Exchange Abuse
 Excerpt from [Microsoft's Security Advisory 4053440](https://technet.microsoft.com/en-us/library/security/4053440.aspx) (headers & emphasis are added by me, not part of the original text): 
 
-## What is it
+## What is it?
 Microsoft Office provides several methods for transferring data between applications. The DDE protocol is a set of messages and guidelines. It sends messages between applications that share data, and uses shared memory to exchange data between applications. Applications can use the DDE protocol for one-time data transfers and for continuous exchanges in which applications send updates to one another as new data becomes available.
 
 ## Threat Scenario
