@@ -31,7 +31,7 @@ For complex system event logging, there's also the tendency (especially for earl
 
 If we look at it as a Cause-to-Effect time-line, such events are closer to the Effect side. There's alot of in-betweens going on that are not captured thus making it difficult to work backwards to find out the root-cause even if the security controls were to be effective in alerting. Sysmon & Netflows are those "in-between" data points that can give more insights compared to just recording a binary allowed or blocked events from firewalls or IPSes.
 
-Of course, there are more mature/advance organisation that goes to the extend of recording those "in-betweens" events from endpoint & network. This brings us to the next topic; linking the data-points together or what I call data-fusion in short.
+Those mature/advance organisations record these "in-betweens" events from endpoint & network, which brings us to the next topic; linking the data-points together or what I call data-fusion in short.
 
 ## Chain-of-Events
 ![](img/chainOfEvents.png)
