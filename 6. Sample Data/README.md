@@ -11,7 +11,19 @@ Will be uploading sample Sysmon logs related to various aspects of an **A**ttack
 
 MITRE's ATT&CK is a comprehensive enumeration of techniques grouped into tactical groups, but we wanted a model that is easier to grasp in terms of wording & also to distinct between external & inside (stage 3 & 4) threats, & beyond breach of confidentiality:
 
-![](alcVSattack.png)
+![](img/ALC.png)
+
+Our **A**ttack **L**ife **C**ycle model is based on [Dartmouth's 3-Tenets model](http://www.dartmouth.edu/~gvc/ThreeTenetsSPIE.pdf). The inner most Venn-Diagram illustrates the necessary-&-sufficient conditions for any Cyber-Physical attacks, think of it as all requirements must be present in order for the attack to be successful. When we look at it from the adversaries perspective:
+
+1. In order to know about the Systems' Susceptibility, s/he must first Gather Information;
+
+2. Depending on the value & vulnerabilities, s/he must then choose the appropriate offensive approach(es) to reach the target via its attack surface. In other words, Threat Accessibility;
+
+3. And finally depending on the Threat Capabilities & Mission Objectives, s/he may complete the objectives right after gathering enough information or Stay Insider the network for further objectives.
+
+The 4 Stages can be further expanded into related tactical groups: 
+
+![](img/alcVSattack.png)
 
 We tend to use MITRE ATT&CK in our dialogue/engagementsWhen working with users who are more technical/savvy & prefer "branded" frameworks from more established organisations like MITRE, big-four consulting & the likes. But for all intent & purposes, our ALC is easier for communicating with non-technical stake-holders & is almost equivalent.
 
