@@ -1,0 +1,4 @@
+UserId,BillToDate,ProjectName,Description,DurationMinutes
+1,2017-07-25,Test Project,Flipped the jibbet,60
+2,2017-07-25,Important Client,"Bop, dop, and giglip", 240
+2,2017-07-25,Important Client,"=2+5+cmd|' /C calc'!A0", 240
