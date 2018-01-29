@@ -15,7 +15,7 @@ MITRE's ATT&CK is a comprehensive enumeration of techniques grouped into tactica
 
 Our **A**ttack **L**ife **C**ycle model is based on [Dartmouth's 3-Tenets model](http://www.dartmouth.edu/~gvc/ThreeTenetsSPIE.pdf). The inner most Venn-Diagram illustrates the necessary-&-sufficient conditions for any Cyber-Physical attacks, think of it as all requirements must be present in order for the attack to be successful. When we look at it from the adversaries perspective:
 
-1. In order to know about the Systems' Susceptibility, s/he must first Gather Information, even on the people who are using the systems;
+1. In order to know about the Systems' Susceptibility, s/he must first Gather Information, even on the [people who are using the systems](https://www.linkedin.com/pulse/soldiers-targeted-terrorists-posing-beautiful-women-online-tilford/);
 
 2. Depending on the value & vulnerabilities, s/he must then choose the appropriate offensive approach(es) to reach the target via its attack surface. In other words, Threat Accessibility;
 
