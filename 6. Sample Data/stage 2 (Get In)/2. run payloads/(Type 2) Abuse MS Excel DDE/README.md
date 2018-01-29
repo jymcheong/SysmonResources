@@ -28,3 +28,20 @@ Instead of Outlook (email client), I used a specially crafted CSV that "pops a c
 6. Line 4 tells us that Excel terminated.
 
 7. Between Excel Process Creation to Terminate, there's only a single pair of Parent -> Child relationship. Keep that in mind & contrast that to the following...
+
+### Popping calc with DDE
+
+![](img/excelparent.png)
+
+![](img/cmdisparent.png)
+
+1. When we put them together the Parent -> Child chain: Explorer -> Excel -> CMD -> Conhost & Calc
+
+2. Conhost is typically seen with CMD launch, doesn't matter if via Explorer or Excel.
+
+## Questions
+Some questions to ask:
+
+1. How often is Excel a parent process in your environment?
+
+2. Is it typical to have is this Parent -> Child process chains with >= 2 edges/links?
