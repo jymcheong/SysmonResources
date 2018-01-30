@@ -57,7 +57,7 @@ To view the Intranet pages on the attacker's terminal, s/he would have to setup 
 
 # Tamper-Detection & Response
 ![](img/D20ECC51-E132-4C25-ABEE-C3A4AF7548EF.png)
-"Assumed Breach" in this case would mean I assume the adversary could disable Windows Event, user-tracking & even the hardware instrumentation. By having redundancy in instrumentation, we can detect anomalies whenever one signal goes missing. The last case would be an abnormal if we have network traffic from the endpoint in question (eg. netflow) but without OS log events (there's Sysmon Event Type 3 at the OS layer).
+"Assumed Breach" in this case would mean I assume the adversary could disable Windows Event, user-tracking & even the hardware instrumentation. By having redundancy in instrumentation, we can detect anomalies whenever one signal goes missing. The last case would be an abnormal if we have network traffic from the endpoint in question (eg. netflow) but without OS log events (there's Sysmon "Network Connection" Event at the OS layer).
 
 Another class of tampering apart from silencing the log-source is to inject fake logs into the log-collection sub-system. Simple Syslog listeners without any network access control are susceptible to log spoofing & even Denial-of-Service. A fleet of Black-PCs are connected to a centralised monitoring system via out-of-band network channel. Even with the worst case scenario of log collection being bombarded by one or few machines, we can use the independent Black-PC management to disarm the offending machine(s) remotely.
 
