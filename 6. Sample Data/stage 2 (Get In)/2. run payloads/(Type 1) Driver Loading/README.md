@@ -1,7 +1,7 @@
 # Driver Loading
 
 ## Background
-This particular sample isn't from malicious payload but OS some bluetooth related loading drivers.
+This particular sample isn't from malicious payload but  loading of bluetooth drivers.
 
 ## Observations
 ![](usb.png)
