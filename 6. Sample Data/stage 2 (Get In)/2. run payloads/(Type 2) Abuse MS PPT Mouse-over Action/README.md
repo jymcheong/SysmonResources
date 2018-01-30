@@ -41,6 +41,6 @@ Similar to that in [Excel sample](https://github.com/jymcheong/SysmonResources/t
 
 For question 3, beyond file path inferred from CmdLine, Internet Explorer/Edge will add an [Alternate Data Stream for contents downloaded](https://stackoverflow.com/questions/4496697/what-is-zone-identifier) from the Internet, thus causing that warning prompt. I don't think it can be inferred from any of the Sysmon events but it may good to know.
 
-Like the questions posed for some of the Type 1 samples, asking a broader question that looks at the relationship between fields & indicators that span across the offensive tactical group will give us better understanding between what is normal & unusual. **To put it simply, the effects of attack-chaining can be observed with a series of Parent -> Child sequences, linking with other Sysmon events.**
+Like the questions posed for some of the Type 1 samples, it may be useful to ask  broader questions to understand the relationship between fields & indicators that span across the offensive tactical group. **Attack-chaining can be observed with a series of Parent -> Child sequences, linking with other Sysmon events.**
 
 Also note that it is possible to spoof parent-child process relations in Windows as eluded by Didier Stevents: [https://blog.didierstevens.com/2017/03/20/that-is-not-my-child-process/](https://blog.didierstevens.com/2017/03/20/that-is-not-my-child-process/)
