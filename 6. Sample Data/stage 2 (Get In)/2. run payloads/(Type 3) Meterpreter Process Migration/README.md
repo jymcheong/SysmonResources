@@ -8,8 +8,6 @@ I continued with the [Powerpoint mouse-over Rundll32 method](https://github.com/
 ![](img/armitage.png)
 
 ## Observations
-Please note that Sysmon by default disabled ProcessAccess because it can be quite taxing on the system. It has to be turned on with a [Sysmon config file](https://github.com/SwiftOnSecurity/sysmon-config/blob/1c19d2b1d77056e5d6e60a2a60a006ed860bff4d/sysmonconfig-export.xml#L425).
-
 I won't repeat the [observations for Powerpoint mouse-over chain of events](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads/(Type%202)%20Abuse%20MS%20PPT%20Mouse-over%20Action#observations), but the most interesting line in the log is related to CreateRemoteThread from Rundll32 to Explorer:
 
 ![](img/migrate.png) 
