@@ -29,7 +29,7 @@ I call it as "symptomatic" because it is very much like medical diagnostics. You
 
 For complex system event logging, there's also the tendency (especially for earlier generations of SIEMs) to record events that are related to symptoms. These type of events are typically emitted from security controls like Endpoint Protection (aka Anti-Virus), Windows Audit events like account logout, network IDS, firewalls & so on. 
 
-If we look at it as a Cause-to-Effect time-line, such events are closer to the Effect side. There's alot of in-betweens going on that are not captured thus making it difficult to work backwards to find out the root-cause even if the security controls were to be effective in alerting. Sysmon & Netflows are those "in-between" data points that can give more insights compared to just recording a binary allowed or blocked events from firewalls or IPSes.
+If we look at it as a Cause-to-Effect timeline, such events are closer to the Effect side. There's alot of in-betweens going on that are not captured thus making it difficult to work backwards to find out the root-cause even if the security controls were to be effective in alerting. Sysmon & Netflows are those "in-between" data points that can give more insights compared to just recording a binary allowed or blocked events from firewalls or IPSes.
 
 Those mature/advance organisations record these "in-betweens" events from endpoint & network, which brings us to the next topic; linking the data-points together or what I call data-fusion in short.
 
@@ -68,7 +68,7 @@ By tracking the user-actions & linking to the foreground application ProcessID w
 
 ![](img/invokeuac.png)
 
-If the consequent program that ran after UAC consent (elevating to admin rights) is Notepad again with that same log file & there are key-press events with Notepad as the foreground app, then there are reasons to believe the user has changed something in the log file. This is also the juncture to justify to look into the Black-PC central monitoring backend to pull out the screen-recording for this suspicious activity.
+If the consequent program that ran after UAC consent (elevating to admin rights) is Notepad again with that same log file & there are key-press events with Notepad as the foreground app, then there are reasons to believe the user has changed something in the log file. **This is also the juncture to investigate deeper with the Black-PC central monitoring backend to pull out the screen-recording for this suspicious activity.**
 
 # Summing it up
 ![](img/elephantlooklike.jpg)
