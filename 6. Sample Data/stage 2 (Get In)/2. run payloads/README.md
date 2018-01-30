@@ -10,7 +10,7 @@ There are various malware taxonomies & so on but I am getting old to remember to
 
 ## Easy Classification
 
-There's much hype with 0-day exploits (Type 3) that people overlook the basic things. By basic, I am refering to how a typical OS work. *Type 1 (Executables)* & *2 (Scripting)* are actually the usual & legitimate ways of running instructions/codes on a computer (observable with Sysmon events). Exploits are typically specific to OS architecture (ie. 32 vs 64bit) & version.  
+There's much hype with 0-day exploits (Type 3) that people overlook the basic things. By basic, I am refering to how a typical OS work. *Type 1 (Executables)* & *2 (Scripting)* are actually the usual & legitimate ways of running instructions/codes on a computer (observable with Sysmon events). Exploits are typically specific to OS architecture (ie. 32 vs 64bit) & version. **To keep it simple: Type 1 & 2 use System FEATURES, type 3 exploits BUGS.** 
 
 ## Attack Chaining
 
@@ -26,6 +26,4 @@ As such it makes more sense to de-couple the delivery mechanisms & payload types
 
 ## Abuse of Features != Exploitation of Bugs but -> Code-Execution
 
-I prefer a clear distinction between **exploiting of bugs** & **abuse of features**. Vulnerabilities can be divided into 3 classes: Design, Implementation & Configuration with the first being the most serious & joked as "It's a feature, not a bug!". **If it were a implementation flaw (bug), we patch it if fixes are released, if it were a configuration issue, we can harden/change**. But if it is a design flaw (feature), then good luck or change the product altogether.
-
-The sample-logs in the various folders will attempt to use actual data to illustrate each types. **Just to be clear, anything that is not EXE & Script falls under Type 3, especially so if it is related to exploitation of bugs, which includes things like HID command injection (feature but can be mitigated with hardening), network packet based exploit like HeartBleed, ExternalBlue (bugs) & so on.**
+I prefer a clear distinction between **exploiting of bugs** & **abuse of features**. Vulnerabilities can be divided into 3 classes: Design, Implementation & Configuration with the first being the most serious & joked as "It's a feature, not a bug!". **If it were a design/implementation flaw (bug), we patch it if fixes are released, if it were a configuration &/or excessive functionalities issue, we can harden**. The sample-logs in the various folders will attempt to use actual data to illustrate each types. 
