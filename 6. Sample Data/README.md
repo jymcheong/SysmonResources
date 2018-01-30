@@ -17,7 +17,7 @@ Our **A**ttack **L**ife **C**ycle model is based on [Dartmouth's 3-Tenets model]
 
 1. In order to know about the Systems' Susceptibility, s/he must first Gather Information, even on the [people who are](https://www.linkedin.com/pulse/soldiers-targeted-terrorists-posing-beautiful-women-online-tilford/) using [the systems](https://www.theguardian.com/world/2018/jan/28/fitness-tracking-app-gives-away-location-of-secret-us-army-bases);
 
-2. Depending on the value & vulnerabilities, s/he must then choose the appropriate offensive approach(es) to reach the target via its attack surface. In other words, Threat Accessibility;
+2. Depending on the system's value & vulnerabilities, s/he must then choose the path or means to reach the target via its attack surface. I.e, Threat Accessibility;
 
 3. And finally depending on the Threat Capabilities & Mission Objectives, s/he may complete the objectives right after gathering enough information or Stay Insider the network for further objectives.
 
