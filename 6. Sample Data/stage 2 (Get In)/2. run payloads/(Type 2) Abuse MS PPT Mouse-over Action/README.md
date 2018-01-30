@@ -29,7 +29,7 @@ In this case, the Kali C2 is offline, otherwise, logs related to rundll32 are ve
 7. Effectively the Parent -> Child chain: Explorer -> PowerPnt -> Rundll32 -> SysWOW64/Rundll32
 
 ## Questions
-Similar to that in [Excel sample](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads/(Type%202)%20Abuse%20MS%20Excel%20DDE) except now...
+Similar to that in [Excel sample](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads/(Type%202)%20Abuse%20MS%20Excel%20DDE) but with Powerpoint, we can see file being used in CmdLine:
 
 1. How does the Parent -> Child chain differ with various MS Office apps, or for that matter any legit apps in your environment?
 
