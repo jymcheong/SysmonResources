@@ -29,6 +29,8 @@ The CommandLine value is  `C:\\Users\\q\\Source\\Repos\\AllTheThings\\AllTheThin
 
 Next, even if it is common that such rundll32 loads (which is honestly bad), **how many of such DLLs (we know it is a DLL even if it is named as doc) make network connections?** **So even without the ability to tell true destination, the Sysmon network connection events are still useful.** 
 
+In this log sample, the first Rundll32 started another Rundll32 from Windows\SysWOW64. 
+
 ## Questions
 This is not exhaustive set, just samples:
 
