@@ -22,7 +22,7 @@ Some may ask: Hey what happened to local/remote exploit & blah... that's under "
 
 ## Deliver -> Run
 
-As such it makes more sense to de-couple the delivery mechanisms & payload types because there are different treatments/migitations. For instance, we can apply **C**ontent **D**isarming & **R**econstruction for Type 3 (non-EXE/Scripts), Since we can't CDR on installers & system scripts, for larger organisations where there are proper channels for software deployments, we can then use controls that are better at detecting bad programs & scripts than try to expect a silver bullet to solve everything. 
+As such it makes more sense to de-couple the delivery mechanisms & payload types because there are different treatments/migitations. For instance, we can apply [**C**ontent **D**isarm & **R**econstruction](https://en.wikipedia.org/wiki/Content_Disarm_%26_Reconstruction) for Type 3 (non-EXE/Scripts), Since we can't CDR on installers & system scripts, for larger organisations where there are proper channels for software deployments, we can then use controls that are better at detecting bad programs & scripts than try to expect a silver bullet to solve everything. 
 
 ## Abuse of Features != Exploitation of Bugs but both leads to Code-Execution
 
