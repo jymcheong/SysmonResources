@@ -16,4 +16,6 @@ I won't repeat the [observations for Powerpoint mouse-over chain of events](http
 
 ## Questions
 
-Apart from CreateRemoteThread, what other way(s) to cause another process to run more codes in memory?
+* Apart from CreateRemoteThread, what other way(s) to cause another process to run more codes in memory?
+
+* Do legit applications or system process create remote threads in another process?
