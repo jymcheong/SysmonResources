@@ -10,7 +10,7 @@ There are various malware taxonomies & so on but I am getting old to remember to
 
 ## Easy Classification
 
-There's much hype with 0-day exploits (Type 3) that people overlook the basic things. By basic, I am refering to how a typical OS work. *Type 1 (Executables)* & *2 (Scripting)* are actually the usual & legitimate ways of running instructions/codes on a computer (observable with Sysmon events). Exploits are typically specific to OS architecture (ie. 32 vs 64bit) & version. **To keep it simple: Type 1 & 2 use System FEATURES, type 3 exploits BUGS.** 
+There's much hype with 0-day exploits (Type 3) that people overlook the basic things. By basic, I am refering to how a typical OS work. *Type 1 (Executables)* & *2 (Scripting)* are actually the usual & legitimate ways of running instructions/codes on a computer (observable with Sysmon events). Exploits are typically specific to OS architecture (ie. 32 vs 64bit) & version. **To keep it simple: Type 1 & 2 abuse System FEATURES, type 3 exploits BUGS.** It can of course get complicated, which brings us to...
 
 ## Attack Chaining
 
@@ -24,6 +24,6 @@ Some may ask: Hey what happened to local/remote exploit & blah... that's under "
 
 As such it makes more sense to de-couple the delivery mechanisms & payload types because there are different treatments/migitations. For instance, we can apply **C**ontent **D**isarming & **R**econstruction for Type 3 (non-EXE/Scripts), Since we can't CDR on installers & system scripts, for larger organisations where there are proper channels for software deployments, we can then use controls that are better at detecting bad programs & scripts than try to expect a silver bullet to solve everything. 
 
-## Abuse of Features != Exploitation of Bugs but -> Code-Execution
+## Abuse of Features != Exploitation of Bugs but both leads to Code-Execution
 
 I prefer a clear distinction between **exploiting of bugs** & **abuse of features**. Vulnerabilities can be divided into 3 classes: Design, Implementation & Configuration with the first being the most serious & joked as "It's a feature, not a bug!". **If it were a design/implementation flaw (bug), we patch it if fixes are released, if it were a configuration &/or excessive functionalities issue, we can harden**. The sample-logs in the various folders will attempt to use actual data to illustrate each types. 
