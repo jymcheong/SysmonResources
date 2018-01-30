@@ -1,4 +1,4 @@
-# Rundll32
+# Rundll32 Abuse
 
 ## Background
 The Type 1s that I have highlighted so far are Portable Executables; one managed code (.NET) & the other native code (tainted winscp.exe). Catching unsigned programs that made weird connections out is low-hanging fruit. 
