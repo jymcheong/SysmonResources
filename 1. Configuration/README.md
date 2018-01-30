@@ -12,14 +12,12 @@ Some events are filtered out (eg. Process Termination of programs running from W
 
 If you are running a lab, you may want to simulate the various applications executions within the lab & ingest all events first. These user applications, along with the file-types are likely vectors for code-execution. **Applying template configuration blindly may result to 'blind-spots'.**
 
-### Basic "catch all" without configuration file (as admin):
+### Basic without configuration file (as admin):
 
-`sysmon -accepteula -i -h * -n -l`
+`sysmon -accepteula -i -h * -n`
 
 -h * 	: use all hash algorithm
 
 -n 		: log network connections
 
--l 		: log loading of modules
-
-More for lab & single machine use/analysis, not suitable for production use due to large volume of events.
+More for lab & single machine use/analysis, not suitable for production use due to large volume of events. This does not log ProcessAccess & module loads. 
