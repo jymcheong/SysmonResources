@@ -1,5 +1,5 @@
 # Why do u bother?
-I keep hearing "it is hard to get data" from various groups of people I was working with, so I decided that once and for all, just put it here. I installed Nxlog-CE with the config ([nxlog.conf.txt](https://github.com/jymcheong/SysmonResources/blob/master/6.%20Sample%20Data/nxlog.conf.txt), need to rename) on various test Windows VMs to capture Sysmon events into individual Json lines.
+I keep hearing "it is hard to get data" from various groups of people I was working with, so I decided that once and for all, just put it here. I [installed Nxlog-CE](https://nxlog.co/products/nxlog-community-edition/download) with the config ([nxlog.conf.txt](https://github.com/jymcheong/SysmonResources/blob/master/6.%20Sample%20Data/nxlog.conf.txt), need to rename) on various test Windows VMs to capture Sysmon events into individual Json lines.
 
 Are you into pen-testing? Or an eager data-science student who is interested in cyber security? This idea that one has to be specialised or a "domain expert" to do someting is really an artifical glass-ceiling we put over our heads. You do it to become the domain expert!
 
