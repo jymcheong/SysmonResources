@@ -26,6 +26,6 @@ As such it makes more sense to de-couple the delivery mechanisms & payload types
 
 ## Abuse of Features != Exploitation of Bugs but -> Code-Execution
 
-I prefer a clear distinction between **exploiting of bugs** & **abuse of features**. Vulnerabilities can be divided into 3 classes: Design, Implementation & Configuration with the first being the most serious & joked as "It's a feature, not a bug!". **If it were a implementation flaw (bug), we can expect a fix via patching, if it were a configuration issue, we can harden/change**. But if it is a design flaw (feature), good luck or change the product altogether or make a big hoo-ha for negative publicity (eg. Intel Meltdown & Spectre).
+I prefer a clear distinction between **exploiting of bugs** & **abuse of features**. Vulnerabilities can be divided into 3 classes: Design, Implementation & Configuration with the first being the most serious & joked as "It's a feature, not a bug!". **If it were a implementation flaw (bug), we patch it if fixes are released, if it were a configuration issue, we can harden/change**. But if it is a design flaw (feature), then good luck or change the product altogether.
 
 The sample-logs in the various folders will attempt to use actual data to illustrate each types. **Just to be clear, anything that is not EXE & Script falls under Type 3, especially so if it is related to exploitation of bugs, which includes things like HID command injection (feature but can be mitigated with hardening), network packet based exploit like HeartBleed, ExternalBlue (bugs) & so on.**
