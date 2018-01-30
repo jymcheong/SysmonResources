@@ -1,5 +1,5 @@
 # Run payload (Execution)
-The various sub-folders hold samples log from code executions observable with Sysmon. Most of the code execution will be based on Metasploit & Empire frameworks. For each payload type, I will also add resources to various public HOWTOs eg. payload generation, PoC source & so on.
+The various sub-folders hold samples log from code executions observable with Sysmon. Most of the payloads will be from Metasploit & Empire frameworks. For each payload type, I will also add resources to various public HOWTOs eg. payload generation, PoC source & so on.
 
 **I am NOT trying to capture logs from all possible types of payloads** but rather some representative to help those who are new to Sysmon to better understand the significance of fields within various Sysmon Event types. I also include logs from normal application execution so as to help contrast the differences/deltas that we can observe from Sysmon Events. 
 
