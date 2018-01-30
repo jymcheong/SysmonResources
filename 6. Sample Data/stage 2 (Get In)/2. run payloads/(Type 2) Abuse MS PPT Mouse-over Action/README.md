@@ -1,7 +1,7 @@
 # Abuse PowerPoint Actions
 
 ## Background
-This is a type 2, it's a feature not a bug ;) Nice for App-Control/Whitelisting evasion + social engineering/deception (eg. something visually compelling to mouse-over).
+This is a type 2, it's a feature not a bug ;) Nice for App-Control/Whitelisting evasion + social engineering/deception (eg. something visually compelling to mouse-over). It's also rather easy to get pass the "Trust warnings" by dropping the doc into certain folders before launching it.
 
 ![](addaction.png)
 
