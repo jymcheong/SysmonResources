@@ -21,3 +21,9 @@ If you are running a lab, you may want to simulate the various applications exec
 -n 		: log network connections
 
 More for lab & single machine use/analysis, not suitable for production use due to large volume of events. This does not log ProcessAccess & module loads. 
+
+### Adapted from SwiftOnSecurity Config
+[smconfig.xml](smconfig.xml)
+
+* Turned on ProcessAccess, PipeMonitoring & watching all Network Connection Initiated
+* The rest are largely the same as [SoS's configuration](https://github.com/SwiftOnSecurity/sysmon-config/blob/master/sysmonconfig-export.xml)
