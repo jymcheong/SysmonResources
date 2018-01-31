@@ -29,6 +29,8 @@ More for lab & single machine use/analysis, not suitable for production use due 
 
 * The rest are largely the same as [SoS's configuration](https://github.com/SwiftOnSecurity/sysmon-config/blob/master/sysmonconfig-export.xml)
 
-Just to have the idea how noisy is Event 10 ProcessAccess. While experimenting with the filtering rules, I noticed certain event type eg. ProcessTerminate will log even when there's no include/exclude rules but not so for let's say ProcessAccess, NetworkConnect & RawAccessRead. 
+Just to have the idea how noisy is Event 10 ProcessAccess. A little more of ProcessAccess significance: [Detecting Mimikatz](https://cyberwardog.blogspot.sg/2017/03/). 
+
+While experimenting with the filtering rules, I noticed certain event type eg. ProcessTerminate will log even when there's no include/exclude rules but not so for let's say ProcessAccess, NetworkConnect & RawAccessRead. 
 
 For a few event types, I used a silly exclude rule of a non-existent ProcessId to include all.
