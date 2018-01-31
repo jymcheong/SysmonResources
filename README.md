@@ -25,6 +25,6 @@ Sysmon includes the following capabilities:
 
 # But Why...
 
-If you have the luxury of using cool **E**ndpoint **D**etection & **R**esponse platform, good for you. But if one doesn't even know what the heck is EDR (***nothing wrong with that btw!***) & wants to start somewhere, Sysmon is that free tool that you may be looking for. 
+If you have the luxury of using cool **E**ndpoint **D**etection & **R**esponse platform, good for you. But if one doesn't even know what the heck is EDR (*nothing wrong with that btw*) & wants to start somewhere, Sysmon is that free tool that you may be looking for. 
 
 Making sense with all those log data can be challenging & I hope with these resources & sample data, make it somewhat a starting point to explore & understand what's going on within the system.
