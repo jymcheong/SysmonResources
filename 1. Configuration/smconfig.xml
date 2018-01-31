@@ -116,7 +116,6 @@
 
 		<!--DATA: UtcTime, ProcessGuid, ProcessId, Image, Device-->
 		<RawAccessRead onmatch="exclude">
-			<ProcessId condition="is">0</ProcessId>
 		</RawAccessRead>
 
 	<!--SYSMON EVENT ID 10 : INTER-PROCESS ACCESS [ProcessAccess]-->
@@ -124,10 +123,11 @@
 		<!--COMMENT:	Can cause high system load, disabled by default.-->
 		<!--COMMENT:	Monitor for processes accessing other process' memory.-->
 		<!--DATA: UtcTime, SourceProcessGuid, SourceProcessId, SourceThreadId, SourceImage, TargetProcessGuid, TargetProcessId, TargetImage, GrantedAccess, CallTrace-->
+		
 		<ProcessAccess onmatch="exclude">
-			<SourceImage condition="is">abc</SourceImage>
+			<!-- <TargetImage condition="contains">lsass</TargetImage> -->
 		</ProcessAccess>
-
+		
 	<!--SYSMON EVENT ID 11 : FILE CREATED [FileCreate]-->
 		<!--EVENT 11: "File created"-->
 		<!--NOTE:	Other filesystem "minifilters" can make it appear to Sysmon that some files are being written twice. This is not a Sysmon issue, per Mark Russinovich.-->
@@ -480,7 +480,7 @@
 		<!--ADDITIONAL REFERENCE: [ https://blog.cobaltstrike.com/2015/10/07/named-pipe-pivoting/ ] -->
 
 		<!--DATA: UtcTime, ProcessGuid, ProcessId, PipeName, Image-->
-		<PipeEvent onmatch="include">
+		<PipeEvent onmatch="exclude">
 		</PipeEvent>
 
 	<!--SYSMON EVENT ID 19 & 20 & 21 : WMI EVENT MONITORING [WmiEvent]-->
@@ -492,7 +492,7 @@
 		<!--ADDITIONAL REFERENCE: [ https://rawsec.lu/blog/posts/2017/Sep/19/sysmon-v610-vs-wmi-persistence/ ] -->
 
 		<!--DATA: EventType, UtcTime, Operation, User, Name, Type, Destination, Consumer, Filter-->
-		<WmiEvent onmatch="include">
+		<WmiEvent onmatch="exclude">
 		</WmiEvent>
 
 	<!--SYSMON EVENT ID 255 : ERROR-->

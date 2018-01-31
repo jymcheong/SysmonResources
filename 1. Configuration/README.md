@@ -31,6 +31,4 @@ More for lab & single machine use/analysis, not suitable for production use due 
 
 Just to have the idea how noisy is Event 10 ProcessAccess. A little more of ProcessAccess significance: [Detecting Mimikatz](https://cyberwardog.blogspot.sg/2017/03/). 
 
-While experimenting with the filtering rules, I noticed certain event type eg. ProcessTerminate will log even when there's no include/exclude rules but not so for let's say ProcessAccess, NetworkConnect & RawAccessRead. 
-
-For a few event types, I used a silly exclude rule of a non-existent ProcessId to include all.
+While experimenting with the filtering rules, I noticed certain event type eg. ProcessTerminate will log even when there's no include/exclude rules but not so for let's say ProcessAccess, NetworkConnect & RawAccessRead. For those event type, I added excludes that have zero rules, which means include all. 
