@@ -38,7 +38,7 @@ This is not exhaustive set, just samples:
 
 **What other system tools that take in commandline parameters that make outbound network connections?**
 
-**Do these parameters from user-writable paths?**
+**Do these parameters contain user-writable paths?**
 
 Think of it another way, ask questions that "spans" across two tactical groups (Run payload & External/Internal Command & Control). So instead of writing a specific rule/query for each & every windows tools abuse (of course we should if we can), the machine analyses & highlights unknowns & let's you put a 'label' to it. 
 
