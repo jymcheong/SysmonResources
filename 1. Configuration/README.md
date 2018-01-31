@@ -25,7 +25,12 @@ More for lab & single machine use/analysis, not suitable for production use due 
 ### Adapted from SwiftOnSecurity Config
 [smconfig.xml](smconfig.xml)
 
-* Turned on ProcessAccess, PipeMonitoring & Network Connection Initiated
+* Capture * from ProcessTerminate, ProcessAccess, PipeMonitoring & Network Connection Initiated
+
 * The rest are largely the same as [SoS's configuration](https://github.com/SwiftOnSecurity/sysmon-config/blob/master/sysmonconfig-export.xml)
 
-Just to have the idea how noisy is Event 10 ProcessAccess. While experimenting with the filtering rules, I noticed certain event type eg. ProcessTerminate will log even when there's no include/exclude rules but not so for let's say ProcessAccess, NetworkConnect & RawAccessRead. I used a silly exclude rule of a non-existent ProcessId to include all.
+Just to have the idea how noisy is Event 10 ProcessAccess. 
+
+While experimenting with the filtering rules, I noticed certain event type eg. ProcessTerminate will log even when there's no include/exclude rules but not so for let's say ProcessAccess, NetworkConnect & RawAccessRead. 
+
+For a few event types, I used a silly exclude rule of a non-existent ProcessId to include all.
