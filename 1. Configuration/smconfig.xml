@@ -44,8 +44,19 @@
 		<!--TECHNICAL:	These exe do not initiate their connections, and thus includes do not work in this section: BITSADMIN.exe-->
 
 		<!--DATA: UtcTime, ProcessGuid, ProcessId, Image, User, Protocol, Initiated, SourceIsIpv6, SourceIp, SourceHostname, SourcePort, SourcePortName, DestinationIsIpV6, DestinationIp, DestinationHostname, DestinationPort, DestinationPortName-->
-		<NetworkConnect onmatch="include">
-			<Image condition="contains">*</Image>
+		<NetworkConnect onmatch="exclude">
+			<!--COMMENT: Unfortunately, these exclusions are very broad and easily abused, but it's a limitation of Sysmon rules that they can't be more specific as they're in user folders-->
+			<Image condition="image">Spotify.exe</Image> <!--Spotify-->
+			<Image condition="end with">AppData\Roaming\Dropbox\bin\Dropbox.exe</Image> <!--Dropbox-->
+			<Image condition="image">g2ax_comm_expert.exe</Image> <!--GoToMeeting-->
+			<Image condition="image">g2mcomm.exe</Image> <!--GoToMeeting-->
+			<!--SECTION: Microsoft-->
+			<Image condition="image">OneDrive.exe</Image> <!--Microsoft:OneDrive-->
+			<Image condition="image">OneDriveStandaloneUpdater.exe</Image> <!--Microsoft:OneDrive-->
+			<Image condition="end with">AppData\Local\Microsoft\Teams\current\Teams.exe</Image> <!--Microsoft: Teams-->
+			<DestinationHostname condition="end with">microsoft.com</DestinationHostname> <!--Microsoft:Update delivery-->
+			<DestinationHostname condition="end with">microsoft.com.akadns.net</DestinationHostname> <!--Microsoft:Update delivery-->
+			<DestinationHostname condition="end with">microsoft.com.nsatc.net</DestinationHostname> <!--Microsoft:Update delivery-->
 		</NetworkConnect>
 	<!--SYSMON EVENT ID 4 : RESERVED FOR SYSMON STATUS MESSAGES-->
 		<!--DATA: UtcTime, State, Version, SchemaVersion-->
@@ -104,7 +115,8 @@
 		<!--COMMENT:	You will likely want to set this to a full capture on domain controllers, where no process should be doing raw reads.-->
 
 		<!--DATA: UtcTime, ProcessGuid, ProcessId, Image, Device-->
-		<RawAccessRead onmatch="include">
+		<RawAccessRead onmatch="exclude">
+			<ProcessId condition="is">0</ProcessId>
 		</RawAccessRead>
 
 	<!--SYSMON EVENT ID 10 : INTER-PROCESS ACCESS [ProcessAccess]-->
@@ -112,8 +124,8 @@
 		<!--COMMENT:	Can cause high system load, disabled by default.-->
 		<!--COMMENT:	Monitor for processes accessing other process' memory.-->
 		<!--DATA: UtcTime, SourceProcessGuid, SourceProcessId, SourceThreadId, SourceImage, TargetProcessGuid, TargetProcessId, TargetImage, GrantedAccess, CallTrace-->
-		<ProcessAccess onmatch="include">
-			<SourceImage condition="contains">*</SourceImage>
+		<ProcessAccess onmatch="exclude">
+			<SourceImage condition="is">abc</SourceImage>
 		</ProcessAccess>
 
 	<!--SYSMON EVENT ID 11 : FILE CREATED [FileCreate]-->
