@@ -125,7 +125,6 @@
 		<!--DATA: UtcTime, SourceProcessGuid, SourceProcessId, SourceThreadId, SourceImage, TargetProcessGuid, TargetProcessId, TargetImage, GrantedAccess, CallTrace-->
 		
 		<ProcessAccess onmatch="exclude">
-			<!-- <TargetImage condition="contains">lsass</TargetImage> -->
 		</ProcessAccess>
 		
 	<!--SYSMON EVENT ID 11 : FILE CREATED [FileCreate]-->
