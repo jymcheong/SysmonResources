@@ -1,7 +1,7 @@
 # MS-Office Macro Abuse
 
 ## Background
-Like the other samples using [DDE](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads/(Type%202)%20Abuse%20MS%20Excel%20DDE) & Mouse-Over actions, [Macros is also a legitimate feature](https://www.ncsc.gov.uk/guidance/macro-security-microsoft-office) within the MS-Office suite of applications. In other words, DDE & mouse-over also works in Winword. 
+Like the other samples using [DDE](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads/(Type%202)%20Abuse%20MS%20Excel%20DDE) & [Mouse-Over](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads/(Type%202)%20Abuse%20MS%20PPT%20Mouse-over%20Action) actions, [Macros is also a legitimate feature](https://www.ncsc.gov.uk/guidance/macro-security-microsoft-office) within the MS-Office suite of applications. In other words, DDE & mouse-over also works in Winword. 
 
 ## Payload
 For the sake of completeness, I will use Macros in Winword, which is Visual Basic **scripting** & in this case, ability to invoke shell commands. This payload again will use Rundll32 to launch a Meterpreter session. But what is interesting during the exercise of preparing this sample & respective logs is this:
