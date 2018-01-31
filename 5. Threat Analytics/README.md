@@ -17,7 +17,7 @@ A viable approach is to learn what are known good/benign within a given environm
 
 For the first question, analytics product vendors would have to "teach" their analytic engines with a representative environment (eg. a Cyber Range) that simulates typical user-applications & emulates offensive sequences. 
 
-It then further begs the question of how close this representative environment is to the actual production site. So it is common to have "learning" period to close the gap between the products' baselines & actual production environment. It also means this "learning" period, one has to work out the false & true positives. 
+It then further begs the question of how close this representative environment is to the actual production site. So it is common to have "learning" period to close the gap between the products' baselines & actual production environment. It also means during this "learning" period, one has to work out the false & true positives. 
 
 I devised something to test EDR & threat analytics, basically an [Outlook backdoor using Microsoft Visual Studio Tool for Office](https://www.youtube.com/watch?v=e-rPstKk8rw). A even simpler backdoor is to just create a BCC forwarding rule as a pre-existing problem to see if the EDR/analytics under test can detect such cases. 
 
