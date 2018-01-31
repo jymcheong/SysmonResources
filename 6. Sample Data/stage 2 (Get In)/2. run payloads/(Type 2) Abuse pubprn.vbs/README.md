@@ -1,7 +1,7 @@
 # Abuse System Scripting
 
 ## Background
-So far the samples are largely related to Microsoft Office, suppose we have an environment that uses ***let's say we do not use Office at all, does it mean there are no means to run arbitrary codes?*** This sample addresses that question. 
+So far the samples are largely related to Microsoft Office, suppose we have an environment that ***let's say not using MS-Office at all, does it mean there are no means to run arbitrary codes?*** This sample addresses that question. 
 
 ## Payload
 Much like Unixes, there are many native scripting capabilities within Windows. There are tools like wscript, cscript, jscript, batch, powershell & so on. Beyond direct scripting, there are also indirect scripting that can be embedded like HTML, CHM, PDF & various file formats that support embedding of scripts, sometimes termed as Active Contents. ***Think of them as programmatic functionalities that does not require a binary file like PE, Java applets, .NET & the likes.***
