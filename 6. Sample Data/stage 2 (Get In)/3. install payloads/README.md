@@ -3,4 +3,4 @@ Persistence simply means payload will run again either upon startup/reboot or ce
 
 Beyond payload types, persistence is further divided into userland or elevated. The former means running as standard user, the latter means running as admin or SYSTEM rights after Escalation of Privilege.
 
-For this set of samples, I will be using Empire post-exploitation framework. 
+For this set of samples, I will be using [Empire post-exploitation framework](https://github.com/EmpireProject/Empire). 
