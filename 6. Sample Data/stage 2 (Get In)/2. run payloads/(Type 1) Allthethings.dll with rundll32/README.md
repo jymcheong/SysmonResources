@@ -8,6 +8,8 @@ Rundll32.exe however, is a **signed** program (part of Windows) that can be call
 ## Payload Used
 I used a LNK (link) file that calls a custom "Allthethings" managed DLL from Casey Smith [@subtee](https://twitter.com/subTee?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor) but integrated with Veil C# Metepreter reverse_https source into it. "Allthethings" DLL is a good test harness (depends on how you see things) to load other stuff like [Empire](https://github.com/EmpireProject/Empire) or whatever you fancy. It was shared for testing/evading application-whitelisting (eg. AppLocker) but Casey had since wiped that repository. Btw, this was executed on a fully patched updated (Windows Defender) Windows 10x64 VM.
 
+Win 10 Mitigations: [https://posts.specterops.io/the-emet-attack-surface-reduction-replacement-in-windows-10-rs3-the-good-the-bad-and-the-ugly-34d5a253f3df](https://posts.specterops.io/the-emet-attack-surface-reduction-replacement-in-windows-10-rs3-the-good-the-bad-and-the-ugly-34d5a253f3df)
+
 ## Observations
 ### Can't tell it was launch via LNK 
 From log line #1, you can see the ProcessCreate event type with image field as full path to rundll32.exe & parent image being explorer.exe, **one can at best infer the windows explorer was at the foreground when this happened but we can't see or tell that LNK file was used**.
