@@ -21,6 +21,12 @@ In the real world, adversaries will be creative when it comes to naming so as to
 
 Setting up rules/queries that pick up the string \*dll is ok but can be easily evade if the extension was something else or none. A better way is to  analyse the CommandLine which I will elaborate below.
 
+A realistic attack tactic looks like this:
+
+![](fakenotepad.png)
+
+Even though that post is about abuse regsvr32, the same idea can be applied to rundll32.
+
 ### What happens when there's proxy server?
 After the process creation, you can see network connection made from **lines # 3 & 4**. That address is my Kali VM **but when there's a proxy configured on the machine, the destination address will be the proxy's.**  
 
