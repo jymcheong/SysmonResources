@@ -28,16 +28,18 @@ LogFile %ROOT%\data\nxlog.log
  Module xm_json
 </Extension>
 
+# Put back, uncomment under <Query Id="0".. if needed
+#
+#	<Select Path="Security">*</Select>\
+#	<Select Path="System">*</Select>\
+#	<Select Path="Application">*</Select>\
+#	<Select Path="Setup">*</Select>\
+#	<Select Path="Windows PowerShell">*</Select>\
 <Input in>
     Module      im_msvistalog
 
     Query <QueryList>\
 	<Query Id="0">\
-	<Select Path="Security">*</Select>\
-	<Select Path="System">*</Select>\
-	<Select Path="Application">*</Select>\
-	<Select Path="Setup">*</Select>\
-	<Select Path="Windows PowerShell">*</Select>\
 	<Select Path="Microsoft-Windows-Sysmon/Operational">*</Select>\
 	</Query>\
 	</QueryList>
