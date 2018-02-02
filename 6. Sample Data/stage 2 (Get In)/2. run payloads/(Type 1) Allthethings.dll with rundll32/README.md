@@ -10,6 +10,9 @@ I used a LNK (link) file that calls a custom "Allthethings" managed DLL from Cas
 
 Win 10 Mitigations: [https://posts.specterops.io/the-emet-attack-surface-reduction-replacement-in-windows-10-rs3-the-good-the-bad-and-the-ugly-34d5a253f3df](https://posts.specterops.io/the-emet-attack-surface-reduction-replacement-in-windows-10-rs3-the-good-the-bad-and-the-ugly-34d5a253f3df)
 
+Another way to abuse Rundll32: [https://gist.github.com/KyleHanslovan/5e0f00d331984c1fb5be32c40f3b265a](https://gist.github.com/KyleHanslovan/5e0f00d331984c1fb5be32c40f3b265a)
+![](infabuse.jpg)
+
 ## Observations
 ### Can't tell it was launch via LNK 
 From log line #1, you can see the ProcessCreate event type with image field as full path to rundll32.exe & parent image being explorer.exe, **one can at best infer the windows explorer was at the foreground when this happened but we can't see or tell that LNK file was used**.
