@@ -33,3 +33,6 @@ It has to do with Empire, when ADSpath is used, it won't use Regpath to store a 
 To confirm that it is really the case: I added `<Image condition="contains">powershell</Image>` under the Include section, reloaded the Sysmon configuration, updated the relevant fileds & then rerun the persistence module:
 
 ![](img/addregistry.png)
+
+### What other events that are relevant but filtered out?
+This is a tough question. For the fact that such configurations are in public domain like Github, s/he can devise clever steps to evade by not being filter out some of the "broader" inclusion &/or exclusion conditions. The earlier example is one such instance. Registry events are really noisy so it becomes a matter of trade-off if one does not have that bandwidth & processing to deal with the volume of data. Updating the Sysmon configuration remotely for a large fleet of endpoints may also be challenging in many cases.
