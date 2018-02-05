@@ -28,7 +28,7 @@ In between the [new processing], we may see other things like RawRead, Registry 
 
 ## Question(s)
 ### Why is there no Registry modification event !?
-It has to do with Empire, when ADSpath is used, it won't use Regpath to store a script which is loaded via ExtFile. Next the Sysmon configuration I used had filtered out the event.
+It has to do with Empire, when ADSpath is used, it won't use a script which is loaded via ExtFile & stored at RegPath. Next the Sysmon configuration I used had filtered out the event.
 
 To confirm that it is really the case: I added `<Image condition="contains">powershell</Image>` under the Include section, reloaded the Sysmon configuration, updated the relevant fileds & then rerun the persistence module:
 
