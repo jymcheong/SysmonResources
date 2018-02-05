@@ -11,4 +11,8 @@ For this set of samples, I will be using [Empire post-exploitation framework](ht
 [https://speakerdeck.com/hshrzd/wicked-malware-persistence-methods](https://speakerdeck.com/hshrzd/wicked-malware-persistence-methods) This is a very good deck that covers many prevailing malware persistence methods.
 
 ## Change in Log Format
-I will be export to EVTX file instead of Json. It's probably more convenient for users who are on Windows to just double click the file & view within Event Viewer. It's also easier on my part instead of ploughing through a large text file to find the right rows. It can be more error prone with the earlier approach.
+I will be export to EVTX file instead of Json. It's probably more convenient for users who are on Windows to just double click the file & view within Event Viewer. It's also easier & less error prone on my part to plough through a large text file to find the right rows. One can also use Powershell to convert it to Json if so desire:
+
+`Get-WinEvent -Path '.\schtask persistence.evtx' | ConvertTo-Json > test.txt`
+
+The output is different from [Run-Payload-samples folder](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads) but all the necessary fields are there. The output from Powershell is a single file that holds a JSON array of events, whereas Nxlog emits discrete lines of JSON objects.
