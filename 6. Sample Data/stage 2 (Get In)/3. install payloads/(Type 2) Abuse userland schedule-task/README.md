@@ -1,8 +1,35 @@
 # Abuse schtask
 ## Background
+Standard users (non-admins) can create scheduled tasks & these tasks can run programs abeit within user's privilege-level.
 
 ## Method
+![](img/moduleinfo.png)
+
+I will not record the initial payload execution which leads to the [Empire C2](https://www.youtube.com/channel/UCOn5uwA42XWUnrjTilwG0xg) session but only logs related to the backdoor installation. Notice for this module, we can set ADS & Registry paths. 
 
 ## Observations
+![](img/createADS.png)
 
-## Questions
+1. From the EVTX file, we can observe the initial Powershell network communication to the C2 server
+
+2. Followed by creation & connection to an anonymous PIPE by the same Powershell process
+
+3. The first Process Create event has a huge chunk of base64 encoded string as shown in the screenshot above. But the most important part is the end, where it pipes to an Alternate Data Stream path ` > c:\users\q\Appdata:blah.txt`. Scroll down further...
+![](img/createtask.png)
+4. We will notice yet another set of PIPE create & connect followed by Create Process events, one Create Process has parentimage of SearchIndexer so it has nothing to do this offensive Powershell process. The next Create Process however shows CommandLine with `schtasks.exe ... Appdata:blah.txt`. So it's clear it has to do with the payload installation steps.
+
+5. Once schtasks.exe terminates (Event ID 5), we see Powershell initiates network connection out. 
+
+Many of these pen-testing/offensive toolkits will use PIPE to get the result from spawned processes, as shown in this example. The general pattern for tools like Empire/Metasploit:
+
+[Commands transport from C2 via network to the backdoor process] -> create & connect PIPE -> [new processing] -> [result from launched process sent via network back to C2]
+
+In between the [new processing], we may see other things like RawRead, Registry access & so on.
+
+## Question(s)
+### Why is there no Registry modification event !?
+It has to do with Empire, when ADSpath is used, it won't use Regpath to store a script which is loaded via ExtFile. Next the Sysmon configuration I used had filtered out the event.
+
+To confirm that it is really the case: I added `<Image condition="contains">powershell</Image>` under the Include section, reloaded the Sysmon configuration, updated the relevant fileds & then rerun the persistence module:
+
+![](img/addregistry.png)
