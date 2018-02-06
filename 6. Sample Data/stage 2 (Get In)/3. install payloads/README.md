@@ -15,4 +15,4 @@ I will be export to EVTX file instead of Json. It's probably more convenient for
 
 `Get-WinEvent -Path C:\sysmon.evtx | Foreach { $_.ToXml() } > events.xml`
 
-This format is easier to ingest into log collectors. For some reason, Powershell's ConvertTo-Json does not further parse the Message field in the Event Object. So in this case, ToXml() seems to be a better choice.
+This format is easier (than evtx) to ingest into log collectors. For some reason, Powershell's ConvertTo-Json does not further parse the Message field in the Event Object. So in this case, ToXml() seems to be a better choice.
