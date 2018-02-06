@@ -4,7 +4,7 @@ Persistence simply means payload will run again either upon startup/reboot or ce
 
 Beyond payload types, persistence can be further divided into **userland** or **elevated** installations. Userland means payload runs as standard user after the installation, the latter means running as admin or SYSTEM rights, installation typically performed after Escalation of Privilege.
 
-## Empire Post-Exploitation Framework
+## Empire Framework
 
 For this set of samples, I will be using [Empire post-exploitation framework](https://github.com/EmpireProject/Empire). The sample logs aim to highlight the payload installation steps & relate to the various Sysmon event types & fields.
 
