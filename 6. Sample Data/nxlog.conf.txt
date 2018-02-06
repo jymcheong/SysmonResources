@@ -46,6 +46,7 @@ LogFile %ROOT%\data\nxlog.log
 
 Exec $DeviceVendor = "Microsoft";
 Exec $DeviceProduct = "EventLog";
+Exec delete($Keywords);
 Exec $raw_event = to_json();
 
 </Input>
