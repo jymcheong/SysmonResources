@@ -11,8 +11,8 @@ For this set of samples, I will be using [Empire post-exploitation framework](ht
 [https://speakerdeck.com/hshrzd/wicked-malware-persistence-methods](https://speakerdeck.com/hshrzd/wicked-malware-persistence-methods) This is a very good deck that covers many prevailing malware persistence methods.
 
 ## Change in Log Format
-I will be export to EVTX file instead of Json. It's probably more convenient for users who are on Windows to just double click the file & view within Event Viewer. It's also easier & less error prone on my part to plough through a large text file to find the right rows. One can also use Powershell to convert it to Json if so desire:
+I will be export to EVTX file instead of Json. It's probably more convenient for users who are on Windows to just double click the file & view within Event Viewer. It's also easier & less error prone on my part to plough through a large text file to find the right rows. One can also use Powershell to convert it to text machine-readable format if so desire:
 
-`Get-WinEvent -Path '.\schtask persistence.evtx' | select Message | ConvertTo-Json > file.json`
+`Get-WinEvent -Path C:\sysmon.evtx | Foreach { $_.ToXml() } > events.xml`
 
-The output is different from [Run-Payload-samples folder](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads) but all the necessary field-values are there. 
+This format is easier to ingest into log collectors. For some reason, Powershell's ConvertTo-Json does not further parse the Message field in the Event Object. So in this case, ToXml() seems to be a better choice.
