@@ -24,7 +24,7 @@ Many of these pen-testing/offensive toolkits will use PIPE to get the result fro
 
 [Commands transport from C2 via network to the backdoor process] -> create & connect PIPE -> [new processing] -> [result from launched process sent via network back to C2]
 
-In between the [new processing], we may see other things like RawRead, Registry access & so on.
+In between the [new processing], we may see other things like RawRead, Registry access & so on. 
 
 ## Question(s)
 ### Why is there no Registry modification event !?
@@ -34,5 +34,10 @@ To confirm that it is really the case: I added `<Image condition="contains">powe
 
 ![](img/addregistry.png)
 
+### Why is there no ADS Created Event?
+Again, the Sysmon configuration I used had filtered it out, only managed to infer from the Process Create event.
+
 ### What other events that are relevant but filtered out?
-This is a tough question. For the fact that such configurations are in public domain like Github, s/he can devise clever steps to evade by not being filter out some of the "broader" inclusion &/or exclusion conditions. The earlier example is one such instance. Registry events are really noisy so it becomes a matter of trade-off if one does not have that bandwidth & processing to deal with the volume of data. Updating the Sysmon configuration remotely for a large fleet of endpoints may also be challenging in many cases.
+This is a tough question. For the fact that such configurations are in public domain like Github, s/he can devise clever steps to evade by not being filter out some of the "broader" inclusion &/or exclusion conditions. The earlier example is one such instance. 
+
+If we don't filter at all, there will be really many events. For instance, Registry events are really noisy so it becomes a matter of trade-off if one does not have that bandwidth & processing to deal with the volume of data. Updating the Sysmon configuration remotely for a large fleet of endpoints may also be challenging in many cases.
