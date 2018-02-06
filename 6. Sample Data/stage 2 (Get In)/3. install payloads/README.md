@@ -6,7 +6,7 @@ Beyond payload types, persistence can be further divided into **userland** or **
 
 ## Empire Post-Exploitation Framework
 
-For this set of samples, I will be using [Empire post-exploitation framework](https://github.com/EmpireProject/Empire). The sample logs aim to highlight the payload installation steps & execution after a startup & relate to the various Sysmon event types & fields.
+For this set of samples, I will be using [Empire post-exploitation framework](https://github.com/EmpireProject/Empire). The sample logs aim to highlight the payload installation steps & relate to the various Sysmon event types & fields.
 
 [https://speakerdeck.com/hshrzd/wicked-malware-persistence-methods](https://speakerdeck.com/hshrzd/wicked-malware-persistence-methods) This is a very good deck that covers many prevailing malware persistence methods.
 
