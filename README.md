@@ -23,8 +23,8 @@ Sysmon includes the following capabilities:
 * Rule filtering to include or exclude certain events dynamically.
 * Generates events from early in the boot process to capture activity made by even sophisticated kernel-mode malware.
 
-# But Why...
+# Why?
 
-If you have the luxury of using cool **E**ndpoint **D**etection & **R**esponse platform, good for you. But if one doesn't even know what the heck is EDR (*nothing wrong with that btw*) & wants to start somewhere, Sysmon is that free tool that you may be looking for. 
+If you have the budget & luxury of using cool **E**ndpoint **D**etection & **R**esponse platform, good for you. But if one doesn't even know what the heck is EDR (*nothing wrong with that btw*) & wants to start somewhere, Sysmon is that free tool that you may be looking for. 
 
 Making sense with all those log data can be challenging & I hope with these resources & sample data, make it somewhat more managable to explore & understand what's going on in Windows.
