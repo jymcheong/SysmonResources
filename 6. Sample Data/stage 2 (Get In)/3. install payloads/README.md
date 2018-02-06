@@ -13,6 +13,6 @@ For this set of samples, I will be using [Empire post-exploitation framework](ht
 ## Change in Log Format
 I will be export to EVTX file instead of Json. It's probably more convenient for users who are on Windows to just double click the file & view within Event Viewer. It's also easier & less error prone on my part to plough through a large text file to find the right rows. One can also use Powershell to convert it to Json if so desire:
 
-`Get-WinEvent -Path '.\schtask persistence.evtx' | select Message |ConvertTo-Json > file.json`
+`Get-WinEvent -Path '.\schtask persistence.evtx' | select Message | ConvertTo-Json > file.json`
 
-The output is different from [Run-Payload-samples folder](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads) but all the necessary fields are there. The output from Powershell is a single file that holds a JSON array of events, whereas Nxlog emits discrete lines of JSON objects.
+The output is different from [Run-Payload-samples folder](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads) but all the necessary field-values are there. 
