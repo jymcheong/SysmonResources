@@ -8,6 +8,6 @@ Neo4j is a very popular graph database but there's some learning curve to the qu
 
 ## How does it look like?
 ![](samplegraph.png)
-Injectsysmon.py is a basic sample script to insert events into OrientDB. For each Json line it inserts, it creates ParentOf edge with any earlier ProcessCreate events to form the relationship. Maybe there are more efficient ways of doing this but this is what I know now.
+[Injectsysmon.py](https://github.com/jymcheong/SysmonResources/blob/master/5.%20Threat%20Analytics/orientDB/injectsysmon.py) is a basic sample script to insert events into OrientDB. For each Json line it inserts, it creates ParentOf edge with any earlier ProcessCreate events to form the relationship. Maybe there are more efficient ways of doing this but this is what I know now.
 
-I also exported my sample DB into Sysmon.gz using OrientDB web-studio. Import requires OrientDB console (can't use browser), please refer to OrientDB manual.
+I also exported my sample DB into [Sysmon.gz](https://github.com/jymcheong/SysmonResources/blob/master/5.%20Threat%20Analytics/orientDB/Sysmon.gz) using OrientDB web-studio. Import requires OrientDB console (can't use browser), please refer to OrientDB manual.
