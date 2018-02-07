@@ -21,7 +21,7 @@ Instead of Outlook (email client), I used a [specially crafted CSV](https://gith
 
 2. From that first log line, we can't tell what file was opened. For certain other Office apps, we may be able to see that from CommandLine, but somehow not for Excel.
 
-3. There can be other events totally not related, which could be hard to eye-ball, especially with lines & lines of text. That's the main reason why Endpoint Detection & Response or whatever Threat Hunting solutions tend to visualise in some forms of graph or timeline. 
+3. There can be other events totally not related, which could be hard to eye-ball, especially with lines & lines of text. That's the main reason why Endpoint Detection & Response or whatever Threat Hunting solutions tend to [visualise in some forms of graph](https://github.com/jymcheong/SysmonResources/tree/master/5.%20Threat%20Analytics/orientDB) or timeline. 
 
 4. Since I am not visualising this, I used a text-editor & search with the ProcessGUID value. From the screenshot, we can see there are 6 matches, spanning across lines 1, [3](https://github.com/jymcheong/SysmonResources/blob/0d63062cda64217a235be78f246e709734e10c78/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads/(Type%202)%20Abuse%20MS%20Excel%20DDE/opening%20a%20blank%20xlsx%20eventlog.txt#L3) & [4](https://github.com/jymcheong/SysmonResources/blob/0d63062cda64217a235be78f246e709734e10c78/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads/(Type%202)%20Abuse%20MS%20Excel%20DDE/opening%20a%20blank%20xlsx%20eventlog.txt#L4).
 
