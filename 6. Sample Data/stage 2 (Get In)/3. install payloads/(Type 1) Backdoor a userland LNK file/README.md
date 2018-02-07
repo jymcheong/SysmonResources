@@ -13,7 +13,7 @@ This module does not store any payload as files. It uses a registry path as defi
 ## Observations
 ![](img/regsetvalue.png)
 
-From the screenshot, we can see the registry set-value event is preceded by a couple of network initiated (by Empire Powershell implant) events. 
+From the screenshot, we can see that the registry set-value event is preceded by a couple of network initiated (by Empire Powershell implant) events. 
 
 The *Details* field of registry set-value event shows a huge chunk of Base64 encoded payload. The poisoned LNK is modified to run Powershell to run both the original software & use this payload for persistence. 
 
