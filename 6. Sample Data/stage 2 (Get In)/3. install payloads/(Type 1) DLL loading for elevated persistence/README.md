@@ -9,7 +9,7 @@ For privileged persistence, there are typically two scenarios:
 
 This sample is the 2nd case. http://www.fuzzysecurity.com/tutorials/16.html has very good write-up on this method, specifically related to IKEEXT (IKE and AuthIP IPsec Keying Modules) service which tries to load wlbsctrl.dll, which works well for Windows 7 machines. 
 
-The other condition for this to succeed is a user-writable folder that is in the System/User PATH environment. For the attacker to figure out these conditions will require Stage 3 - Internal Reconnaisance (information gathering).
+The other condition for this method to succeed is a user-writable folder that is in the System/User PATH environment. For the attacker to figure out these conditions will require Stage 3 - Internal Reconnaisance (information gathering).
 
 ##Empire
 
@@ -34,4 +34,4 @@ Next, the Wlbsctrl.dll file is written. This DLL will in turn launch the Debug.b
 
 Although we may not find answers to these questions from the Sysmon events directly, we will most likely need to answer them after an alert from some host control when it alerts suspicious file writes similar to this. 
 
-*Instead of getting analyst to do such additional information gathering, will it be more efficient if there is some form of automated scripting?*
+*Instead of getting analyst to do such additional information gathering, will it be more efficient if there is some form of automated scripting/APIs that queries the host(s) in question?*
