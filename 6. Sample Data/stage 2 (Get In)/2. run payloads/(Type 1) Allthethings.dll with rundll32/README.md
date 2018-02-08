@@ -11,7 +11,7 @@ I used a LNK (link) file that calls a custom "Allthethings" managed DLL from Cas
 Win 10 Mitigations: [https://posts.specterops.io/the-emet-attack-surface-reduction-replacement-in-windows-10-rs3-the-good-the-bad-and-the-ugly-34d5a253f3df](https://posts.specterops.io/the-emet-attack-surface-reduction-replacement-in-windows-10-rs3-the-good-the-bad-and-the-ugly-34d5a253f3df)
 
 Another way to abuse Rundll32: [https://gist.github.com/KyleHanslovan/5e0f00d331984c1fb5be32c40f3b265a](https://gist.github.com/KyleHanslovan/5e0f00d331984c1fb5be32c40f3b265a)
-![](infabuse.jpg)
+![](img/infabuse.jpg)
 
 ## Observations
 ### Can't tell it was launch via LNK 
@@ -26,7 +26,7 @@ Setting up rules/queries that pick up the string \*dll is ok but can be easily e
 
 A realistic attack tactic looks like this:
 
-![](fakenotepad.png)
+![](img/fakenotepad.png)
 
 Even though that post is about abuse regsvr32, the same idea can be applied to rundll32.
 

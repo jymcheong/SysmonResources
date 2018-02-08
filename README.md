@@ -1,7 +1,7 @@
 # Sysmon Resources
 Consolidation of various resources related to [Microsoft Sysmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon). The resources are organised in the various folders above. Much of it is re-organisation of [https://github.com/MHaggis/sysmon-dfir](https://github.com/MHaggis/sysmon-dfir) kudos to [Michael Haag](https://github.com/MHaggis). 
 
-My opinions/thoughts/contributions are largely within the [analytics](https://github.com/jymcheong/SysmonResources/tree/master/5.%20Threat%20Analytics) & [sample data folders](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data) (sample logs will be gradually added). Github Desktop & MacDown apps made it a pleasure to organise these resources.
+My opinions/thoughts/contributions are largely within the [analytics](https://github.com/jymcheong/SysmonResources/tree/master/5.%20Threat%20Analytics) & [sample data folders](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data) (sample logs will be gradually added). [Github Desktop](https://desktop.github.com) & [Typora](https://typora.io) apps made it a pleasure to organise these resources.
 
 # What is Sysmon?
 System Monitor (Sysmon) is a Windows system service and device driver that, once installed on a system, remains resident across system reboots to monitor and log system activity to the Windows event log. It provides detailed information about process creations, network connections, and changes to file creation time...
@@ -25,6 +25,4 @@ Sysmon includes the following capabilities:
 
 # Why?
 
-If you have the budget & luxury of using cool **E**ndpoint **D**etection & **R**esponse platform, good for you. But if one doesn't even know what the heck is EDR (*nothing wrong with that btw*) & wants to start somewhere, Sysmon is that free tool that you may be looking for. 
-
-Making sense with all those log data can be challenging & I hope with these resources & sample data, make it somewhat more managable to explore & understand what's going on in Windows.
+If you have the budget & luxury of using cool **E**ndpoint **D**etection & **R**esponse platform, good for you. Otherwise if one wants to start somewhere within a DIY "lab", Sysmon is that free tool that you may be looking for. Making sense with all those log data can be challenging & I hope with these resources & sample data, make it somewhat more managable to explore & understand what's going on in Windows.
