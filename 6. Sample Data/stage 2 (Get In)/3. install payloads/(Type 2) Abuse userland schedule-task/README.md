@@ -35,7 +35,11 @@ To confirm that it is really the case: I added `<Image condition="contains">powe
 ![](img/addregistry.png)
 
 ### Why is there no ADS Created Event?
-Again, the Sysmon configuration I used had filtered it out, only managed to infer from the Process Create event.
+Again, the Sysmon configuration I used had filtered it out, only managed to infer from the Process Create event. The screenshot below is an excerpt of the Sysmon config file:
+
+![](img/adsfilter.png)
+
+Since I was using a .txt file, it will NOT be included, which begs the next question...
 
 ### What other events that are relevant but filtered out?
 This is a tough question. For the fact that such configurations are in public domain like Github, s/he can devise clever steps to evade by not being filter out some of the "broader" inclusion &/or exclusion conditions. The earlier example is one such instance. 
