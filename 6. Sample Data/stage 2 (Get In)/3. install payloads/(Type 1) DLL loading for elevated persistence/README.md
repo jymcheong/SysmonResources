@@ -25,7 +25,7 @@ So for this sample, C:\python2.7 is the "weak" folder that is within %PATH%, thu
 
 ![writedll](/Users/jymcheong/Documents/GitHub/SysmonResources/6. Sample Data/stage 2 (Get In)/3. install payloads/(Type 1) DLL loading for elevated persistence/img/writedll.png)
 
-Next, the Wlbsctrl.dll file is written. This DLL will in turn launch the Debug.bat after a reboot/start-up.
+Next, the wlbsctrl.dll file is written. This DLL will in turn launch the Debug.bat after a reboot/start-up.
 
 ## Questions
 
