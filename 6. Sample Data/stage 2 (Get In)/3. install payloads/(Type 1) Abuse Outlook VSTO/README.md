@@ -6,7 +6,7 @@
 
 ##Backdoor
 
-This is a Proof-of-Concept backdoor that I had ***written to simulate a non-beaconing C2 (ie. secondary C2 channel in case first one was caught)***. Demo: https://www.youtube.com/edit?o=U&video_id=e-rPstKk8rw. In short, when the compromised Outlook client receives a specially crafted email, the Outlook client performs the Powershell commands within the mail-body & deletes the mail very quickly such that it is not discernable to the user.
+This is a Proof-of-Concept backdoor that I had *written to simulate a non-beaconing C2 (ie. secondary C2 channel in case first one was caught)*. Demo: https://www.youtube.com/edit?o=U&video_id=e-rPstKk8rw. In short, when the compromised Outlook client receives a specially crafted email, the Outlook client performs the Powershell commands within the mail-body & deletes the mail very quickly such that it is not discernable to the user.
 
 This backdoor is installed via Empire scripting done with [AutoTTP, a framework](https://www.youtube.com/edit?o=U&video_id=aW_imj75M_A) that I'd developed that allows combinations of different toolkits (eg. Empire + Metasploit) & organised into different attack stages & steps. I will outline the high-level steps taken by [this script](https://github.com/jymcheong/AutoTTP/blob/master/stage2/install_payload/windows/empire_install_outlook_VSTOc2.py) to install this VSTO backdoor:
 
@@ -53,7 +53,7 @@ I omitted logs related to the initial establishing of C2 with the Empire listene
 
 * **After** the 3:10:10 Process Terminate of VSTOInstaller, the events are related to the remaining steps of the installation.
 
-###Comments
+##Comments
 
 * Through the preparation of all these samples, I had to change the Sysmon filtering from [SwiftOnSecurity's Github repo](https://github.com/SwiftOnSecurity/sysmon-config) because some of the registry & file create events were excluded. 
 
