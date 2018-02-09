@@ -27,17 +27,17 @@ Most of the other Empire payload installation samples so far are pretty straight
 
 I omitted logs related to the initial establishing of C2 with the Empire listener. The test was conducted on an updated Win 10 enterprise VM with [Powershell logging](https://blogs.technet.microsoft.com/ashleymcglone/2017/03/29/practical-powershell-security-enable-auditing-and-logging-with-dsc/). To zoom into the range within the Event Viewer Sysmon logs, my script prints out the time-stamp right before & after the backdoor installation. I then select the start-row within Event Viewer & bulk select to the end-row that was slightly later than the script-end timestamp.
 
-* Log lines from 3:09:23 to :48 are related to Step 1 to 4. By right, looking at the Powershell Operational logs will show the script blocks that were being executed but I could NOT find any. I was quite sure that I enabled the Powershell Script Block logging but yet the Powershell logs related that time-frame was missing. Bear in mind, the backdoor installation had already completed. I decided I would just reboot the VM & redo…. then I noticed after re-ran the Empire stager to get a new C2 session:
+* Log lines from 3:09:23 to :48 are related to Step 1 to 4. **By right, looking at the Powershell Operational logs will show the script blocks that were being executed but I could NOT find any.** I was quite sure that I enabled the Powershell Script Block logging but yet the Powershell logs related that time-frame was missing. Bear in mind, the backdoor installation had already completed. I decided I would just reboot the VM & redo…. then I noticed after re-ran the Empire stager to get a new C2 session:
 
   ![](img/disablepslogging.png) 
 
-* That timestamp is after the installation run but notice there's a SetValue call within the strange looking block. So I went to Empire Github & did a search:
+* That timestamp is after the installation run but notice **there's a SetValue call within the strange looking block**. So I went to Empire Github & did a search:
 
   ![](img/empirebypass.png) 
 
   So it's clear that there's means to bypass but the very initial code that sets the bypass is logged.
 
-* Entire set of 3:09:51 log lines relates to Step 5, you can use Event Viewer to see TargetObject (ie. reg path) Details (contents) fields. Those registry settings part of the VSTO installation trust settings. Why it can be silently installed is because the system implicit trust a local VSTO package as oppose to one that was downloaded from the Internet, files downloaded from the Internet has a hiddle ZoneIdentifier ADS attached to the file thus allow Windows to prompt warning. ***I won't go into details as it is not a good idea that more people start using this.***
+* Entire set of 3:09:51 log lines relates to Step 5, you can use Event Viewer to see TargetObject (ie. reg path) Details (contents) fields. Those registry settings part of the VSTO installation trust settings. Why it can be silently installed is because the **system implicitly trust a locally published VSTO package (by design) as oppose to one that was downloaded from the Internet, files downloaded from the Internet has a hidden ZoneIdentifier ADS attached to download files thus allow Windows to prompt warning.** ***I won't go into details as it is not a good idea that more people start using this.***
 
 * You will also notice there's always a registry create (`TargetObject: HKU\S-1-5-21-1371555976-851846072-2573341172-1001\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Connections`) even following every *Network connection detected* for Powershell process.
 
