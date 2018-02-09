@@ -4,7 +4,7 @@
 
 **V**isual **S**tudio **T**ools for **O**ffice is a developer tools that provide features that help you create Office solutions to suit a variety of business needs. Unfortunately it can also be abused to create a backdoor. VSTO is not the only legit mechanism with MS-Office suite, there are others as eluded within https://labs.mwrinfosecurity.com/blog/add-in-opportunities-for-office-persistence/
 
-##Backdoor
+## Backdoor
 
 This is a Proof-of-Concept backdoor that I had *written to simulate a non-beaconing C2 (ie. secondary C2 channel in case first one was caught)*. Demo: https://www.youtube.com/edit?o=U&video_id=e-rPstKk8rw. In short, when the compromised Outlook client receives a specially crafted email, the Outlook client performs the Powershell commands within the mail-body & deletes the mail very quickly such that it is not discernable to the user.
 
@@ -52,7 +52,8 @@ I omitted logs related to the initial establishing of C2 with the Empire listene
 * From 3:10:08 Process Create onwards until 3:10:10 Process Termination (Event ID 5) of VSTOInstaller.exe, a series of File Create & Registry value-sets which are still related to Step 8 of installation.
 
 * **After** the 3:10:10 Process Terminate of VSTOInstaller, the events are related to the remaining steps of the installation.
-##Other Comments
+
+## Other Comments
 
 * Through the preparation of all these samples, I had to change the Sysmon filtering from [SwiftOnSecurity's Github repo](https://github.com/SwiftOnSecurity/sysmon-config) because some of the registry & file create events were excluded. 
 
