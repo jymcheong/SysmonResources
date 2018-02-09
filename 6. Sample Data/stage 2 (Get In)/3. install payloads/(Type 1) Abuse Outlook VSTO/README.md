@@ -52,7 +52,6 @@ I omitted logs related to the initial establishing of C2 with the Empire listene
 * From 3:10:08 Process Create onwards until 3:10:10 Process Termination (Event ID 5) of VSTOInstaller.exe, a series of File Create & Registry value-sets which are still related to Step 8 of installation.
 
 * **After** the 3:10:10 Process Terminate of VSTOInstaller, the events are related to the remaining steps of the installation.
-
 ##Other Comments
 
 * Through the preparation of all these samples, I had to change the Sysmon filtering from [SwiftOnSecurity's Github repo](https://github.com/SwiftOnSecurity/sysmon-config) because some of the registry & file create events were excluded. 
