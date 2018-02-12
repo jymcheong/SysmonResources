@@ -29,4 +29,4 @@ Btw, this is executed on a fully patched/updated Windows 10 Enterprise test VM. 
 
   ![](img/filecreateevent.png)
 
-  There's another persistence sample related to poisoning Winword template **Normal.dotm** which we will see interesting or rather a limitation of Sysmon.
+  There's another persistence sample related to [poisoning Winword template **Normal.dotm**](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/3.%20install%20payloads/(Type%202)%20Abuse%20Winword%20Normal%20dotm) which we will see interesting or rather a limitation of Sysmon.
