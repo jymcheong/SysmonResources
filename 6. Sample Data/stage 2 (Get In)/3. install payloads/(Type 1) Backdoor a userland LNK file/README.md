@@ -23,6 +23,10 @@ Btw, this is executed on a fully patched/updated Windows 10 Enterprise test VM. 
 ## Questions
 * *Where are the file create events (Event ID 11)?* I use a modified version of [SwiftOnSecurity Sysmon Configuration](https://github.com/SwiftOnSecurity/sysmon-config/blob/f24dc224a9484f91f3ebc66b87c7eb161149f899/sysmonconfig-export.xml#L458), **you will notice that .lnk is not in the "include" list**. 
 
-  In this case, the poisoning does not create a new file, it modified. ***So it begs the question, are modified logged by Sysmon?***
+  We would imagine/assume that the poisoning does not create a new file, it modified. ***So it begs the question, are modified logged by Sysmon?***
 
-  * Yes, even if the LNK file-name remains unchanged, any changes in the *Target* field of the LNK, will cause a Event ID 11 log. 
+  * Strangely, powershell backdoor_lnk module caused a Event ID 11 log. 
+
+  ![](img/filecreateevent.png)
+
+  There's another persistence sample related to poisoning Winword template **Normal.dotm** which we will see interesting or rather a limitation of Sysmon.
