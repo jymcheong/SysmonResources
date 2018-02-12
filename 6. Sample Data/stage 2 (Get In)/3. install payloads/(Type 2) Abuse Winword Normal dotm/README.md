@@ -47,10 +47,10 @@ Persisting in such an environment is simply an upload command as shown above. We
 ## Conclusion
 
 * Sysmon File Create event does not cover file modification.
-* We won't be able to track the over-writing/poisoning of other templates for various Microsoft Office Suite with Sysmon File Create event.
+* We won't be able to track over-writing of other templates for various Microsoft Office Suite with Sysmon File Create event.
 
-All is not lost, there are other indicators to watch out for. For instance:
+All is not lost, there are other indicators to watch out for, for instance:
 
 ![](img/network.png)
 
-which leads us to another stage of Attack-Life-Cycle/Kill-Chain of external C2 (Command & Control).
+which leads us to another stage of the Attack-Life-Cycle/Kill-Chain; external C2 (Command & Control) [macro abuse](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads/(Type%202)%20Abuse%20MS%20Winword%20Macros).
