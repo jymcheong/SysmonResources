@@ -4,6 +4,8 @@
 
 **V**isual **S**tudio **T**ools for **O**ffice is a developer tools that provide features that help you create Office solutions to suit a variety of business needs. Unfortunately it can also be abused to create a backdoor. VSTO is not the only legit mechanism with MS-Office suite, there are others as eluded within https://labs.mwrinfosecurity.com/blog/add-in-opportunities-for-office-persistence/
 
+More info: https://attack.mitre.org/wiki/Technique/T1137
+
 ## Backdoor
 
 This is a Proof-of-Concept backdoor that I had *written to simulate a non-beaconing C2 (ie. secondary C2 channel in case first one was caught)*. Demo: https://www.youtube.com/edit?o=U&video_id=e-rPstKk8rw. In short, when the compromised Outlook client receives a specially crafted email, the Outlook client performs the Powershell commands within the mail-body & deletes the mail very quickly such that it is not discernable to the user.
@@ -67,3 +69,4 @@ I omitted logs related to the initial establishing of C2 with the Empire listene
 
 * This particular sample can be thought of as a representative of a custom implant, but what happens if we craft detection queries/logic too specific to certain methods? *A good starting point to answer that: https://www.carbonblack.com/2016/06/14/defining-effective-patterns-attack-machine-learning/*
 * Even before talking about detection logic, how do we ensure that we have not [excluded events out due to the Sysmon configuration that was used](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/3.%20install%20payloads/(Type%202)%20Abuse%20userland%20schedule-task#questions)? *This was observed with another sample related to [abusing userland scheduled task](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/3.%20install%20payloads/(Type%202)%20Abuse%20userland%20schedule-task).*
+

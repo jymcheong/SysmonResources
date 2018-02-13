@@ -11,6 +11,8 @@ The [Windows registry](https://msdn.microsoft.com/en-us/library/windows/desktop/
 - **HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunOnce**
 - **HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce**
 
+More info: https://attack.mitre.org/wiki/Technique/T1060
+
 ## Empire
 
 [Empire](https://github.com/EmpireProject/Empire) is a post-exploitation framework. By post-exploitation, it means after the initial payload execution & gaining Command & Control (or C2) session over the target machine.

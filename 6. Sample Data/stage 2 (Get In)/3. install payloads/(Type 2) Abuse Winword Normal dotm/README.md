@@ -14,6 +14,8 @@ The template path is in a Trusted Location (below) which supersedes the setting 
 
 
 
+More info: https://attack.mitre.org/wiki/Technique/T1137
+
 ## Empire Command
 
 ![](img/upload.png)
