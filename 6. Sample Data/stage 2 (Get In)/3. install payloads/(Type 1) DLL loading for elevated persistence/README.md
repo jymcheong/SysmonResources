@@ -11,6 +11,8 @@ This sample is the 2nd case. http://www.fuzzysecurity.com/tutorials/16.html has 
 
 The other condition for this method to succeed is a user-writable folder that is in the System/User PATH environment. For the attacker to figure out these conditions will require Stage 3 - Internal Reconnaisance (information gathering).
 
+More info: https://attack.mitre.org/wiki/Technique/T1038
+
 ##Empire
 
 ![](img/empire.png)
@@ -19,11 +21,11 @@ So for this sample, C:\python2.7 is the "weak" folder that is within %PATH%, thu
 
 ## Observations
 
-![writebat](/Users/jymcheong/Documents/GitHub/SysmonResources/6. Sample Data/stage 2 (Get In)/3. install payloads/(Type 1) DLL loading for elevated persistence/img/writebat.png)
+![writebat](img/writebat.png)
 
 *Debug.bat* is an Empire Stager file. Notice the *Network Connections (Event ID 11)* before & after the file writes.
 
-![writedll](/Users/jymcheong/Documents/GitHub/SysmonResources/6. Sample Data/stage 2 (Get In)/3. install payloads/(Type 1) DLL loading for elevated persistence/img/writedll.png)
+![writedll](img/writedll.png)
 
 Next, the wlbsctrl.dll file is written. This DLL will in turn launch the Debug.bat after a reboot/start-up.
 

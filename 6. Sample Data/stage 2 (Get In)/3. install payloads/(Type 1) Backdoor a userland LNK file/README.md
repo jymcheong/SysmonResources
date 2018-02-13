@@ -9,7 +9,7 @@ More info: https://attack.mitre.org/wiki/Technique/T1023
 
 [Empire](https://github.com/EmpireProject/Empire) is a post-exploitation framework. By post-exploitation, it means after the initial payload execution & gaining Command & Control (or C2) session with the target machine.
 
-This module does not store any payload as files. It uses a registry path as defined in the field RegPath to store the payload that will be executed when user clicks the poison LNK-shortcut (eg. web browser shortcut). In [another sample](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/3.%20install%20payloads/(Type%202)%20Abuse%20userland%20schedule-task), I used **A**lternate **D**ata **S**tream instead of registry storage. 
+This module does not store any payload as files on disk. It uses a registry path as defined in the field RegPath to store the payload that will be executed when user clicks the poison LNK-shortcut (eg. web browser shortcut). In [another sample](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/3.%20install%20payloads/(Type%202)%20Abuse%20userland%20schedule-task), I used **A**lternate **D**ata **S**tream instead of registry storage. 
 
 ![](img/backdoorLNK.png)
 
