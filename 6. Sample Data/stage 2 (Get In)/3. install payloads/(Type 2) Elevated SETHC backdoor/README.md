@@ -10,7 +10,7 @@ More info: https://attack.mitre.org/wiki/Technique/T1015
 
 ![](img/module.png)
 
-The Empire module sets up debugger to launch cmd.exe when sethc.exe is executed. If we press Shift button 5 times, we will get an Empire session running under logon user context. But if it were pressed at the Windows logon screen, we get a privileged session:
+The Empire module sets up debugger to launch cmd.exe when sethc.exe is executed. When we press Shift button 5 times, we will get an Empire session running under logon user context. But if it were pressed at the Windows logon screen, we get a privileged session:
 
 ![](img/systemSession.png)
 

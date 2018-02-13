@@ -2,6 +2,8 @@
 ## Background
 Standard users (non-admins) can create scheduled tasks & these tasks can run programs abeit within user's privilege-level.
 
+More info: https://attack.mitre.org/wiki/Technique/T1053
+
 ## Method
 ![](img/moduleinfo.png)
 
