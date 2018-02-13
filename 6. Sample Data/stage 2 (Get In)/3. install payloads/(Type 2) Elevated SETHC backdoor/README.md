@@ -26,7 +26,7 @@ This log sample is related to the installation of backdoor, not the triggering o
 
   ![](img/stager.png)
 
-* Next, the Empire stager was written into the registry *(notice that TargetObject matches the Empire module setting earlier )*
+* Next, the Empire stager was written into the registry *(notice that TargetObject matches the Empire module setting earlier)*
 
 ![](img/setupdebug1.png)
 
