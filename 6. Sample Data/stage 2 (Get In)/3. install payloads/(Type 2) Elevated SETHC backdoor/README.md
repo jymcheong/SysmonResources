@@ -40,5 +40,6 @@ This log sample is related to the installation of backdoor, not the triggering o
 
 ## Questions
 
-* Is it common to have **I**mage **F**ile **E**xecution **O**ptions registry path created/modified in your environment?
-* How many such IFEO keys exist out-of-the-box?
+* Is it common to have **I**mage **F**ile **E**xecution **O**ptions registry keys for different programs in your environment? 
+* What are those programs that are being "debugged"?
+* How many such IFEO keys exist out-of-the-box within a freshly installed Windows?
