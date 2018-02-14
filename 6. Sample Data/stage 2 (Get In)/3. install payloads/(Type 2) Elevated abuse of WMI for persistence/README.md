@@ -49,5 +49,5 @@ The asterisk (*) means it requires admin rights or privilege session to run.
 ## Questions
 
 * Are these WMI events (id 19, 20 & 21) commonly seen in a typical windows client zone/environment?
-* Apart from time of sequence, is there any other way to reliably to attribute the WMI events to the offending process? 
+* Apart from time of sequence, is there any other way to reliably to know which process triggered the WMI events? 
 
