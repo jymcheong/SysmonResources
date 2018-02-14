@@ -24,7 +24,7 @@ I will not record the initial payload execution which leads to the [Empire C2](h
 
 Many of these pen-testing/offensive toolkits will use PIPE to get the result from spawned processes, as shown in this example. The general pattern for tools like Empire/Metasploit:
 
-[Commands transport from C2 via network to the backdoor process] -> create & connect PIPE -> [new processing] -> [result from launched process sent via network back to C2]
+[Commands transport from C2 via network to the backdoor process] -> create & connect PIPE -> [new processing] -> [result from launched process sent via network back to C2]. *In the case of Empire, it seems that PIPE is involved whenever the module runs in the background (ie. Background: True).* 
 
 In between the [new processing], we may see other things like RawRead, Registry access & so on. 
 
