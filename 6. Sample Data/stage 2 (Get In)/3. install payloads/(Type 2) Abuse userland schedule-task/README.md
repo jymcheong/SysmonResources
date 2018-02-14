@@ -44,6 +44,6 @@ Again, the Sysmon configuration I used had filtered it out, only managed to infe
 Since I was using a .txt file, it will NOT be included, which begs the next question...
 
 ### What other events that are relevant but filtered out?
-This is a tough question. For the fact that such configurations are in public domain like Github, s/he can devise clever steps to evade by not being filter out some of the "broader" inclusion &/or exclusion conditions. The earlier example is one such instance. 
+This is a tough question. For the fact that such configurations are in public domain like Github, an adversary can devise clever steps to evade by not being filter out some of the "broader" inclusion &/or exclusion conditions. The earlier example is one such instance. 
 
 If we don't filter at all, there will be really many events. For instance, Registry events are really noisy so it becomes a matter of trade-off if one does not have that bandwidth & processing to deal with the volume of data. Updating the Sysmon configuration remotely for a large fleet of endpoints may also be challenging in many cases.
