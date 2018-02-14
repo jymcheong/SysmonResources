@@ -36,8 +36,6 @@ The asterisk (*) means it requires admin rights or privilege session to run.
 
   ![](img/consumer.png)
 
-  ​
-
 * WMI Event ID 21 that binds the Filter to Consumer looks like:
 
   ![](img/wmibind.png)
