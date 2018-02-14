@@ -24,9 +24,9 @@ The asterisk (*) means it requires admin rights or privilege session to run.
 
 * From the other fields, there is no direct link to the Empire Powershell instance. The only clue we have is the entire sequence happened on the same second 10:50:06. 
 
-* The registry events has nothing to do with the WMI offensive step but related to powershell networking.
+* The registry events has nothing to do with the WMI implant but related to powershell networking.
 
-* Even the Process Create event **has no direct relationship with the offensive Powershell process**:
+* Even the Process Create event **has no direct link with the offensive Powershell process**:
 
   ![](img/processcreate.png)
 
@@ -40,9 +40,14 @@ The asterisk (*) means it requires admin rights or privilege session to run.
 
   ![](img/wmibind.png)
 
+* The last two events are related to Powershell network connection back to the Empire listener (C2 server). *I used a stupidly obvious host name: empirec2 for illustration reason*. In the real world, it is trival to use web-servers (eg. Nginx) to front it with [valid but free SSL cert](https://letsencrypt.org) & domain name. 
 
+  ![](img/empirec2.png)
+
+  ​
 
 ## Questions
 
-
+* Are these WMI events (id 19, 20 & 21) commonly seen in a typical windows client zone/environment?
+* Apart from time of sequence, is there any other way to reliably to attribute the WMI events to the offending process? 
 
