@@ -48,8 +48,10 @@ The asterisk (*) means it requires admin rights or privilege session to run.
 
 ## Questions
 
-* Are these WMI events (id 19, 20 & 21) commonly seen in a typical windows client zone/environment?
-* Apart from time of sequence, is there any other way to reliably to know which process triggered the WMI events? 
+* Are these WMI events (id 19, 20 & 21) commonly seen in a your environment? More at server zones or both server & client zones?
+* Apart from time of sequence, is there any other way to reliably to know which process created the WMI subscription?
+
+I asked the 2nd question because after turning on the WMI trace, I still can't seem to find the answer. For C2 that are beaconing, we may still be able to see the preceding network activities (eg. Powershell in this case), ***but what if it is non-beaconing type of C2 with delayed or event-driven execution?*** One of those non-beaconing C2 was a PoC that I experimented with [Outlook VSTO](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/3.%20install%20payloads/(Type%201)%20Abuse%20Outlook%20VSTO). 
 
 ## Other References
 
@@ -59,3 +61,4 @@ https://www.fireeye.com/blog/threat-research/2016/08/wmi_vs_wmi_monitor.html bef
 
 https://nathanguagenti.blogspot.sg/2017/03/windows-event-forwarding-etl-etw.html
 
+https://www.darkoperator.com/blog/2017/10/14/basics-of-tracking-wmi-activity
