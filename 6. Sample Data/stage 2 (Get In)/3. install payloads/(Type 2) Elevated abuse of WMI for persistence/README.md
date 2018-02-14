@@ -51,3 +51,11 @@ The asterisk (*) means it requires admin rights or privilege session to run.
 * Are these WMI events (id 19, 20 & 21) commonly seen in a typical windows client zone/environment?
 * Apart from time of sequence, is there any other way to reliably to know which process triggered the WMI events? 
 
+## Other References
+
+https://www.fireeye.com/blog/threat-research/2016/08/wmi_vs_wmi_monitor.html before Sysmon had event ID 19 to 21, Mr [Matt Graeber](https://twitter.com/mattifestation?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor) is one of those folks who actively looked into WMI, both offensively and defensively.
+
+[https://msdn.microsoft.com/en-us/library/aa826686(v=vs.85).aspx](https://msdn.microsoft.com/en-us/library/aa826686(v=vs.85).aspx)
+
+
+
