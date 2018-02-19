@@ -1,5 +1,13 @@
 # External Command & Control (C2)
 
+## Mitre's View on C2
+
+From https://attack.mitre.org/wiki/Command_and_Control, Mitre sees it as various protocols & levels of covertness, but there's also an interesting statement from that wiki page: 
+
+*"The resulting breakdown should help convey the concept that detecting intrusion through command and control protocols without prior knowledge is a difficult proposition over the long term."*
+
+In my view, that statement is true but it also mean it lacks certain utility if we are just limited to those few general methods listed there. Which leads me to consider the other aspects of C2 that we may discern even if it is some form of unknown obfuscation/evasion within channels that are being monitored.
+
 ## External vs Internal C2
 
 I believe it is important to distinct between external from internal C2. *Why? For instance in an air-gapped environment, assuming the adversary managed to get a backdoor into the isolated machines, s/he still needs a channel for the compromised machine to communicate with. That by definition should be INTERNAL C2 since the controller will typically be within the targetted premises.* 
@@ -21,3 +29,4 @@ The samples in this sub-folder is organised into these two general types. There 
 ***Why divide into these classes?*** Some benign programs are known to beacon, eg. software updater processes & the likes. Rare programs (identified by their hash checksums) that beacon regularly are low-hanging fruits to catch. Non-beaconing types that are event driven are trickier & may require network packet inspection. With the advent of TLS/SSL, it does not make things easier.
 
 I don't have samples for "side-channels" but an interesting list of air-gap circumventing research can be found at: https://cyber.bgu.ac.il//advanced-cyber/airgap 
+
