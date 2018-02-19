@@ -26,3 +26,5 @@ Consider this scenario of **Internal** **Reconnaisance**. Again like External vs
 
 <u>As such, the value of Sysmon Event ID 3 is</u> ***"which process has accessed what destination address & port"***. Even if there is a proxy server in between the client to the Internet, we need to ask ourselves how frequent is it for non-browser processes communicating at port 80 &/or 443.
 
+*To make it harder for defenders to detect, a careful adversary may just inject codes into a browser & perform the Internal Reconnaissance with that process. So it also make sense to be able to record "cross-process" activities, which is recorded by Sysmon too.*
+
