@@ -15,3 +15,5 @@ In my Attack Life Cycle, I deliberately part Internal C2 as a Stage 3 tactic. Fr
 ## Beaconing vs Non-beaconing
 
 Many of these backdoors & malware tend to call-back to the C2 server for the next instruction. This periodic communication is sometimes known as beaconing. The samples in this sub-folder is organised into these two general types. There could be various communication protocols used. The most covert ones are those that you are not monitoring, sometimes also known as "side-channels". 
+
+Sorry I don't have samples for "side-channels" but an interesting list of air-gap circumventing research can be found at: https://cyber.bgu.ac.il//advanced-cyber/airgap 
