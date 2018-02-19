@@ -16,4 +16,4 @@ External C2 on the other hand refers to remote-controlling machines that have so
 
 Many of these backdoors & malware tend to call-back to the C2 server for the next instruction. This periodic communication is sometimes known as beaconing. The samples in this sub-folder is organised into these two general types. There could be various communication protocols used. The most covert ones are those that are not being monitored, sometimes also known as "side-channels". 
 
-Sorry I don't have samples for "side-channels" but an interesting list of air-gap circumventing research can be found at: https://cyber.bgu.ac.il//advanced-cyber/airgap 
+I don't have samples for "side-channels" but an interesting list of air-gap circumventing research can be found at: https://cyber.bgu.ac.il//advanced-cyber/airgap 
