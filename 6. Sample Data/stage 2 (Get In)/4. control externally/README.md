@@ -6,7 +6,7 @@ From https://attack.mitre.org/wiki/Command_and_Control, Mitre sees it as various
 
 *"The resulting breakdown should help convey the concept that detecting intrusion through command and control protocols without prior knowledge is a difficult proposition over the long term."*
 
-In my view, that statement is true but it also mean it lacks certain utility if we are just limited to those few general methods listed there. Which leads me to consider the other aspects of C2 that we may discern even if it is some form of unknown obfuscation/evasion within channels that are being monitored. A good example may be from [Mr Robot episode 4, connecting a Raspberry Pi to Steel Mountain's HVAC system](https://www.forbes.com/sites/abigailtracy/2015/07/15/hacking-the-hacks-mr-robot-episode-four-sam-esmail/#b5fee554503f).
+In my view, that statement is true but it also mean it is limited to those few general methods listed there. Which leads me to consider the other aspects of C2 that we may discern even if it is some form of unknown obfuscation/evasion within channels that are being monitored. A good example may be from [Mr Robot episode 4, connecting a Raspberry Pi to Steel Mountain's HVAC system](https://www.forbes.com/sites/abigailtracy/2015/07/15/hacking-the-hacks-mr-robot-episode-four-sam-esmail/#b5fee554503f).
 
 ## External vs Internal C2
 
@@ -24,7 +24,7 @@ External C2 on the other hand refers to remote-controlling machines that have so
 
 Many of these backdoors & malware tend to call-back to the C2 server for the next instruction. This periodic communication is sometimes known as beaconing. The frequency could be short or over a longer period depending on the offensive tools.
 
-The samples in this sub-folder is organised into these two general types. There could be various communication protocols used. The most covert ones are those that are not being monitored, sometimes also known as "side-channels". 
+The samples in this sub-folder is organised into these two general types. There could be various communication protocols used. The most covert ones are those that are not being monitored, sometimes also known as "side-channels" eg. heat, lights blinking etc see BGU's research, link below. 
 
 ***Why divide into these classes?*** Some benign programs are known to beacon, eg. software updater processes & the likes. Rare programs (identified by their hash checksums) that beacon regularly are low-hanging fruits to catch. Non-beaconing types that are event driven are trickier & may require network packet inspection. With the advent of TLS/SSL, it does not make things easier.
 
