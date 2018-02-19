@@ -4,7 +4,7 @@ If you were to use tools like Empire or Metasploit & observe the Sysmon logs, yo
 
 From the adversary's perspective, s/he may want to have another form of C2 that is not so easily spotted by analyzing periodicity & which processes are making network calls. It should be non-beaconing or event-driven. https://attack.mitre.org/wiki/Command_and_Control has a list of C2s but only [Communication Through Removable Media](https://attack.mitre.org/wiki/Technique/T1092) & [Remote File Copy](https://attack.mitre.org/wiki/Technique/T1105) are likely to be considered as non-beaconing.  
 
-The Removable Media example is something like the alleged CIA Brutal Kangaroo: https://thehackernews.com/2017/06/wikileaks-Brutal-Kangaroo-airgap-malware.html 
+The Removable Media example is something like the alleged CIA Brutal Kangaroo Malware: https://thehackernews.com/2017/06/wikileaks-Brutal-Kangaroo-airgap-malware.html 
 
 An example of **Remote File Copy** C2 could be a backdoor that only responds to a specific file activity. It is quite trivial to implement file/directory monitoring across platforms with tools like https://github.com/fsnotify/fsnotify.
 
