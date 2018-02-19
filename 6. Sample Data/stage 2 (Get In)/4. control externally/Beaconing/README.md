@@ -12,7 +12,7 @@ https://attack.mitre.org/wiki/Technique/T1043: Adversaries may communicate over 
 | HTTP(S)                                              | https://github.com/EmpireProject/Empire           |
 | [Websocket](https://en.wikipedia.org/wiki/WebSocket) | https://github.com/Arno0x/WSC2                    |
 
-You may ask how about other protocols like ICMP & what not. It make sense to limit outbound protocols to the Internet plus, Sysmon can only report successful TCP & UDP connections.
+You may ask how about other protocols like ICMP & what not. Sysmon can only report successful TCP & UDP connections.
 
 ## Observations
 
