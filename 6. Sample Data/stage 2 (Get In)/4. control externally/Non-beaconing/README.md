@@ -8,7 +8,7 @@ The Removable Media example is something like the alleged CIA Brutal Kangaroo Ma
 
 An example of **Remote File Copy** C2 could be a backdoor that only responds to a specific file activity. It is quite trivial to implement file/directory monitoring across platforms with tools like https://github.com/fsnotify/fsnotify.
 
-## Outlook Backdoor
+## Outlook VSTO Backdoor
 
 The example I will be sharing is related to Outlook VSTO backdoor PoC that I developed for product testing. *The payload installation sample Sysmon log can be found [here](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/3.%20install%20payloads/(Type%201)%20Abuse%20Outlook%20VSTO)*. I will include the other Sysmon Events beyond ID 3. 
 
