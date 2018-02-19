@@ -6,7 +6,7 @@ From https://attack.mitre.org/wiki/Command_and_Control, Mitre sees it as various
 
 *"The resulting breakdown should help convey the concept that detecting intrusion through command and control protocols without prior knowledge is a difficult proposition over the long term."*
 
-In my view, that statement is true but it also mean it lacks certain utility if we are just limited to those few general methods listed there. Which leads me to consider the other aspects of C2 that we may discern even if it is some form of unknown obfuscation/evasion within channels that are being monitored.
+In my view, that statement is true but it also mean it lacks certain utility if we are just limited to those few general methods listed there. Which leads me to consider the other aspects of C2 that we may discern even if it is some form of unknown obfuscation/evasion within channels that are being monitored. A good example may be from [Mr Robot episode 4, connecting a Raspberry Pi to Steel Mountain's HVAC system](https://www.forbes.com/sites/abigailtracy/2015/07/15/hacking-the-hacks-mr-robot-episode-four-sam-esmail/#b5fee554503f).
 
 ## External vs Internal C2
 
