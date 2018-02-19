@@ -10,7 +10,7 @@ I believe it is important to distinct between external from internal C2. *Why? F
 
 External C2 on the other hand refers to remote-controlling machines that have some form of Internet access. There's also another important notion known as the 'Pivot', which we can think of as a stepping stone for the adversary to reach a machine that has no direct internet access but is allowed to communicate with a machine that is connected to the Internet. 
 
-In my Attack Life Cycle, I deliberately part Internal C2 as a Stage 3 tactic. From an incident response angle, sometimes we might totally missed External C2 but sensors may flag something suspicious between internal hosts.
+[In my Attack Life Cycle](https://jym.sg), I deliberately part Internal C2 as a Stage 3 tactic. From an incident response angle, sometimes we might totally missed External C2 but sensors may flag something suspicious between internal hosts.
 
 ## Beaconing vs Non-beaconing
 
