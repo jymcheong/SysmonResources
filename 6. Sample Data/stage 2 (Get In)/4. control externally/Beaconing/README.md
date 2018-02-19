@@ -6,7 +6,7 @@ https://attack.mitre.org/wiki/Technique/T1043: Adversaries may communicate over 
 
 ## Beaconing over Commonly Used Ports
 
-| Protocol                                             | Toolkit                                           |
+| Protocols                                            | Toolkits                                          |
 | ---------------------------------------------------- | ------------------------------------------------- |
 | DNS                                                  | https://github.com/lukebaggett/dnscat2-powershell |
 | HTTP(S)                                              | https://github.com/EmpireProject/Empire           |
