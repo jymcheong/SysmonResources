@@ -22,17 +22,16 @@ Similarly for **dnscat2**:
 
 ## Observations
 
-Unlike the other tactics which may have a sequence of different Sysmon event types, C2 is rather straight forward: **Event ID 3**. *I will just leave the EVTX logs in their respective folders for those who are keen to find those events* instead of detailing it like [code-execution](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads) & [persistence](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/3.%20install%20payloads). 
+Unlike the other tactics which may have a sequence of different Sysmon event types, C2 traffic is rather "straight forward": **Event ID 3**. *I will just leave the EVTX logs in their respective folders for those who are keen to find those events* instead of detailing it like [code-execution](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads) & [persistence](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/3.%20install%20payloads). 
 
-Regardless of protocol, I just want to use the illustration below to highlight **a fundamental weakness of just looking at network traffic/sensors alone**:
+Regardless of protocol, I just want to use the illustration below to highlight **a fundamental weakness of just looking at network traffic/sensors alone** & also why I enclosed quotes to straight forward:
 
 ![](img/internalreconn.jpeg)
 
-Consider this scenario of **Internal** **Reconnaisance**. Again like External vs Internal C2, there should also be distinction between reconnaisance that is probing external facing services vs internal resources like in this case. The severity is different obviously for the latter since the adversary has already gotten External C2 over the machine in question.
+Consider this scenario of **Internal** **Reconnaisance**. Again like External vs Internal C2, there should also be distinction between reconnaisance that is probing external facing services (eg. open ports & services) vs internal resources like in this case. *The severity is different obviously for the latter since the adversary has already gotten External C2 over the machine in question.*
 
 **Suppose we only had network traffic to analyse, it is rather challenging to differentiate in Step 1, between a legit access to Intranet resources and one that was remotely controlled by an External C2 server.**
 
 <u>As such, the value of Sysmon Event ID 3 is</u> ***which process has accessed what destination address & port***. Even if there is a proxy server in between the client to the Internet, we need to ask ourselves how frequent is it for non-browser processes communicating at port 80 &/or 443.
 
 *To make it harder for defenders to detect, a careful adversary may just inject codes into a browser & perform the Internal Reconnaissance with that process. So it also make sense to be able to record "cross-process" activities, which is recorded by Sysmon too.*
-
