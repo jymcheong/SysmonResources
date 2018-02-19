@@ -18,7 +18,7 @@ You may ask how about other protocols like ICMP & what not. It make sense to lim
 
 Unlike the other tactics which may have a sequence of different Sysmon event types, C2 is rather straight forward: **Event ID 3**. *I will just leave the EVTX logs in their respective folders for those who are keen to find those events*. Regardless of protocol, I just want to use the illustration below to highlight a fundamental weakness of just looking at network traffic/sensors alone:
 
-![](img/internalreconn.png)
+![](img/internalreconn.jpeg)
 
 Consider this scenario of **Internal** **Reconnaisance**. Again like External vs Internal C2, there should also be distinction between reconnaisance that is probing external facing services vs internal resources like in this case. The severity is different obviously for the latter since the adversary has already gotten External C2 over the machine in question.
 
