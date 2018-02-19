@@ -10,7 +10,7 @@ In my view, that statement is true but it also mean it lacks certain utility if 
 
 ## External vs Internal C2
 
-I believe it is important to distinct between external from internal C2. *Why? For instance in an air-gapped environment, assuming the adversary managed to get a backdoor into the isolated machines, s/he still needs a channel for the compromised machine to communicate with. That by definition should be INTERNAL C2 since the controller will typically be within the targetted premises.* 
+I believe it is important to distinct between external from internal C2. *Why? For instance in an **air-gapped environment**, assuming the adversary managed to get a backdoor into the isolated machines, s/he still needs a channel for the compromised machine to communicate with. That by definition should be INTERNAL C2 since the controller will typically be within the targetted premises.* **It also means higher severity!**
 
 ## External -> Pivot -> Internal
 
