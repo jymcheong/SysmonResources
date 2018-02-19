@@ -29,7 +29,3 @@ Step 3: Results from the earlier step is replied to the sender of the specially 
 ### Observations
 
 **As far as network traffic is concern, there is honestly no way to differentiate Outlook communications with the backend (eg. Exchange server).** The only way is analyzing the text-body of the mail that in my case, contains Powershell commands. Again, it was just a quick PoC, a careful adversary will obfuscate the commands.
-
-## Polling vs Event-Driven
-
-The beaconing type of C2 are typically polling for the next instruction from the C2 server. Things like Removable Media Communication & Outlook backdoor are event-driven eg. insert infected USB stick & receiving a new command email. 

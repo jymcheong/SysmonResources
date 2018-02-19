@@ -22,11 +22,11 @@ External C2 on the other hand refers to remote-controlling machines that have so
 
 ## Beaconing vs Non-beaconing
 
-Many of these backdoors & malware tend to call-back to the C2 server for the next instruction. This periodic communication is sometimes known as beaconing. The frequency could be short or over a longer period depending on the offensive tools (aka *periodicity*).
+Many of these backdoors & malware tend to call-back to poll the C2 server for the next instruction. This periodic communication is sometimes known as beaconing. The frequency could be short or over a longer period depending on the offensive tools (aka *periodicity*).
 
 The samples in this sub-folder is organised into these two general types. There could be various communication protocols used. The most covert ones are those that **are not being monitored**, sometimes also known as "*side-channels*" eg. heat, lights blinking etc see BGU's research, link below. 
 
-***Why divide into these classes?*** Some benign programs are known to beacon, eg. software updater processes & the likes. Rare programs (identified by their hash checksums) that beacon regularly are low-hanging fruits to catch. Non-beaconing types that are event driven are trickier & may require network packet inspection. With the advent of TLS/SSL, it does not make things easier.
+***Why divide into these classes?*** Some benign programs are known to beacon, eg. software updater processes & the likes. Rare programs (identified by their hash checksums) that beacon regularly are low-hanging fruits to catch. *Non-beaconing types that are event driven are trickier & may require network packet inspection or deeper host instrumentations for detection*. With the advent of TLS/SSL, it does not make things easier.
 
 I don't have samples for "side-channels" but an interesting list of air-gap circumventing research can be found at: https://cyber.bgu.ac.il//advanced-cyber/airgap 
 
