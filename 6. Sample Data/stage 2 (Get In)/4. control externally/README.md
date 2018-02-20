@@ -20,7 +20,7 @@ External C2 on the other hand refers to remote-controlling machines that have so
 
 [In my Attack Life Cycle](https://jym.sg), I deliberately put Internal C2 as a Stage 3 tactic. From an incident response angle, sometimes we might totally missed External C2 but sensors may flag something suspicious between internal hosts.
 
-## Beaconing vs Non-beaconing
+## Beaconing vs Non-Beaconing
 
 Many of these backdoors & malware tend to call-back to poll the C2 server for the next instruction. This periodic communication is sometimes known as beaconing. The frequency could be short or over a longer period depending on the offensive tools (aka *periodicity*).
 
