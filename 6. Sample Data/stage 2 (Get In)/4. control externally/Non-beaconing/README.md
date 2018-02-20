@@ -10,7 +10,7 @@ An example of **Remote File Copy** C2 could be a backdoor that only responds to 
 
 ## Outlook VSTO Backdoor
 
-The example I will be sharing is related to Outlook VSTO backdoor PoC that I developed for product testing. *The payload installation sample Sysmon log can be found [here](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/3.%20install%20payloads/(Type%201)%20Abuse%20Outlook%20VSTO)*. I will include the other Sysmon Events beyond ID 3. 
+The example I will be sharing is related to Outlook VSTO backdoor PoC that I developed for product testing. *The payload installation sample Sysmon log can be found [here](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/3.%20install%20payloads/(Type%201)%20Abuse%20Outlook%20VSTO)*. 
 
 ### How does it work?
 
@@ -29,3 +29,7 @@ Step 3: Results from the earlier step is replied to the sender of the specially 
 ### Observations
 
 **As far as network traffic is concern, there is honestly no way to differentiate Outlook communications with the backend (eg. Exchange server).** The only way is analyzing the text-body of the mail that in my case, contains Powershell commands. Again, it was just a quick PoC, a careful adversary will obfuscate the commands.
+
+![](networkevent.png)
+
+All we can see is Outlook making a IMAP over SSL.
