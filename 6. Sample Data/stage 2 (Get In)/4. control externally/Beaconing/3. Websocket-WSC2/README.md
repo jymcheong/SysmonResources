@@ -1,4 +1,4 @@
-# C2 over Websocket
+# External C2 over Websocket
 
 ## Background
 
