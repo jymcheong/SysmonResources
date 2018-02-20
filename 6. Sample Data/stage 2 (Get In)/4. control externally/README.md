@@ -28,5 +28,4 @@ The samples in this sub-folder is organised into these two general types. There 
 
 ***Why divide into these classes?*** Some benign programs are known to beacon, eg. software updater processes & the likes. Rare programs (identified by their hash checksums) that beacon regularly are low-hanging fruits to catch. *Non-beaconing types that are event driven are trickier & may require network packet inspection or deeper host instrumentations for detection*. With the advent of TLS/SSL, it does not make things easier.
 
-I don't have samples for "side-channels" but an interesting list of air-gap circumventing research can be found at: https://cyber.bgu.ac.il//advanced-cyber/airgap 
-
+I don't have samples for "side-channels" but an interesting list of air-gap circumventing research can be found at: https://cyber.bgu.ac.il//advanced-cyber/airgap
