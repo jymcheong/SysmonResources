@@ -20,11 +20,9 @@ Similarly for **dnscat2**:
 
 ![](img/dnscat2delay.png)
 
-## Observations
+## Network Inspection Enough?
 
-Unlike the other tactics which may have a sequence of different Sysmon event types, C2 traffic is rather "straight forward": **Event ID 3**. *I will just leave the EVTX logs in the respective folders* instead of detailing it like [code-execution](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads) & [persistence](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/3.%20install%20payloads). 
-
-Regardless of protocol, I just want to use the illustration below to highlight **a fundamental weakness of just looking at network traffic/sensors alone** & also why I enclosed quotes to straight forward:
+Unlike the other tactics which may have a sequence of different Sysmon event types, C2 traffic is rather "straight forward": **Event ID 3**. I will **won't be detailing** each EVTX logs like [code-execution](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads) & [persistence](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/3.%20install%20payloads). Regardless of protocol, I just want to use the illustration below to highlight **a fundamental weakness of just looking at network traffic/sensors alone** & also why I enclosed quotes to straight forward:
 
 ![](img/internalreconn.jpeg)
 
