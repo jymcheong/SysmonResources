@@ -24,4 +24,8 @@ So with these high-level info in mind, let's look at the logs
 * I won't be going into details with the code-execution sequences but will focus on a key difference between WSC2 & Empire C2.
 * Now if you filter the log to only look at Event ID 3, you will find that there are only 4 events that indicated communications to Kali host. I also let it run much longer but not capture in the logs uploaded. **There is NO repeated Event ID 3 events from Powershell or these 3 IExplorer processes.** 
 * Even if there were heartbeat messages from C2 to Agent *(bear in mind the Agent is acting as the Websocket server as described in the blog earlier)*, *it is unlikely to be recorded in Sysmon Event ID 3 since this event is about Network Connection Initiated*.
-* This is unlike Empire or Metasploit C2 where you get periodic ID 3 events from the agent process. 
+* This is unlike Empire or Metasploit C2 where you get periodic ID 3 events from the agent process.
+
+## Questions
+
+What happens if we observe this with Wireshark or network forensics?
