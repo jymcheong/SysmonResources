@@ -4,7 +4,7 @@
 
 http://blog.teamtreehouse.com/an-introduction-to-websockets WebSockets provide a persistent connection between a client and server that both parties can use to start sending data at any time. Depending on how it is implemented, it may or may not have heartbeat between server & client. That being said, some web proxies may interfere with Websocket communications. 
 
-This log deserves more attention since it differs from usual beaconing C2. In fact, it is likely possible for Websocket to do both beaconing & event-driven C2.
+This log deserves more attention since it differs from usual beaconing C2. In fact, it is likely possible for Websocket to do both beaconing & event-driven C2. I started thinking about WebSockets after I saw its use-case in real-time web app developments. The darker side of me saw its other applications & I realize I was not alone...
 
 ## Offensive Tool
 
