@@ -8,7 +8,11 @@ This log deserves more attention since it differs from usual beaconing C2. In fa
 
 ## Offensive Tool
 
-https://github.com/Arno0x/WSC2 The source code of this tool. A more detail write-up can be found here: https://arno0x0x.wordpress.com/2017/11/10/using-websockets-and-ie-edge-for-c2-communications/. I took an excerpt from that page:
+https://github.com/Arno0x/WSC2 The source code of this tool. A more detail write-up can be found here: https://arno0x0x.wordpress.com/2017/11/10/using-websockets-and-ie-edge-for-c2-communications/. 
+
+![](background.png)
+
+I took an excerpt from that page:
 
 1. The controller runs a Web/WebSocket server as well as a command line interface allowing the attacker to enter commands for the agent
 2. The agent runs on the victim’s machine and executes any instructions it receives from the C2, interacting with a browser process handling all communications with the C2 server
