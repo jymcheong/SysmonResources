@@ -28,7 +28,7 @@ Many of these backdoors & malware tend to call-back to poll the C2 server for th
 
 The samples in this sub-folder is organised into these two general types. There could be various communication protocols used. The most covert C2s are those that **are not being monitored**, sometimes also known as "*side-channels*" eg. heat, lights blinking etc see BGU's research, link below. 
 
-*Why divide into these classes?* ***The latter are harder to catch. The former, together with the data-point (Event ID 3 + network sensors) of which process to what destination address & port, may be easier to spot, whether by human (by crafting good queries as with Threat Hunting, or machines).***
+*Why divide into these classes?* ***The latter are harder to catch as you will [see in my example](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/4.%20control%20externally/Non-Beaconing). The former, together with the data-point (Sysmon Event ID 3 + network sensors) of which process to what destination address & port, may be easier to spot, whether by human (by crafting good queries as with Threat Hunting, or machines).***
 
 Some benign programs are known to beacon (eg. software updater processes), but they are likely to be minorities. A crafty adversary may inject into such processes thus we may still need to be careful if such software processes deviates from where it usually communicates to.
 
