@@ -20,7 +20,7 @@ I believe it is important to distinct between external from internal C2. *Why? F
 
 External C2 on the other hand refers to remote-controlling machines that have some form of Internet access. There's also another important notion known as the 'Pivot', which we can think of as a *"stepping stone"* for the adversary to reach a neighbouring machine that has no direct internet access but is allowed to communicate with the compromised machine that is connected to the Internet (right side of the diagram above). 
 
-[In the Attack Life Cycle model](https://jym.sg), I deliberately put Internal C2 as a Stage 3 tactic. From an detection perspective, sometimes we might totally missed External C2 but network sensors or HIPS may flag something suspicious between internal hosts.
+[In the Attack Life Cycle model](https://jym.sg), I deliberately put Internal C2 as a Stage 3 tactic. From an detection perspective, *sometimes we may totally missed External C2 or it may be a internal implant that uses side-channel*, but network sensors or HIPS may flag something suspicious between internal hosts.
 
 ## Beaconing vs Non-Beaconing
 
@@ -32,6 +32,6 @@ The samples in this sub-folder is organised into these two general types. There 
 
 Some benign programs are known to beacon (eg. software updater processes), but they are likely to be minorities. A crafty adversary may inject into such processes thus we may still need to be careful if such software processes deviates from where it usually communicates to.
 
-Rare programs (identified by their hash checksums) that beacon regularly are low-hanging fruits to catch. *Non-beaconing types that are event driven are trickier & may require network packet inspection or deeper host instrumentations for detection*. With the advent of TLS/SSL, it does not make things easier, but it makes [Cisco Stealthwatch interesting](https://www.cisco.com/c/en/us/products/security/stealthwatch/index.html).
+Rare programs (identified by their hash checksums) that beacon regularly are low-hanging fruits to catch. *Non-beaconing types that are event driven are trickier & may require network packet inspection or deeper host instrumentations for detection*. With the advent of TLS/SSL, it does not make things easier, but it makes [Cisco Stealthwatch interesting](https://www.cisco.com/c/en/us/products/security/stealthwatch/index.html#~stickynav=1#lightbox-cta).
 
 I don't have samples for "side-channels" but an interesting list of air-gap circumventing research can be found at: https://cyber.bgu.ac.il//advanced-cyber/airgap
