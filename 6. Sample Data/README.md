@@ -13,7 +13,7 @@ MITRE's ATT&CK is a comprehensive enumeration of techniques grouped into tactica
 
 ![](img/alc.png)
 
-Our **A**ttack **L**ife **C**ycle model is based on [Dartmouth's 3-Tenets model](http://www.dartmouth.edu/~gvc/ThreeTenetsSPIE.pdf). The inner most Venn-Diagram illustrates the necessary-&-sufficient conditions for any Cyber-Physical attacks, think of it as all requirements must be present in order for the attack to be successful. When we look at it from the adversaries perspective:
+Our **A**ttack **L**ife **C**ycle model is based on [Dartmouth's 3-Tenets model](http://www.dartmouth.edu/~gvc/ThreeTenetsSPIE.pdf). The inner most Venn-Diagram illustrates the necessary-&-sufficient conditions (from Dartmouth's paper) for any Cyber-Physical attacks, think of it as **all requirements must be present in order for the attack to be successful**. When we look at it from the adversaries perspective:
 
 1. In order to know about the Systems' Susceptibility, s/he must first Gather Information, even on the [people who are](https://www.linkedin.com/pulse/soldiers-targeted-terrorists-posing-beautiful-women-online-tilford/) using [the systems](https://www.theguardian.com/world/2018/jan/28/fitness-tracking-app-gives-away-location-of-secret-us-army-bases);
 
@@ -21,7 +21,7 @@ Our **A**ttack **L**ife **C**ycle model is based on [Dartmouth's 3-Tenets model]
 
 3. And finally depending on the Threat Capabilities & Mission Objectives, s/he may complete the objectives right after gathering enough information or Stay Insider the network for further objectives.
 
-For insider threat, it is very challenging because they already have good knowledge & legit access to the systems to begin with compared to external actors who have to go through more stages. The 4 Stages can be further expanded into related tactical groups: 
+For insider threats, they are very challenging because these users already have good knowledge & have legitimate access to the systems to begin with, compared to external actors who have to go through more stages. The 4 Stages can be further expanded into related tactical groups: 
 
 ![](img/alcVSattack.png)
 
