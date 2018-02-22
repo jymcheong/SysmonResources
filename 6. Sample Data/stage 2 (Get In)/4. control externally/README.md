@@ -1,5 +1,7 @@
 # External Command & Control (C2)
 
+This means the C2 server is outside your network. Another form of C2 exist within your network, thus Internal C2 & the notion of 'Pivot' which i will elaborate later.
+
 ## Mitre's View on C2
 
 From https://attack.mitre.org/wiki/Command_and_Control, Mitre sees it as various protocols & levels of covertness, but there's also an interesting statement from that wiki page: 
@@ -18,7 +20,7 @@ I believe it is important to distinct between external from internal C2. *Why? F
 
 External C2 on the other hand refers to remote-controlling machines that have some form of Internet access. There's also another important notion known as the 'Pivot', which we can think of as a *"stepping stone"* for the adversary to reach a neighbouring machine that has no direct internet access but is allowed to communicate with the compromised machine that is connected to the Internet (right side of the diagram above). 
 
-[In my Attack Life Cycle](https://jym.sg), I deliberately put Internal C2 as a Stage 3 tactic. From an detection perspective, sometimes we might totally missed External C2 but network sensors may flag something suspicious between internal hosts.
+[In the Attack Life Cycle model](https://jym.sg), I deliberately put Internal C2 as a Stage 3 tactic. From an detection perspective, sometimes we might totally missed External C2 but network sensors or HIPS may flag something suspicious between internal hosts.
 
 ## Beaconing vs Non-Beaconing
 
