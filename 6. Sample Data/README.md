@@ -1,7 +1,7 @@
-# Why do u bother?
+# Why bother?
 I keep hearing "it is hard to get data" from various groups of people I am/was working with, so I decided that once and for all, just put it here. I [installed Nxlog-CE](https://nxlog.co/products/nxlog-community-edition/download) with the config ([nxlog.conf.txt](https://github.com/jymcheong/SysmonResources/blob/master/6.%20Sample%20Data/nxlog.conf.txt), need to rename) on various test Windows VMs to capture Sysmon events into individual Json lines.
 
-Are you into pen-testing? Or an eager data-science student who is interested in cyber security? This idea that one has to be specialised or a "domain expert" to do someting is really an artifical glass-ceiling we put over our heads. You do it to become the domain expert!
+Are you into pen-testing? Or a data-science student/specialist who take a deeper look into info/cyber security? This idea that one has to be specialised or a "domain expert" to do someting is really an artifical glass-ceiling we put over our heads. You do it to become the domain expert!
 
 So if you are into offensive, you may want to see what data that are emitted that get you caught. Or if you are into data-science, running a program like Winword isn't rocket science to get data for what is normal. Try a little [Kali & Metasploit](https://www.offensive-security.com), it's not that hard.
 
