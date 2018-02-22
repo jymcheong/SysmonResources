@@ -6,7 +6,7 @@ From https://attack.mitre.org/wiki/Command_and_Control, Mitre sees it as various
 
 *"The resulting breakdown should help convey the concept that detecting intrusion through command and control protocols without prior knowledge is a difficult proposition over the long term."*
 
-In my view, that statement is true but it also mean it is limited to those few general methods listed there. Which leads me to consider the other aspects of C2 that we may discern even if it is some form of unknown obfuscation/evasion within channels that are being monitored. A good example may be from [Mr Robot episode 4, connecting a Raspberry Pi to Steel Mountain's HVAC system](https://www.forbes.com/sites/abigailtracy/2015/07/15/hacking-the-hacks-mr-robot-episode-four-sam-esmail/#b5fee554503f).
+In my view, that statement is true but it also mean it is limited to those methods listed there. Which leads me to consider the other aspects of C2 that we may discern even if it is some form of unknown obfuscation/evasion within channels that are being monitored.
 
 ## External vs Internal C2
 
@@ -18,14 +18,18 @@ I believe it is important to distinct between external from internal C2. *Why? F
 
 External C2 on the other hand refers to remote-controlling machines that have some form of Internet access. There's also another important notion known as the 'Pivot', which we can think of as a *"stepping stone"* for the adversary to reach a neighbouring machine that has no direct internet access but is allowed to communicate with the compromised machine that is connected to the Internet (right side of the diagram above). 
 
-[In my Attack Life Cycle](https://jym.sg), I deliberately put Internal C2 as a Stage 3 tactic. From an incident response angle, sometimes we might totally missed External C2 but sensors may flag something suspicious between internal hosts.
+[In my Attack Life Cycle](https://jym.sg), I deliberately put Internal C2 as a Stage 3 tactic. From an detection perspective, sometimes we might totally missed External C2 but network sensors may flag something suspicious between internal hosts.
 
 ## Beaconing vs Non-Beaconing
 
 Many of these backdoors & malware tend to call-back to poll the C2 server for the next instruction. This periodic communication is sometimes known as beaconing. The frequency could be short or over a longer period depending on the offensive tools (aka *periodicity*).
 
-The samples in this sub-folder is organised into these two general types. There could be various communication protocols used. The most covert C2 are those that **are not being monitored**, sometimes also known as "*side-channels*" eg. heat, lights blinking etc see BGU's research, link below. 
+The samples in this sub-folder is organised into these two general types. There could be various communication protocols used. The most covert C2s are those that **are not being monitored**, sometimes also known as "*side-channels*" eg. heat, lights blinking etc see BGU's research, link below. 
 
-***Why divide into these classes?*** Some benign programs are known to beacon, eg. software updater processes & the likes. Rare programs (identified by their hash checksums) that beacon regularly are low-hanging fruits to catch. *Non-beaconing types that are event driven are trickier & may require network packet inspection or deeper host instrumentations for detection*. With the advent of TLS/SSL, it does not make things easier.
+*Why divide into these classes?* ***The latter are harder to catch. The former, together with the data-point (Event ID 3 + network sensors) of which process to what destination address & port, may be easier to spot, whether by human (by crafting good queries as with Threat Hunting, or machines).***
+
+Some benign programs are known to beacon (eg. software updater processes), but they are likely to be minorities. A crafty adversary may inject into such processes thus we may still need to be careful if such software processes deviates from where it usually communicates to.
+
+Rare programs (identified by their hash checksums) that beacon regularly are low-hanging fruits to catch. *Non-beaconing types that are event driven are trickier & may require network packet inspection or deeper host instrumentations for detection*. With the advent of TLS/SSL, it does not make things easier, but it makes [Cisco Stealthwatch interesting](https://www.cisco.com/c/en/us/products/security/stealthwatch/index.html).
 
 I don't have samples for "side-channels" but an interesting list of air-gap circumventing research can be found at: https://cyber.bgu.ac.il//advanced-cyber/airgap
