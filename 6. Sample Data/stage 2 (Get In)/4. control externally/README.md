@@ -30,7 +30,7 @@ The samples in this sub-folder is organised into these two general types. There 
 
 *Why divide into these classes?* ***The latter are harder to catch as you will [see in my example](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/4.%20control%20externally/Non-Beaconing). The former, together with the data-point (Sysmon Event ID 3 + network sensors) of which process to what destination address & port, may be easier to spot, whether by human (by crafting good queries as with Threat Hunting, or machines).***
 
-Some benign programs are known to beacon (eg. software updater processes), but they are likely to be minorities. A crafty adversary may inject into such processes thus we may still need to be careful if such software processes deviates from where it usually communicates to.
+Some benign programs are known to beacon (eg. software updater processes), but they are likely to be minorities. Blue-teams may have the tendency to "white-list" (ignore) such processes, as such, a crafty adversary may inject into such processes thus we may still need to be careful if such software processes deviates from where it usually communicates to.
 
 Rare programs (identified by their hash checksums) that beacon regularly are low-hanging fruits to catch. *Non-beaconing types that are event driven are trickier & may require network packet inspection or deeper host instrumentations for detection*. With the advent of TLS/SSL, it does not make things easier, but it makes [Cisco Stealthwatch interesting](https://www.cisco.com/c/en/us/products/security/stealthwatch/index.html#~stickynav=1#lightbox-cta).
 
