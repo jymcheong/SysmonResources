@@ -16,7 +16,7 @@ There's much hype with 0-day exploits (Type 3) that people overlook the basic th
 
 More importantly, techniques are often chained together. Shell-codes based payloads are typically much smaller payloads than let's say EXEs. As such, it is often done in multi-stages, eg. (old-school): exploit -> drop payload (more complex logic) -> run payload. 
 
-The in-thing now is in-memory code-injection & abuse of legit system componets to evade protection & detection. Put it in any way, evasive attacks don't write to disk but cause another process to run more arbitrary codes in-memory &/or abuse system components to run larger malicious codes. 
+The trend now is *in-memory* code-execution & abuse of legit system componets to evade protection & detection. Put it in any way, evasive attacks don't write to disk but cause another process to run more arbitrary codes in-memory &/or abuse system components to run larger malicious codes. 
 
 Some may ask: Hey what happened to local/remote exploit & blah... that's under "Deliver payload" or Payload Delivery. Good examples of remote exploits would be things like HeartBleed & EternalBlue, both **delivered as packets** over the wire. But it gets confusing, then isn't a weaponized Word-doc or PDF "remote" exploit too since the attacker can send them to the target/victim? 
 
