@@ -22,12 +22,10 @@ For this sample log, I compiled dnscat2.exe from source from the Server Github l
 * If you refer to Zeltser's article, you will notice repeated query-response in his Wireshark trace. 
 * It make sense since Sysmon only records initiated connection from a process, it does not continously create events whenever a session has traffic.
 
-Since I couldn't get the Powershell client to work, I did something I thought was equivalent:
+Since I couldn't get the Powershell client to work, I did something which I thought was equivalent:
 
 ![](img/powershellresolve.png)
 
-* Interesting, when I switch back to Event Viewer with filter on event ID 3, ***there was NOTHING for Powershell***
+* ***Interesting, when I switched back to Event Viewer filtering to see event ID 3, there was NOTHING for Powershell***
 * This may not be an equivalent, but even if it did record, likely it will be same as dnscat2.exe, only a single event.
-
-
 
