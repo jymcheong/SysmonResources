@@ -2,7 +2,7 @@
 
 ## Background
 
-https://attack.mitre.org/wiki/Technique/T1043 Why DNS when there's HTTP(S)? When network gateways/sensors may be watching HTTP(S)? Or as a [backup/fall-back channel](backup/fall-back channel). 
+https://attack.mitre.org/wiki/Technique/T1043 Why DNS when there's HTTP(S)? When network gateways/sensors may be watching HTTP(S)? Or as a [backup/fall-back channel](https://attack.mitre.org/wiki/Technique/T1008). 
 
 ## Offensive Toolkits
 
@@ -14,7 +14,7 @@ Lenny Zeltser has a good discourse on this tool: https://zeltser.com/c2-dns-tunn
 
 ## Observations
 
-For this sample log, I compiled dnscat2.exe from source from the Server Github link. *I somehow could not get the Powershell client to work. It use to work when I managed to setup an authoritative DNS for a test domain that I purchased some time ago, it had expired.* Anyway, the Powershell client is not stable & tends to crash. 
+For this sample log, I compiled dnscat2.exe from source from the Server Github link. *I somehow could not get the Powershell client to work. It use to work when I'd setup an authoritative DNS for a test domain some time ago, it had expired.* Anyway, the Powershell client is not stable & tends to crash. 
 
 ![](img/dnscatevent.png)
 
