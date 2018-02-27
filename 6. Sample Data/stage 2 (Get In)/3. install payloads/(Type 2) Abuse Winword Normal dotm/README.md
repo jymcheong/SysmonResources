@@ -55,4 +55,4 @@ All is not lost, there are other indicators to watch out for, for instance:
 
 ![](img/network.png)
 
-which leads us to another stage of the Attack-Life-Cycle/Kill-Chain; external C2 (Command & Control) [macro abuse](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads/(Type%202)%20Abuse%20MS%20Winword%20Macros).
+which leads us to another stage of the Attack-Life-Cycle/Kill-Chain; [external C2 (Command & Control)](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/4.%20control%20externally).
