@@ -1,4 +1,4 @@
-# Payload-files in Removable Storage Media
+# Removable Storage Media
 
 ## Payload
 
