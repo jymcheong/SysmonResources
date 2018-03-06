@@ -8,7 +8,7 @@
 
 ![payloads](payloads.jpg)
 
-We can further "sub-divide" code-execution by asking something more fundamental: **"How to run codes on a computer?"**. Think of payload types as the "link" between delivery & execution: Compiled executables binaries (type 1), Scripts (type 2) & Others (type 3, typically with shell-codes hidden within malformed contents, or network packets/physical-port commands).  **Type 1 & 2 use features from the system whereas Type 3 tend to exploit vulnerabilities.**
+We can further "sub-divide" code-execution by asking something more fundamental: **"How to run codes on a computer?"**. Think of payload types as the "link" between delivery & execution: Compiled executables binaries (type 1), Scripts (type 2) & Others (type 3, typically with shell-codes hidden within user-contents, or network packets/physical-port commands).  **Type 1 & 2 use features from the system whereas Type 3 tend to exploit vulnerabilities.**
 
 Relating back to an earlier point about "other defense methods", a reliable way beyond signature-based blacklisting is the neutralisation of *Type 3 - User Content payloads* using [Content Disarm & Reconstruction](https://en.wikipedia.org/wiki/Content_Disarm_%26_Reconstruction). Other novel approach include detecting machine-codes within User Contents (not executables or scripts) & deny such files altogether without having to decide whether it is good or bad codes.
 
