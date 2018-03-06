@@ -16,7 +16,7 @@ Relating back to an earlier point about "other defense methods", a reliable way 
 
 The sample logs here attempt to illustrate some common delivery tactics.
 
-| Means to deliver payload         | Type 1                                                       | Type 2                                        | Type 3                                                       |
+| Means to deliver                 | Type 1                                                       | Type 2                                        | Type 3                                                       |
 | -------------------------------- | ------------------------------------------------------------ | --------------------------------------------- | ------------------------------------------------------------ |
 | Email                            | Mostly should be blocked                                     | Possible to get through                       | Usually get through for 0-day, there's no signature/patch yet |
 | Browser                          | Possible to download depending on environment                | Possible to download depending on environment | Usually allowed to download                                  |
