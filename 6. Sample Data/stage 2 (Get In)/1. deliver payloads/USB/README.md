@@ -2,7 +2,7 @@
 
 ## Payload
 
-Type 1 (executables) & Type 2 (scripts/configurations) are rather straight-forward with Sysmon Event ID, especially for controlled user environments that enforce Application-Control/Whitelisting. Outliers can be detected at 2 levels, host & population respective. I will not digress since that has to do with analytics. For the earlier reasons, I selected a LNK exploit ([CVE-2017-8464](https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2017-8464)) from Metasploit. If you are repeating this experiment, you will most probably need to temporary switch off your Anti-Virus engine.
+Type 1 (executables) & Type 2 (scripts/configurations) are rather straight-forward with Sysmon Event ID, especially for controlled user environments that enforce Application-Control/Whitelisting. Outliers can be detected at 2 levels, host & population. I will not digress since that has to do with analytics. For the earlier reasons, I selected a LNK exploit ([CVE-2017-8464](https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2017-8464)) from Metasploit. If you are repeating this experiment, you will most probably need to temporary switch off your Anti-Virus engine.
 
 ## Observations
 
