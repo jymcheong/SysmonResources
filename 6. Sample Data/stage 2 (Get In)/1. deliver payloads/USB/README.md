@@ -25,4 +25,5 @@ Type 1 (executables) & Type 2 (scripts/configurations) are rather straight-forwa
 ## Questions
 
 * What happens when a payload requires user-interaction/intervention? How do we observe?
+* How often is it to have this sequence USB inserted -maybe something in between -> Process Creation?
 
