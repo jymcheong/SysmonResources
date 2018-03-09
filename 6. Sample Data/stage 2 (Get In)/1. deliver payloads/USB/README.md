@@ -20,6 +20,7 @@ Type 1 (executables) & Type 2 (scripts/configurations) are rather straight-forwa
 
 * I use launching a calculator as an illustration since the topic here is about delivery, not so much on the execution although the two are very related.
 * Notice all happened within 2:57:2. We can infer there's no user intervention.
+* rundll32 terminates after calculator was launched.
 
 ## Questions
 
