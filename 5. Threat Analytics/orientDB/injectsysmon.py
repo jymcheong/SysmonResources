@@ -13,7 +13,7 @@ client.db_open("Sysmon", uid, pwd)
 lines = codecs.open(filepath, 'r', encoding='utf-8').readlines()
 for event in lines:
     e = json.loads(event)
-    e['Keywords'] = str(e['Keywords'])
+    e['Keywords'] = str(e['Keywords']) #negative no. is too big for any field type to hold except string
     client.command("insert into Sysmon content " + json.dumps(e))
     if("ParentProcessGuid" in event): # only link if there's a ParentProcessGuid
         edgecmd = "Create Edge ParentOf FROM (Select from Sysmon Where EventID = 1 AND ProcessGuid = '{0}' AND Hostname = '{1}') TO \
