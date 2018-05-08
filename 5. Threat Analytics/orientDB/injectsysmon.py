@@ -2,11 +2,14 @@ import pyorient
 import codecs
 import json
 
-client = pyorient.OrientDB("localhost", 2424)
-session_id = client.connect("YOUR_ID", "YOUR_PWD")
-client.db_open("Sysmon", "YOUR_ID", "YOUR_PWD")
-
+uid = "YOUR_ID"
+pwd = "YOUR_PWD"
 filepath = 'template eventlog.txt'  # change to your file path
+
+client = pyorient.OrientDB("localhost", 2424)
+session_id = client.connect(uid, pwd)
+client.db_open("Sysmon", uid, pwd)
+
 lines = codecs.open(filepath, 'r', encoding='utf-8').readlines()
 for event in lines:
     e = json.loads(event)
