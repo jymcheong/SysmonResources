@@ -51,7 +51,12 @@ Exec $raw_event = to_json();
 
 <Output out>
     Module      om_file
-    file	"c:\eventlog.txt"
+    File 	"C:\" + $Hostname + "_" + $DeviceProduct + ".txt"
+    Exec	if out->file_size() > 200K \
+                { \
+                   $newfile = "C:\" + $Hostname + "_" + $DeviceProduct + "_" + strftime(now(), "%Y_%m_%d_%H%M%S") + ".txt"; \
+                   out->rotate_to($newfile); \
+                }
 </Output>
 
 <Route 1>
