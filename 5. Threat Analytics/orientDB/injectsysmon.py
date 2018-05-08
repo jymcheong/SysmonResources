@@ -12,9 +12,11 @@ for event in lines:
     e = json.loads(event)
     e['Keywords'] = str(e['Keywords'])
     client.command("insert into Sysmon content " + json.dumps(e))
-    if("ParentProcessGuid" in event):
-        edgecmd = "Create Edge ParentOf FROM (Select from Sysmon Where EventID = 1 AND ProcessGuid = '{0}' AND Hostname = '{1}') TO (SELECT FROM Sysmon Where ProcessGuid = '{2}' AND Hostname = '{3}')".format(e["ParentProcessGuid"],e['Hostname'],e["ProcessGuid"],e['Hostname'])
+    if("ParentProcessGuid" in event): # only link if there's a ParentProcessGuid
+        edgecmd = "Create Edge ParentOf FROM (Select from Sysmon Where EventID = 1 AND ProcessGuid = '{0}' AND Hostname = '{1}') TO \
+                    (SELECT FROM Sysmon Where EventID = 1 AND ProcessGuid = '{2}' AND \
+                    Hostname = '{3}')".format(e["ParentProcessGuid"],e['Hostname'],e["ProcessGuid"],e['Hostname'])
         try:
             client.command(edgecmd)
-        except:
+        except: # there are cases when parent process event was not captured
             print('likely no source vertex')
