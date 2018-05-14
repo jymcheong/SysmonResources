@@ -1,23 +1,30 @@
-WinEvent Common fields:	EventID, EventTime, EventReceivedTime, Hostname, SourceName, Channel
-
 ProcessCreate       UtcTime, ProcessGuid, ProcessID, Image, FileVersion, Description, Product, Company, CommandLine, CurrentDirectory, User, LogonGuid, LogonId, TerminalSessionId, IntegrityLevel, Hashes, ParentProcessGuid, ParentProcessId, ParentImage, ParentCommandLine
 FileCreateTime      UtcTime, ProcessGuid, ProcessId, Image, TargetFilename, CreationUtcTime, PreviousCreationUtcTime
 NetworkConnect      UtcTime, ProcessGuid, ProcessId, Image, User, Protocol, Initiated, SourceIsIpv6, SourceIp, SourceHostname, SourcePort, SourcePortName, DestinationIsIpV6, DestinationIp, DestinationHostname, DestinationPort, DestinationPortName
 Status              UtcTime, State, Version, SchemaVersion
 ProcessTerminate    UtcTime, ProcessGuid, ProcessId, Image
 DriverLoad          UtcTime, ImageLoaded, Hashes, Signed, Signature, SignatureStatus
-ImageLoad           UtcTime, ProcessGuid, ProcessId, Image, ImageLoaded, Hashes, Signed, Signature, SignatureStatus
+ImageLoad*          UtcTime, ProcessGuid, ProcessId, Image, ImageLoaded, Hashes, Signed, Signature, SignatureStatus
 CreateRemoteThread  UtcTime, SourceProcessGuid, SourceProcessId, SourceImage, TargetProcessId, TargetImage, NewThreadId, StartAddress, StartModule, StartFunction
-RawAccessRead       UtcTime, ProcessGuid, ProcessId, Image, Device
-ProcessAccess       UtcTime, SourceProcessGuid, SourceProcessId, SourceThreadId, SourceImage, TargetProcessGuid, TargetProcessId, TargetImage, GrantedAccess, CallTrace
+RawAccessRead*      UtcTime, ProcessGuid, ProcessId, Image, Device
+ProcessAccess*      UtcTime, SourceProcessGuid, SourceProcessId, SourceThreadId, SourceImage, TargetProcessGuid, TargetProcessId, TargetImage, GrantedAccess, CallTrace
 FileCreate          UtcTime, ProcessGuid, ProcessId, Image, TargetFilename, CreationUtcTime, PreviousCreationUtcTime
-RegistryEventAddDel 
+RegistryEventAddDel EventType, UtcTime, ProcessGuid, ProcessId, Image, TargetObject, Details (can't filter on), NewName (can't filter on)
 RegistryEventValSet
-RegistryEventRename EventType, UtcTime, ProcessGuid, ProcessId, Image, TargetObject, Details (can't filter on), NewName (can't filter on)
+RegistryEventRename 
 FileCreateStreamHash UtcTime, ProcessGuid, ProcessId, Image, TargetFilename, CreationUtcTime, Hash
 ConfigChange        UtcTime, Configuration, ConfigurationFileHash
 PipeEventCreate     UtcTime, ProcessGuid, ProcessId, PipeName, Image
 PipeEventConnected  UtcTime, ProcessGuid, ProcessId, PipeName, Image
-WmiEventFilter
+WmiEventFilter      EventType, UtcTime, Operation, User, Name, Type, Destination, Consumer, Filter
 WmiEventConsumer
-WmiEventConsumerToFilter EventType, UtcTime, Operation, User, Name, Type, Destination, Consumer, Filter
+WmiEventConsumerToFilter 
+
+* Disabled by default: 
+ImageLoad, RawAccessRead & ProcessAccess
+
+WinEvent Common fields:	
+EventID, EventTime, EventReceivedTime, Hostname, SourceName, Channel
+
+Events that are without ProcessGUID: 
+Status, DriverLoad, WmiEvent*, CreateRemoteThread, ProcessAccess
