@@ -25,4 +25,4 @@ Sysmon includes the following capabilities:
 
 # Why?
 
-If you have the budget & luxury of using cool **E**ndpoint **D**etection & **R**esponse platform, good for you. Otherwise if one wants to start somewhere within a DIY "lab", Sysmon is that free tool that you may be looking for. Making sense with all those log data can be challenging & I hope with these resources & sample data, make it somewhat more managable to explore & understand what's going on in Windows.
+If you have the budget & luxury of using cool **E**ndpoint **D**etection & **R**esponse platform, good for you. Otherwise if one wants to start somewhere within a DIY "lab", Sysmon is that free tool that you may be looking for. Making sense with all those log data can be challenging & I hope with these resources & sample data, make it somewhat more managable to explore & understand what is going on in Windows.

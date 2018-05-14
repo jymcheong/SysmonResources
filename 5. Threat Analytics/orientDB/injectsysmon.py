@@ -2,18 +2,24 @@ import pyorient
 import codecs
 import json
 
-client = pyorient.OrientDB("localhost", 2424)
-session_id = client.connect("YOUR_ID", "YOUR_PWD")
-client.db_open("Sysmon", "YOUR_ID", "YOUR_PWD")
-
+uid = "YOUR_ID"
+pwd = "YOUR_PWD"
 filepath = 'template eventlog.txt'  # change to your file path
+
+client = pyorient.OrientDB("localhost", 2424)
+session_id = client.connect(uid, pwd)
+client.db_open("Sysmon", uid, pwd)
+
 lines = codecs.open(filepath, 'r', encoding='utf-8').readlines()
 for event in lines:
     e = json.loads(event)
-    client.command("insert into Sysmon content " + event)
-    if("ParentProcessGuid" in event):
-        edgecmd = "Create Edge ParentOf FROM (Select from Sysmon Where EventID = 1 AND ProcessGuid = '{0}' AND Hostname = '{1}') TO (SELECT FROM Sysmon Where ProcessGuid = '{2}' AND Hostname = '{3}')".format(e["ParentProcessGuid"],e['Hostname'],e["ProcessGuid"],e['Hostname'])
+    e['Keywords'] = str(e['Keywords']) #negative no. is too big for any field type to hold except string
+    client.command("insert into Sysmon content " + json.dumps(e))
+    if("ParentProcessGuid" in event): # only link if there's a ParentProcessGuid
+        edgecmd = "Create Edge ParentOf FROM (Select from Sysmon Where EventID = 1 AND ProcessGuid = '{0}' AND Hostname = '{1}') TO \
+                    (SELECT FROM Sysmon Where EventID = 1 AND ProcessGuid = '{2}' AND \
+                    Hostname = '{3}')".format(e["ParentProcessGuid"],e['Hostname'],e["ProcessGuid"],e['Hostname'])
         try:
             client.command(edgecmd)
-        except:
+        except: # there are cases when parent process event was not captured
             print('likely no source vertex')
