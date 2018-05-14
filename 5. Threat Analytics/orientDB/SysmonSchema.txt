@@ -26,5 +26,5 @@ ImageLoad, RawAccessRead & ProcessAccess
 WinEvent Common fields:	
 EventID, EventTime, EventReceivedTime, Hostname, SourceName, Channel
 
-Events that are without ProcessGUID: 
-Status, DriverLoad, WmiEvent*, CreateRemoteThread, ProcessAccess
+Events that are without ProcessId/GUID: 
+Status, DriverLoad, WmiEvent*, CreateRemoteThread, ProcessAccess (last 2 has Source & Target instead)
