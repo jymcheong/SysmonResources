@@ -44,7 +44,12 @@ LogFile %ROOT%\data\nxlog.log
 
 Exec $DeviceVendor = "Microsoft";
 Exec $DeviceProduct = "EventLog";
-Exec delete($Keywords);
+
+# Only Sysmon Event line has ProcessID populated, so we rename
+Exec if $SourceName =~ /Sysmon/ rename_field("ProcessID","SysmonProcessId");
+# If there's a ProcessId field in the message, extract it out
+Exec if $Message =~ /ProcessId\:\s+(\d+)/ $ProcessId=$1;
+
 Exec $raw_event = to_json();
 
 </Input>
