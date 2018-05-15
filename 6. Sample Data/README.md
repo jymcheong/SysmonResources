@@ -27,3 +27,9 @@ For insider threats, they are very challenging because these users already have 
 
 We tend to use MITRE ATT&CK in our dialogue/engagementsWhen working with users who are more technical/savvy & prefer "branded" frameworks from more established organisations like MITRE, big-four consulting & the likes. But for all intent & purposes, our ALC is easier for communicating with non-technical stake-holders & is almost equivalent.
 
+
+
+## NXLog Configuration
+
+Please install Nxlog to \Program Files\ for 64bit Windows (instead of \Program Files (X86)) & use the provided [Configuration File](nxlog.conf.txt). Rename to .conf, please.
+
