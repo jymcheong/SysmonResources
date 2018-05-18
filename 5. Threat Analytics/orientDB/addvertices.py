@@ -51,7 +51,6 @@ for event in lines:
         classname = eventIdLookup[e['EventID']]
         
     # DataFusion events
-    # TODO create OrientDB for each possible action
     if '"SourceName":"DataFuseUserActions"' in event:
         del e['ProcessID'] # deleted because there's a ProcessId field in Message        
         uat = json.loads(e['Message'])
@@ -59,5 +58,7 @@ for event in lines:
             e[k] = v
         classname = 'UserActionTracking' # e['Action']
     print("insert into " + classname + " content " + json.dumps(e))
-    client.command("insert into " + classname + " content " + json.dumps(e))
+    r = client.command("insert into " + classname + " content " + json.dumps(e))
+    
+    print(r[0]._rid)
     
