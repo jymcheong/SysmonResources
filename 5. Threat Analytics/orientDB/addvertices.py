@@ -23,7 +23,13 @@ client = pyorient.OrientDB("localhost", 2424)
 session_id = client.connect(uid, pwd)
 client.db_open("DataFusion", uid, pwd)
 
-eventIdLookup = {1:'ProcessCreate', 2:'FileCreateTime', 3:'NetworkConnect'}
+eventIdLookup = {1:'ProcessCreate', 2:'FileCreateTime', 3:'NetworkConnect', \
+                 4:'SysmonStatus', 5:'ProcessTerminate',6:'DriverLoad', \
+                 7:'ImageLoad', 8:'CreateRemoteThread', 9:'RawAccessRead', \
+                 10:'ProcessAccess', 11:'FileCreate', 12:'RegistryEvent', \
+                 13:'RegistryEvent', 14:'RegistryEvent', 15:'FileCreateStreamHash', \
+                 16:'ConfigChanged', 17:'PipeCreated', 18:'PipeConnected', \
+                 19:'WmiEvent', 20:'WmiEvent', 21:'WmiEvent' }
 
 lines = codecs.open(sys.argv[1], 'r', encoding='utf-8').readlines()
 for event in lines:
@@ -37,7 +43,7 @@ for event in lines:
         if 'Keywords' in e: #negative no. is too big, so cast to string
             e['Keywords'] = str(e['Keywords']) 
         classname = eventIdLookup[e['EventID']]
-        # rename the field
+        # ProcessID is Sysmon servie PID, Nxlog doesn't extract the one we need
         e['SysmonProcessId'] = e['ProcessID']
         del e['ProcessID']
         # extract ProcessId from Message field
