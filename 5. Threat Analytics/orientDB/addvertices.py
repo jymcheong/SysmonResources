@@ -8,7 +8,7 @@ import re
 uid = "root" # don't do this in production
 pwd = "Password1234"
 
-#sys.argv += 'events.txt'.split() # for testing only
+sys.argv += 'events.txt'.split() # for testing only
 
 if len(sys.argv) == 1:
     print('please provide path to winevent log file from collected by Nxlog!')
@@ -29,7 +29,7 @@ eventIdLookup = {1:'ProcessCreate', 2:'FileCreateTime', 3:'NetworkConnect', \
                  10:'ProcessAccess', 11:'FileCreate', 12:'RegistryEvent', \
                  13:'RegistryEvent', 14:'RegistryEvent', 15:'FileCreateStreamHash', \
                  16:'ConfigChanged', 17:'PipeCreated', 18:'PipeConnected', \
-                 19:'WmiEvent', 20:'WmiEvent', 21:'WmiEvent' }
+                 19:'WmiEvent', 20:'WmiEvent', 21:'WmiEvent', 255:'Error' }
 
 lines = codecs.open(sys.argv[1], 'r', encoding='utf-8').readlines()
 for event in lines:
@@ -57,7 +57,7 @@ for event in lines:
         uat = json.loads(e['Message'])
         for k,v in uat.items():
             e[k] = v
-        classname = e['Action']
-
+        classname = 'UserActionTracking' # e['Action']
+    print("insert into " + classname + " content " + json.dumps(e))
     client.command("insert into " + classname + " content " + json.dumps(e))
     
