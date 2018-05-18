@@ -5,7 +5,7 @@ import codecs
 import json
 import re
 
-uid = "root"
+uid = "root" # don't do this in production
 pwd = "Password1234"
 
 sys.argv += 'events.txt'.split()
