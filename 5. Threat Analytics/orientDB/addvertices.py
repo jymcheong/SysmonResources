@@ -8,7 +8,7 @@ import re
 uid = "root" # don't do this in production
 pwd = "Password1234"
 
-sys.argv += 'events.txt'.split()
+sys.argv += 'events.txt'.split() # for testing only
 
 if len(sys.argv) == 0:
     print('please provide path to winevent log file from collected by Nxlog!')
