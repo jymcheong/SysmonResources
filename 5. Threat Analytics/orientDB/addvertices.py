@@ -42,14 +42,14 @@ for event in lines:
     if '"SourceName":"Microsoft-Windows-Sysmon"' in event:
         if 'Keywords' in e: #negative no. is too big, so cast to string
             e['Keywords'] = str(e['Keywords']) 
-        classname = eventIdLookup[e['EventID']]
         # ProcessID is Sysmon servie PID, Nxlog doesn't extract the one we need
         e['SysmonProcessId'] = e['ProcessID']
         del e['ProcessID']
         # extract ProcessId from Message field
         processId = re.search("ProcessId: (\d+)", event)
         e['ProcessId'] = processId.group(1)
-    
+        classname = eventIdLookup[e['EventID']]
+        
     # DataFusion events
     # TODO create OrientDB for each possible action
     if '"SourceName":"DataFuseUserActions"' in event:
