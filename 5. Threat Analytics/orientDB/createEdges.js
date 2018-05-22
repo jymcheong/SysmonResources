@@ -30,7 +30,7 @@ db.liveQuery("live select from ProcessCreate")
 // ProcessCreate-[CreatedRemoteThread:SourceProcessGuid]->CreateRemoteThread
 // CreateRemoteThread-[RemoteThreadFor:TargetProcessId]->ProcessCreate
 
-// Stage2 - Install Payload / Persistence
+// Stage 2 - Install Payload / Persistence
 // ProcessCreate-[WroteFile:ProcessGuid,Hostname]->FileCreate
 // FileCreate-[UsedAsDriver:TargetFilename=ImageLoaded]->DriverLoad
 // FileCreate-[UsedAsImage:TargetFilename=ImageLoaded]->ImageLoad
@@ -39,10 +39,11 @@ db.liveQuery("live select from ProcessCreate")
 // ProcessCreate-[CreatedFileStream:ProcessGuid,Hostname]->FileCreateStreamHash
 // ProcessCreate-[AccessedWMI:ProcessGuid,Hostname]->WmiEvent
 // ProcessCreate-[Terminated:ProcessGuid,Hostname]->ProcessTerminate
+// a process that doesn't terminate & not part of system or user services...
 
-// Stage2/3 External-Internal C2
+// Stage 2 & 3 - External/Internal C2
 // ProcessCreate-[ConnectedTo:ProcessGuid,Hostname]->NetworkConnect
-// ProcessCreate-[CreatedPipe:ProcessGuid,Hostname]-> PipeCreate
+// ProcessCreate-[CreatedPipe:ProcessGuid,Hostname]->PipeCreate
 // ProcessCreate-[ConnectedPipe:ProcessGuid,Hostname]->PipeConnected
 
 // Stage3 Capture Credentials - eg. Mimikatz
