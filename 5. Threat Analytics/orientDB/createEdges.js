@@ -23,13 +23,13 @@ db.liveQuery("live select from ProcessCreate")
                     console.log('no parent found...')
             });
   })
-
+// The implementation pattern is very similar to the code above...
 // Legend: FromClass-[EdgeClassName:PropertiesToLinkWith]->ToClass
-// Stage 2 - Run payload eg. MSF Process Migration creates remote threads
+// Stage 2 - Run payload ====
 // ProcessCreate-[CreatedRemoteThread:SourceProcessGuid]->CreateRemoteThread
 // CreateRemoteThread-[RemoteThreadFor:TargetProcessId]->ProcessCreate
 
-// Stage 2 - Install Payload / Persistence
+// Stage 2 - Install Payload / Persistence ====
 // ProcessCreate-[WroteFile:ProcessGuid,Hostname]->FileCreate
 // FileCreate-[UsedAsDriver:TargetFilename=ImageLoaded]->DriverLoad
 // FileCreate-[UsedAsImage:TargetFilename=ImageLoaded]->ImageLoad
@@ -41,16 +41,16 @@ db.liveQuery("live select from ProcessCreate")
 // ProcessCreate-[Terminated:ProcessGuid,Hostname]->ProcessTerminate
 // a process that doesn't terminate & not part of system or user services...
 
-// Stage 2 & 3 - External/Internal C2
+// Stage 2 & 3 - External/Internal C2 ====
 // ProcessCreate-[ConnectedTo:ProcessGuid,Hostname]->NetworkConnect
 // ProcessCreate-[CreatedPipe:ProcessGuid,Hostname]->PipeCreate
 // ProcessCreate-[ConnectedPipe:ProcessGuid,Hostname]->PipeConnected
 
-// Stage3 Capture Credentials - eg. Mimikatz
+// Stage3 Capture Credentials - eg. Mimikatz ====
 // ProcessCreate-[ProcessAccessed:SourceProcessGuid]->ProcessAccess
 // ProcessAccess-[ProcessAccessedFrom:TargetProcessGuid]->ProcessCreate
 
-// Stage 4 - Steal
+// Stage 4 - Steal ====
 // ProcessCreate-[RawRead:ProcessGuid,Hostname]->RawAccessRead
 
 // Stage 4 - Tampering (Doesn't mean every FileCreateTime = tampering!)
