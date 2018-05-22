@@ -25,7 +25,6 @@ db.liveQuery("live select from ProcessCreate")
   })
 
 // Legend: FromClass-[EdgeClassName:PropertiesToLinkWith]->ToClass
-
 // Stage 2 - Run payload eg. MSF Process Migration creates remote threads
 // ProcessCreate-[CreatedRemoteThread:SourceProcessGuid]->CreateRemoteThread
 // CreateRemoteThread-[RemoteThreadFor:TargetProcessId]->ProcessCreate
@@ -37,6 +36,7 @@ db.liveQuery("live select from ProcessCreate")
 // ProcessCreate-[LoadedImage:ProcessGuid,Hostname]->ImageLoad
 // ProcessCreate-[AccessedRegistry:ProcessGuid,Hostname]->RegistryEvent
 // ProcessCreate-[CreatedFileStream:ProcessGuid,Hostname]->FileCreateStreamHash
+// FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
 // ProcessCreate-[AccessedWMI:ProcessGuid,Hostname]->WmiEvent
 // ProcessCreate-[Terminated:ProcessGuid,Hostname]->ProcessTerminate
 // a process that doesn't terminate & not part of system or user services...
