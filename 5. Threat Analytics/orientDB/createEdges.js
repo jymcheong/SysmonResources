@@ -11,7 +11,7 @@ var db = server.use({name: 'DataFusion', username: 'root', password: 'Password12
 db.liveQuery("live select from ProcessCreate")
   .on('live-insert', function(inserted){
      var child = inserted.content;
-     console.log('inserted ' + JSON.stringify(child));
+     console.log('inserted: ' + JSON.stringify(child));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + child.ParentProcessGuid + '" AND Hostname = "' + child.Hostname + '"'
             ).then(function(parent){
@@ -28,18 +28,19 @@ db.liveQuery("live select from ProcessCreate")
   })
 // The implementation pattern is very similar to the code above...
 // Stage 2 - Run payload ====
-// note the use of RecordNumber to ensure we are inserting to the correct vertex.
+// note the use of RecordNumber together with ProcessGuid because the lack of @rid from OrientJS.
 db.liveQuery("live select from CreateRemoteThread")
   .on('live-insert', function(data){
      var CreateRemoteThread = data.content;
-     console.log('inserted ' + JSON.stringify(CreateRemoteThread));
+     console.log('inserted: ' + JSON.stringify(CreateRemoteThread));
      // ProcessCreate-[CreatedRemoteThread:SourceProcessGuid]->CreateRemoteThread
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + CreateRemoteThread.SourceProcessGuid + '" AND Hostname = "' + CreateRemoteThread.Hostname + '"'
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                     cmd = 'CREATE EDGE CreatedThread FROM ' + ProcessCreate[0].rid + 
-                          ' TO (SELECT FROM CreateRemoteThread WHERE RecordNumber ="' + CreateRemoteThread.RecordNumber + 
+                          ' TO (SELECT FROM CreateRemoteThread WHERE RecordNumber =' + CreateRemoteThread.RecordNumber + 
+                          ' AND SourceProcessGuid = "' + CreateRemoteThread.SourceProcessGuid +
                           '" AND Hostname = "' + CreateRemoteThread.Hostname + '")';
                     console.log('command: ' + cmd);
                     db.query(cmd);
@@ -54,7 +55,8 @@ db.liveQuery("live select from CreateRemoteThread")
           ).then(function(ProcessCreate){
                 if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                   cmd = 'CREATE EDGE RemoteThreadFor FROM (SELECT FROM CreateRemoteThread WHERE RecordNumber = ' 
-                  + CreateRemoteThread.RecordNumber + ' AND Hostname = "' + CreateRemoteThread.Hostname + '") TO ' + ProcessCreate[0].rid;
+                  + CreateRemoteThread.RecordNumber + ' AND SourceProcessGuid = "' + CreateRemoteThread.SourceProcessGuid + 
+                  '" AND Hostname = "' + CreateRemoteThread.Hostname + '") TO ' + ProcessCreate[0].rid;
                   console.log('command: ' + cmd);
                   db.query(cmd);
                 }
@@ -64,10 +66,52 @@ db.liveQuery("live select from CreateRemoteThread")
   })
 
 // Stage 2 - Install Payload / Persistence ====
-// ProcessCreate-[WroteFile:ProcessGuid,Hostname]->FileCreate
+
+db.liveQuery("live select from FileCreate")
+  .on('live-insert', function(data){
+     var FileCreate = data.content;
+     console.log('inserted: ' + JSON.stringify(FileCreate));
+     // ProcessCreate-[WroteFile:ProcessGuid,Hostname]->FileCreate
+     db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
+              + FileCreate.ProcessGuid + '" AND Hostname = "' + FileCreate.Hostname + '"'
+            ).then(function(ProcessCreate){
+                  if(ProcessCreate.length > 0) { //when ProcessCreate event exist
+                    cmd = 'CREATE EDGE WroteFile FROM ' + ProcessCreate[0].rid + 
+                          ' TO (SELECT FROM FileCreate WHERE RecordNumber =' + FileCreate.RecordNumber + 
+                          ' AND ProcessGuid = "' + FileCreate.ProcessGuid +
+                          '" AND Hostname = "' + FileCreate.Hostname + '")';
+                    console.log('command: ' + cmd);
+                    db.query(cmd);
+                  }
+                  else
+                    console.log('ProcessCreate vertex not found...')
+            });
+   })
+
 // FileCreate-[UsedAsDriver:TargetFilename=ImageLoaded]->DriverLoad
 // FileCreate-[UsedAsImage:TargetFilename=ImageLoaded]->ImageLoad
-// ProcessCreate-[LoadedImage:ProcessGuid,Hostname]->ImageLoad
+
+db.liveQuery("live select from ImageLoad")
+  .on('live-insert', function(data){
+     var ImageLoad = data.content;
+     console.log('inserted: ' + JSON.stringify(ImageLoad));
+     // ProcessCreate-[LoadedImage:ProcessGuid,Hostname]->ImageLoad
+     db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
+              + ImageLoad.ProcessGuid + '" AND Hostname = "' + ImageLoad.Hostname + '"'
+            ).then(function(ProcessCreate){
+                  if(ProcessCreate.length > 0) { //when ProcessCreate event exist
+                    cmd = 'CREATE EDGE LoadedImage FROM ' + ProcessCreate[0].rid + 
+                          ' TO (SELECT FROM ImageLoad WHERE RecordNumber =' + ImageLoad.RecordNumber + 
+                          ' AND ProcessGuid = "' + ImageLoad.ProcessGuid +
+                          '" AND Hostname = "' + ImageLoad.Hostname + '")';
+                    console.log('command: ' + cmd);
+                    db.query(cmd);
+                  }
+                  else
+                    console.log('ProcessCreate vertex not found...')
+            });
+   })
+
 // ProcessCreate-[AccessedRegistry:ProcessGuid,Hostname]->RegistryEvent
 // ProcessCreate-[CreatedFileStream:ProcessGuid,Hostname]->FileCreateStreamHash
 // FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
