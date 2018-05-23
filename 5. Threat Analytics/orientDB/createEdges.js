@@ -2,6 +2,8 @@ var OrientDB = require('orientjs');
 var server = OrientDB({host: 'localhost', port: 2424});
 var db = server.use({name: 'DataFusion', username: 'root', password: 'Password1234', useToken : true});
 
+// ==== Stage 2 - Run payload ====
+
 /* Legend: FromClass-[EdgeClassName:PropertiesToLinkWith]->ToClass
  * Summary: Create ParentOf Edge for ProcessCreate Parent-Child vertices.
  * Description: Uses OrientDB Live Query to create edges when vertices are inserted.
@@ -27,8 +29,6 @@ db.liveQuery("live select from ProcessCreate")
             });
   })
 
-// The following codes is very similar to the code above...
-// ==== Stage 2 - Run payload ====
 // Using RecordNumber together with ProcessGuid because the lack of @rid from OrientJS.
 db.liveQuery("live select from CreateRemoteThread")
   .on('live-insert', function(data){
