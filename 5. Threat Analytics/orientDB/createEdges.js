@@ -90,13 +90,32 @@ db.liveQuery("live select from FileCreate")
    })
 
 // FileCreate-[UsedAsDriver:TargetFilename=ImageLoaded]->DriverLoad
-// FileCreate-[UsedAsImage:TargetFilename=ImageLoaded]->ImageLoad
+db.liveQuery("live select from DriverLoad")
+  .on('live-insert', function(data){
+     var DriverLoad = data.content;
+     console.log('inserted: ' + JSON.stringify(DriverLoad));
+     db.query('SELECT @rid FROM FileCreate WHERE TargetFilename = "' 
+              + DriverLoad.ImageLoaded + '" AND Hostname = "' + DriverLoad.Hostname + '"'
+            ).then(function(FileCreate){
+                  if(FileCreate.length > 0) { //when FileCreate event exist
+                    cmd = 'CREATE EDGE UsedAsDriver FROM ' + FileCreate[0].rid + 
+                          ' TO (SELECT FROM DriverLoad WHERE RecordNumber =' + DriverLoad.RecordNumber + 
+                          ' AND ImageLoaded = "' + DriverLoad.ImageLoaded +
+                          '" AND Hostname = "' + DriverLoad.Hostname + '")';
+                    console.log('command: ' + cmd);
+                    db.query(cmd);
+                  }
+                  else
+                    console.log('FileCreate vertex not found...')
+            });
+   })
 
-// ProcessCreate-[LoadedImage:ProcessGuid,Hostname]->ImageLoad
+
 db.liveQuery("live select from ImageLoad")
   .on('live-insert', function(data){
      var ImageLoad = data.content;
      console.log('inserted: ' + JSON.stringify(ImageLoad));
+     // ProcessCreate-[LoadedImage:ProcessGuid,Hostname]->ImageLoad
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + ImageLoad.ProcessGuid + '" AND Hostname = "' + ImageLoad.Hostname + '"'
             ).then(function(ProcessCreate){
@@ -111,6 +130,21 @@ db.liveQuery("live select from ImageLoad")
                   else
                     console.log('ProcessCreate vertex not found...')
             });
+      // FileCreate-[UsedAsImage:TargetFilename=ImageLoaded]->ImageLoad
+      db.query('SELECT @rid FROM FileCreate WHERE TargetFilename = "' 
+            + ImageLoad.ImageLoaded + '" AND Hostname = "' + ImageLoad.Hostname + '"'
+          ).then(function(FileCreate){
+                if(FileCreate.length > 0) { //when FileCreate event exist
+                  cmd = 'CREATE EDGE UsedAsImage FROM ' + FileCreate[0].rid + 
+                        ' TO (SELECT FROM ImageLoad WHERE RecordNumber =' + ImageLoad.RecordNumber + 
+                        ' AND ImageLoaded = "' + ImageLoad.ImageLoaded +
+                        '" AND Hostname = "' + ImageLoad.Hostname + '")';
+                  console.log('command: ' + cmd);
+                  db.query(cmd);
+                }
+                else
+                  console.log('FileCreate vertex not found...')
+          });
    })
 
 // ProcessCreate-[AccessedRegistry:ProcessGuid,Hostname]->RegistryEvent
@@ -155,6 +189,7 @@ db.liveQuery("live select from FileCreateStreamHash")
             });
    })
 
+// TODO
 // FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
 
 // ProcessCreate-[AccessedWMI:ProcessGuid,Hostname]->WmiEvent
