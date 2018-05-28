@@ -168,6 +168,7 @@ db.liveQuery("live select from RegistryEvent")
                     console.log('ProcessCreate vertex not found...')
             });
       // FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
+      // this assumes ADS created first before the registry event. Another case later which is the reverse
       db.query('SELECT @rid FROM FileCreateStreamHash LET $re = (SELECT FROM RegistryEvent WHERE Details = "' 
               + RegistryEvent.Details + '" AND RecordNumber = ' + RegistryEvent.RecordNumber + ') WHERE $re.Details.asString().indexOf(TargetFilename) > -1'
             ).then(function(FileCreateStreamHash){
@@ -203,11 +204,23 @@ db.liveQuery("live select from FileCreateStreamHash")
                   }
                   else
                     console.log('ProcessCreate vertex not found...')
-            });
+            });            
+      // FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
+      // this assumes registry event was created first, then the ADS   
+      db.query('SELECT @rid FROM RegistryEvent WHERE Hostname = "' 
+            + FileCreateStreamHash.Hostname + '" AND Details.asString().indexOf("' + FileCreateStreamHash.TargetFilename + '") > -1'
+          ).then(function(RegistryEvent){
+                if(RegistryEvent.length > 0) { //when RegistryEvent event exist
+                  cmd = 'CREATE EDGE FoundWithin FROM (SELECT FROM FileCreateStreamHash WHERE RecordNumber = ' + FileCreateStreamHash.RecordNumber + 
+                        ' AND ProcessGuid = "' + FileCreateStreamHash.ProcessGuid +
+                        '" AND Hostname = "' + FileCreateStreamHash.Hostname + '") TO ' + RegistryEvent[0].rid;
+                  console.log('command: ' + cmd);
+                  db.query(cmd);
+                }
+                else
+                  console.log('RegistryEvent vertex not found...')
+          });
    })
-
-// TODO
-// FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
 
 
 // ProcessCreate-[AccessedWMI:ProcessGuid,Hostname]->WmiEvent
