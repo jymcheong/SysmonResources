@@ -147,11 +147,12 @@ db.liveQuery("live select from ImageLoad")
           });
    })
 
-// ProcessCreate-[AccessedRegistry:ProcessGuid,Hostname]->RegistryEvent
+
 db.liveQuery("live select from RegistryEvent")
   .on('live-insert', function(data){
      var RegistryEvent = data.content;
      console.log('inserted: ' + JSON.stringify(RegistryEvent));
+     // ProcessCreate-[AccessedRegistry:ProcessGuid,Hostname]->RegistryEvent
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + RegistryEvent.ProcessGuid + '" AND Hostname = "' + RegistryEvent.Hostname + '"'
             ).then(function(ProcessCreate){
@@ -166,6 +167,22 @@ db.liveQuery("live select from RegistryEvent")
                   else
                     console.log('ProcessCreate vertex not found...')
             });
+      // FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
+      db.query('SELECT @rid FROM FileCreateStreamHash LET $re = (SELECT FROM RegistryEvent WHERE Details = "' 
+              + RegistryEvent.Details + '" AND RecordNumber = ' + RegistryEvent.RecordNumber + ') WHERE $re.Details.asString().indexOf(TargetFilename) > -1'
+            ).then(function(FileCreateStreamHash){
+                  if(FileCreateStreamHash.length > 0) { //when FileCreateStreamHash event exist
+                    cmd = 'CREATE EDGE FoundWithin FROM ' + FileCreateStreamHash[0].rid + 
+                          ' TO (SELECT FROM RegistryEvent WHERE RecordNumber =' + RegistryEvent.RecordNumber + 
+                          ' AND ProcessGuid = "' + RegistryEvent.ProcessGuid +
+                          '" AND Hostname = "' + RegistryEvent.Hostname + '")';
+                    console.log('command: ' + cmd);
+                    db.query(cmd);
+                  }
+                  else
+                    console.log('FileCreateStreamHash vertex not found...')
+            });
+
    })
 
 // ProcessCreate-[CreatedFileStream:ProcessGuid,Hostname]->FileCreateStreamHash   
@@ -191,6 +208,7 @@ db.liveQuery("live select from FileCreateStreamHash")
 
 // TODO
 // FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
+
 
 // ProcessCreate-[AccessedWMI:ProcessGuid,Hostname]->WmiEvent
 db.liveQuery("live select from WmiEvent")
