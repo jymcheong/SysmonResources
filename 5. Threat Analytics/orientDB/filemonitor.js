@@ -48,22 +48,33 @@ function processFile(filepath) {
 
 var nsfw = require('nsfw');
 
-var watcher1;
-return nsfw(
-  directory_to_monitor,
-  function(events) {
-    // handle events
-    console.log(events)
-  })
-  .then(function(watcher) {
-    watcher1 = watcher;
-    return watcher.start();
-  })
-  .then(function() {
-    // we are now watching dir1 for events!
-    
-    // To stop watching
-    //watcher1.stop()
-  });
-
-//process.stdin.resume();
+var nsfw = require('nsfw');
+  var watcher2;
+  return nsfw(
+    "c:/windows/datafusion/logs",
+    function(events) {
+    // handles other events
+        for(i = 0, len = events.length; i < len; i++){
+            elem = events[i]
+            if(elem['action'] == 3) {
+                console.log(elem)
+            }
+    }
+    },
+    {
+      debounceMS: 250,
+      errorCallback(errors) {
+        //handle errors
+      }
+    })
+    .then(function(watcher) {
+      watcher2 = watcher;
+      return watcher.start();
+    })
+    .then(function() {
+      // we are now watching dir2 for events!
+    })
+    .then(function() {
+      // To stop watching
+      //watcher2.stop();
+    })
