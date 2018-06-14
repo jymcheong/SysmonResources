@@ -44,7 +44,7 @@ function startFileMonitor() {
     var nsfw = require('nsfw');
     var watcher2;
     return nsfw(
-        "C:/Windows/Datafusion/logs",
+        directory_to_monitor,
         function(events) {
         // handles other events
             for(i = 0, len = events.length; i < len; i++){
@@ -63,13 +63,6 @@ function startFileMonitor() {
         .then(function(watcher) {
         watcher2 = watcher;
         return watcher.start();
-        })
-        .then(function() {
-        // we are now watching dir2 for events!
-        })
-        .then(function() {
-        // To stop watching
-        //watcher2.stop();
         })
 }
 
