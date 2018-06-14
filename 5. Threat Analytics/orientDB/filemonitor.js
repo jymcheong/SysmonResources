@@ -51,6 +51,10 @@ function startFileMonitor() {
                 elem = events[i]
                 if(elem['action'] == 3) {
                     console.log(elem)
+                    var newfile = "" + elem['directory'] + "/" + elem['newFile']
+                    if(newfile.indexOf('rotated') > -1){
+                        processFile(newfile)
+                    }
                 }
             }
         },
