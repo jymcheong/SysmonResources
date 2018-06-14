@@ -1,5 +1,5 @@
-//==== Configure here
-const directory_to_monitor = '/tmp'
+//==== Configure here ========
+const directory_to_monitor = 'C:/Windows/Datafusion/logs'
 var OrientDB = require('orientjs');
 var server = OrientDB({host: 'localhost', port: 2424});
 var db = server.use({name: 'DataFusion', username: 'root', password: 'Password1234', useToken : true});
@@ -40,41 +40,37 @@ function processFile(filepath) {
     );    
 }
 
-// test the lookup table
-//console.log(eventIdLookup[1]) 
-
-// test line by line read
-//processFile(__dirname + '/events.txt') 
-
-var nsfw = require('nsfw');
-
-var nsfw = require('nsfw');
-  var watcher2;
-  return nsfw(
-    "c:/windows/datafusion/logs",
-    function(events) {
-    // handles other events
-        for(i = 0, len = events.length; i < len; i++){
-            elem = events[i]
-            if(elem['action'] == 3) {
-                console.log(elem)
+function startFileMonitor() {
+    var nsfw = require('nsfw');
+    var watcher2;
+    return nsfw(
+        "C:/Windows/Datafusion/logs",
+        function(events) {
+        // handles other events
+            for(i = 0, len = events.length; i < len; i++){
+                elem = events[i]
+                if(elem['action'] == 3) {
+                    console.log(elem)
+                }
             }
-    }
-    },
-    {
-      debounceMS: 250,
-      errorCallback(errors) {
-        //handle errors
-      }
-    })
-    .then(function(watcher) {
-      watcher2 = watcher;
-      return watcher.start();
-    })
-    .then(function() {
-      // we are now watching dir2 for events!
-    })
-    .then(function() {
-      // To stop watching
-      //watcher2.stop();
-    })
+        },
+        {
+        debounceMS: 250,
+        errorCallback(errors) {
+            //handle errors
+        }
+        })
+        .then(function(watcher) {
+        watcher2 = watcher;
+        return watcher.start();
+        })
+        .then(function() {
+        // we are now watching dir2 for events!
+        })
+        .then(function() {
+        // To stop watching
+        //watcher2.stop();
+        })
+}
+
+startFileMonitor()
