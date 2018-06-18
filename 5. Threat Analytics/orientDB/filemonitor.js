@@ -1,6 +1,6 @@
 const directory_to_monitor = "C:/Windows/Datafusion/logs";
 var OrientDB = require('orientjs');
-var server = OrientDB({host: '172.30.1.34', port: 2424});
+var server = OrientDB({host: 'localhost', port: 2424});
 var db = server.use({name: 'DataFusion', username: 'root', password: 'Password1234', useToken : true});
 //==================================
 const eventIdLookup = {1:'ProcessCreate', 2:'FileCreateTime', 3:'NetworkConnect', 
