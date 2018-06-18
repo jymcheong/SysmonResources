@@ -108,5 +108,5 @@ function startFileMonitor() {
 
 var lineCount = 0
 var rowCount = 0
-//startFileMonitor()
-processFile('/tmp/events.txt')
+//startFileMonitor() // starts directory monitoring for rotated logs
+processFile('/tmp/events.txt') // test single file
