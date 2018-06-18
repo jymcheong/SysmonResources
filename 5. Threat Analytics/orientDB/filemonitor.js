@@ -22,6 +22,7 @@ function processFile(filepath) {
             s.pause();
             // process line here and call s.resume() when rdy
             processLine(line)
+            lineCount++
             // resume the readstream, possibly from a callback
             s.resume();
         })
@@ -30,6 +31,7 @@ function processFile(filepath) {
         })
         .on('end', function(){
             console.log('Read entire file.')
+            console.log('Total line count: ' + lineCount) // tally with row count
             //either zip & delete the file.. after a while it's huge.
         })
     );    
@@ -104,6 +106,7 @@ function startFileMonitor() {
         })
 }
 
+var lineCount = 0
 var rowCount = 0
 //startFileMonitor()
 processFile('/tmp/events.txt')
