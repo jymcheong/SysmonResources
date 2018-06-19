@@ -21,19 +21,20 @@ function escapeLine(jsonline){
 db.liveQuery("live select from ProcessCreate")
   .on('live-insert', function(inserted){
      var child = inserted.content;
-     console.log('inserted: ' + JSON.stringify(child));
+     console.log('inserted ProcessCreate ' + child.Image);
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + child.ParentProcessGuid + '" AND Hostname = "' + escapeLine(child.Hostname) + '"'
             ).then(function(parent){
-                  if(parent.length > 0) { //when parent ProcessCreate event exist
+              console.log(JSON.stringify(parent));  
+                if(parent.length > 0) { //when parent ProcessCreate event exist
+                    console.log('Found ProcessCreate Parent')
                     console.log(JSON.stringify(parent[0].rid));
                     //create edge between parent to current vertex
                     db.query('CREATE EDGE ParentOf FROM ' + parent[0].rid + 
                     ' TO (SELECT FROM ProcessCreate WHERE ProcessGuid ="' + child.ProcessGuid + 
                     '" AND Hostname = "' + escapeLine(child.Hostname) + '")');
                   }
-                  else
-                    console.log('no parent found...')
+                  
             });
   })
 
@@ -41,7 +42,7 @@ db.liveQuery("live select from ProcessCreate")
 db.liveQuery("live select from CreateRemoteThread")
   .on('live-insert', function(data){
      var CreateRemoteThread = data.content;
-     console.log('inserted: ' + JSON.stringify(CreateRemoteThread));
+     //console.log('inserted: ' + JSON.stringify(CreateRemoteThread));
      // ProcessCreate-[CreatedRemoteThread:SourceProcessGuid]->CreateRemoteThread
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + CreateRemoteThread.SourceProcessGuid + '" AND Hostname = "' + escapeLine(CreateRemoteThread.Hostname) + '"'
@@ -51,11 +52,9 @@ db.liveQuery("live select from CreateRemoteThread")
                           ' TO (SELECT FROM CreateRemoteThread WHERE RecordNumber =' + CreateRemoteThread.RecordNumber + 
                           ' AND SourceProcessGuid = "' + CreateRemoteThread.SourceProcessGuid +
                           '" AND Hostname = "' + escapeLine(CreateRemoteThread.Hostname) + '")';
-                    console.log('command: ' + cmd);
+                    //console.log('command: ' + cmd);
                     db.query(cmd);
                   }
-                  else
-                    console.log('ProcessCreate vertex not found...')
             });
 
       // CreateRemoteThread-[RemoteThreadFor:TargetProcessId]->ProcessCreate
@@ -66,11 +65,9 @@ db.liveQuery("live select from CreateRemoteThread")
                   cmd = 'CREATE EDGE RemoteThreadFor FROM (SELECT FROM CreateRemoteThread WHERE RecordNumber = ' 
                   + CreateRemoteThread.RecordNumber + ' AND SourceProcessGuid = "' + CreateRemoteThread.SourceProcessGuid + 
                   '" AND Hostname = "' + escapeLine(CreateRemoteThread.Hostname) + '") TO ' + ProcessCreate[0].rid;
-                  console.log('command: ' + cmd);
+                  //console.log('command: ' + cmd);
                   db.query(cmd);
-                }
-                else
-                  console.log('ProcessCreate vertex not found...')
+                }                
           });
   })
 
@@ -80,7 +77,7 @@ db.liveQuery("live select from CreateRemoteThread")
 db.liveQuery("live select from FileCreate")
   .on('live-insert', function(data){
      var FileCreate = data.content;
-     console.log('inserted: ' + JSON.stringify(FileCreate));
+     //console.log('inserted: ' + JSON.stringify(FileCreate));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + FileCreate.ProcessGuid + '" AND Hostname = "' + escapeLine(FileCreate.Hostname) + '"'
             ).then(function(ProcessCreate){
@@ -89,11 +86,9 @@ db.liveQuery("live select from FileCreate")
                           ' TO (SELECT FROM FileCreate WHERE RecordNumber =' + FileCreate.RecordNumber + 
                           ' AND ProcessGuid = "' + FileCreate.ProcessGuid +
                           '" AND Hostname = "' + escapeLine(FileCreate.Hostname) + '")';
-                    console.log('command: ' + cmd);
+                    //console.log('command: ' + cmd);
                     db.query(cmd);
-                  }
-                  else
-                    console.log('ProcessCreate vertex not found...')
+                  }                  
             });
    })
 
@@ -101,7 +96,7 @@ db.liveQuery("live select from FileCreate")
 db.liveQuery("live select from DriverLoad")
   .on('live-insert', function(data){
      var DriverLoad = data.content;
-     console.log('inserted: ' + JSON.stringify(DriverLoad));
+     //console.log('inserted: ' + JSON.stringify(DriverLoad));
      db.query('SELECT @rid FROM FileCreate WHERE TargetFilename = "' 
               + escapeLine(DriverLoad.ImageLoaded) + '" AND Hostname = "' + escapeLine(DriverLoad.Hostname) + '"'
             ).then(function(FileCreate){
@@ -110,11 +105,9 @@ db.liveQuery("live select from DriverLoad")
                           ' TO (SELECT FROM DriverLoad WHERE RecordNumber =' + DriverLoad.RecordNumber + 
                           ' AND ImageLoaded = "' + escapeLine(DriverLoad.ImageLoaded) +
                           '" AND Hostname = "' + escapeLine(DriverLoad.Hostname) + '")';
-                    console.log('command: ' + cmd);
+                    //console.log('command: ' + cmd);
                     db.query(cmd);
                   }
-                  else
-                    console.log('FileCreate vertex not found...')
             });
    })
 
@@ -122,7 +115,7 @@ db.liveQuery("live select from DriverLoad")
 db.liveQuery("live select from ImageLoad")
   .on('live-insert', function(data){
      var ImageLoad = data.content;
-     console.log('inserted: ' + JSON.stringify(ImageLoad));
+     //console.log('inserted: ' + JSON.stringify(ImageLoad));
      // ProcessCreate-[LoadedImage:ProcessGuid,Hostname]->ImageLoad
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + ImageLoad.ProcessGuid + '" AND Hostname = "' + escapeLine(ImageLoad.Hostname) + '"'
@@ -132,11 +125,9 @@ db.liveQuery("live select from ImageLoad")
                           ' TO (SELECT FROM ImageLoad WHERE RecordNumber =' + ImageLoad.RecordNumber + 
                           ' AND ProcessGuid = "' + ImageLoad.ProcessGuid +
                           '" AND Hostname = "' + escapeLine(ImageLoad.Hostname) + '")';
-                    console.log('command: ' + cmd);
+                    //console.log('command: ' + cmd);
                     db.query(cmd);
                   }
-                  else
-                    console.log('ProcessCreate vertex not found...')
             });
       // FileCreate-[UsedAsImage:TargetFilename=ImageLoaded]->ImageLoad
       db.query('SELECT @rid FROM FileCreate WHERE TargetFilename = "' 
@@ -147,11 +138,9 @@ db.liveQuery("live select from ImageLoad")
                         ' TO (SELECT FROM ImageLoad WHERE RecordNumber =' + ImageLoad.RecordNumber + 
                         ' AND ImageLoaded = "' + escapeLine(ImageLoad.ImageLoaded) +
                         '" AND Hostname = "' + escapeLine(ImageLoad.Hostname) + '")';
-                  console.log('command: ' + cmd);
+                  //console.log('command: ' + cmd);
                   db.query(cmd);
                 }
-                else
-                  console.log('FileCreate vertex not found...')
           });
    })
 
@@ -159,7 +148,7 @@ db.liveQuery("live select from ImageLoad")
 db.liveQuery("live select from RegistryEvent")
   .on('live-insert', function(data){
      var RegistryEvent = data.content;
-     console.log('inserted: ' + JSON.stringify(RegistryEvent));
+     //console.log('inserted: ' + JSON.stringify(RegistryEvent));
      // ProcessCreate-[AccessedRegistry:ProcessGuid,Hostname]->RegistryEvent
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + RegistryEvent.ProcessGuid + '" AND Hostname = "' + escapeLine(RegistryEvent.Hostname) + '"'
@@ -169,11 +158,9 @@ db.liveQuery("live select from RegistryEvent")
                           ' TO (SELECT FROM RegistryEvent WHERE RecordNumber =' + RegistryEvent.RecordNumber + 
                           ' AND ProcessGuid = "' + RegistryEvent.ProcessGuid +
                           '" AND Hostname = "' + escapeLine(RegistryEvent.Hostname) + '")';
-                    console.log('command: ' + cmd);
+                    //console.log('command: ' + cmd);
                     db.query(cmd);
                   }
-                  else
-                    console.log('ProcessCreate vertex not found...')
             });
       // FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
       // this assumes ADS created first before the registry event. Another case later which is the reverse
@@ -185,11 +172,9 @@ db.liveQuery("live select from RegistryEvent")
                           ' TO (SELECT FROM RegistryEvent WHERE RecordNumber =' + RegistryEvent.RecordNumber + 
                           ' AND ProcessGuid = "' + RegistryEvent.ProcessGuid +
                           '" AND Hostname = "' + escapeLine(RegistryEvent.Hostname) + '")';
-                    console.log('command: ' + cmd);
+                    //console.log('command: ' + cmd);
                     db.query(cmd);
                   }
-                  else
-                    console.log('FileCreateStreamHash vertex not found...')
             });
 
    })
@@ -198,7 +183,7 @@ db.liveQuery("live select from RegistryEvent")
 db.liveQuery("live select from FileCreateStreamHash")
   .on('live-insert', function(data){
      var FileCreateStreamHash = data.content;
-     console.log('inserted: ' + JSON.stringify(FileCreateStreamHash));
+     //console.log('inserted: ' + JSON.stringify(FileCreateStreamHash));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + FileCreateStreamHash.ProcessGuid + '" AND Hostname = "' + escapeLine(FileCreateStreamHash.Hostname) + '"'
             ).then(function(ProcessCreate){
@@ -207,11 +192,9 @@ db.liveQuery("live select from FileCreateStreamHash")
                           ' TO (SELECT FROM FileCreateStreamHash WHERE RecordNumber =' + FileCreateStreamHash.RecordNumber + 
                           ' AND ProcessGuid = "' + FileCreateStreamHash.ProcessGuid +
                           '" AND Hostname = "' + escapeLine(FileCreateStreamHash.Hostname) + '")';
-                    console.log('command: ' + cmd);
+                    //console.log('command: ' + cmd);
                     db.query(cmd);
                   }
-                  else
-                    console.log('ProcessCreate vertex not found...')
             });            
       // FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
       // this assumes registry event was created first, then the ADS   
@@ -222,12 +205,10 @@ db.liveQuery("live select from FileCreateStreamHash")
                   cmd = 'CREATE EDGE FoundWithin FROM (SELECT FROM FileCreateStreamHash WHERE RecordNumber = ' + FileCreateStreamHash.RecordNumber + 
                         ' AND ProcessGuid = "' + FileCreateStreamHash.ProcessGuid +
                         '" AND Hostname = "' + escapeLine(FileCreateStreamHash.Hostname) + '") TO ' + RegistryEvent[0].rid;
-                  console.log('command: ' + cmd);
+                  //console.log('command: ' + cmd);
                   db.query(cmd);
                 }
-                else
-                  console.log('RegistryEvent vertex not found...')
-          });
+            });
    })
 
 
@@ -235,7 +216,7 @@ db.liveQuery("live select from FileCreateStreamHash")
 db.liveQuery("live select from WmiEvent")
   .on('live-insert', function(data){
      var WmiEvent = data.content;
-     console.log('inserted: ' + JSON.stringify(WmiEvent));
+     //console.log('inserted: ' + JSON.stringify(WmiEvent));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + WmiEvent.ProcessGuid + '" AND Hostname = "' + escapeLine(WmiEvent.Hostname) + '"'
             ).then(function(ProcessCreate){
@@ -244,11 +225,10 @@ db.liveQuery("live select from WmiEvent")
                           ' TO (SELECT FROM WmiEvent WHERE RecordNumber =' + WmiEvent.RecordNumber + 
                           ' AND ProcessGuid = "' + WmiEvent.ProcessGuid +
                           '" AND Hostname = "' + escapeLine(WmiEvent.Hostname) + '")';
-                    console.log('command: ' + cmd);
+                    //console.log('command: ' + cmd);
                     db.query(cmd);
                   }
-                  else
-                    console.log('ProcessCreate vertex not found...')
+                  
             });
    })
 
@@ -256,7 +236,7 @@ db.liveQuery("live select from WmiEvent")
 db.liveQuery("live select from ProcessTerminate")
   .on('live-insert', function(data){
      var ProcessTerminate = data.content;
-     console.log('inserted: ' + JSON.stringify(ProcessTerminate));
+     //console.log('inserted: ' + JSON.stringify(ProcessTerminate));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + ProcessTerminate.ProcessGuid + '" AND Hostname = "' + escapeLine(ProcessTerminate.Hostname) + '"'
             ).then(function(ProcessCreate){
@@ -265,11 +245,10 @@ db.liveQuery("live select from ProcessTerminate")
                           ' TO (SELECT FROM ProcessTerminate WHERE RecordNumber =' + ProcessTerminate.RecordNumber + 
                           ' AND ProcessGuid = "' + ProcessTerminate.ProcessGuid +
                           '" AND Hostname = "' + escapeLine(ProcessTerminate.Hostname) + '")';
-                    console.log('command: ' + cmd);
+                    //console.log('command: ' + cmd);
                     db.query(cmd);
                   }
-                  else
-                    console.log('ProcessCreate vertex not found...')
+                  
             });
    })
 
@@ -279,7 +258,7 @@ db.liveQuery("live select from ProcessTerminate")
 db.liveQuery("live select from NetworkConnect")
   .on('live-insert', function(data){
      var NetworkConnect = data.content;
-     console.log('inserted: ' + JSON.stringify(NetworkConnect));
+     //console.log('inserted: ' + JSON.stringify(NetworkConnect));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + NetworkConnect.ProcessGuid + '" AND Hostname = "' + escapeLine(NetworkConnect.Hostname) + '"'
             ).then(function(ProcessCreate){
@@ -288,32 +267,30 @@ db.liveQuery("live select from NetworkConnect")
                           ' TO (SELECT FROM NetworkConnect WHERE RecordNumber =' + NetworkConnect.RecordNumber + 
                           ' AND ProcessGuid = "' + NetworkConnect.ProcessGuid +
                           '" AND Hostname = "' + escapeLine(NetworkConnect.Hostname) + '")';
-                    console.log('command: ' + cmd);
+                    //console.log('command: ' + cmd);
                     db.query(cmd);
                   }
-                  else
-                    console.log('ProcessCreate vertex not found...')
+                  
             });
    })
 
 // ProcessCreate-[CreatedPipe:ProcessGuid,Hostname]->PipeCreate
-db.liveQuery("live select from PipeCreate")
+db.liveQuery("live select from PipeCreated")
   .on('live-insert', function(data){
-     var PipeCreate = data.content;
-     console.log('inserted: ' + JSON.stringify(PipeCreate));
+     var PipeCreated = data.content;
+     //console.log('inserted: ' + JSON.stringify(PipeCreate));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + PipeCreate.ProcessGuid + '" AND Hostname = "' + escapeLine(PipeCreate.Hostname) + '"'
+              + PipeCreated.ProcessGuid + '" AND Hostname = "' + escapeLine(PipeCreated.Hostname) + '"'
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                     cmd = 'CREATE EDGE CreatedPipe FROM ' + ProcessCreate[0].rid + 
-                          ' TO (SELECT FROM PipeCreate WHERE RecordNumber =' + PipeCreate.RecordNumber + 
-                          ' AND ProcessGuid = "' + PipeCreate.ProcessGuid +
-                          '" AND Hostname = "' + escapeLine(PipeCreate.Hostname) + '")';
-                    console.log('command: ' + cmd);
+                          ' TO (SELECT FROM PipeCreated WHERE RecordNumber =' + PipeCreated.RecordNumber + 
+                          ' AND ProcessGuid = "' + PipeCreated.ProcessGuid +
+                          '" AND Hostname = "' + escapeLine(PipeCreated.Hostname) + '")';
+                    //console.log('command: ' + cmd);
                     db.query(cmd);
                   }
-                  else
-                    console.log('ProcessCreate vertex not found...')
+                  
             });
    })
 
@@ -321,7 +298,7 @@ db.liveQuery("live select from PipeCreate")
 db.liveQuery("live select from PipeConnected")
   .on('live-insert', function(data){
      var PipeConnected = data.content;
-     console.log('inserted: ' + JSON.stringify(PipeConnected));
+     //console.log('inserted: ' + JSON.stringify(PipeConnected));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + PipeConnected.ProcessGuid + '" AND Hostname = "' + escapeLine(PipeConnected.Hostname) + '"'
             ).then(function(ProcessCreate){
@@ -330,11 +307,10 @@ db.liveQuery("live select from PipeConnected")
                           ' TO (SELECT FROM PipeConnected WHERE RecordNumber =' + PipeConnected.RecordNumber + 
                           ' AND ProcessGuid = "' + PipeConnected.ProcessGuid +
                           '" AND Hostname = "' + escapeLine(PipeConnected.Hostname) + '")';
-                    console.log('command: ' + cmd);
+                    //console.log('command: ' + cmd);
                     db.query(cmd);
                   }
-                  else
-                    console.log('ProcessCreate vertex not found...')
+                  
             });
    })
 
@@ -343,7 +319,7 @@ db.liveQuery("live select from PipeConnected")
 db.liveQuery("live select from ProcessAccess")
   .on('live-insert', function(data){
      var ProcessAccess = data.content;
-     console.log('inserted: ' + JSON.stringify(ProcessAccess));
+     //console.log('inserted: ' + JSON.stringify(ProcessAccess));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + ProcessAccess.SourceProcessGuid + '" AND Hostname = "' + escapeLine(ProcessAccess.Hostname) + '"'
             ).then(function(ProcessCreate){
@@ -353,11 +329,10 @@ db.liveQuery("live select from ProcessAccess")
                           ' TO (SELECT FROM ProcessAccess WHERE RecordNumber =' + ProcessAccess.RecordNumber + 
                           ' AND SourceProcessGuid = "' + ProcessAccess.SourceProcessGuid +
                           '" AND Hostname = "' + PescapeLine(rocessAccess.Hostname) + '")';
-                    console.log('command: ' + cmd);
+                    //console.log('command: ' + cmd);
                     db.query(cmd);
                   }
-                  else
-                    console.log('ProcessCreate vertex not found...')
+                  
             });
       db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
             + ProcessAccess.TargetProcessGuid + '" AND Hostname = "' + escapeLine(ProcessAccess.Hostname) + '"'
@@ -367,11 +342,10 @@ db.liveQuery("live select from ProcessAccess")
                   cmd = 'CREATE EDGE ProcessAccessedFrom FROM (SELECT FROM ProcessAccess WHERE RecordNumber = ' 
                   + ProcessAccess.RecordNumber + ' AND TargetProcessGuid = "' + ProcessAccess.TargetProcessGuid + 
                   '" AND Hostname = "' + escapeLine(ProcessAccess.Hostname) + '") TO ' + ProcessCreate[0].rid;
-                  console.log('command: ' + cmd);
+                  //console.log('command: ' + cmd);
                   db.query(cmd);
                 }
-                else
-                  console.log('ProcessCreate vertex not found...')
+                
           });
    })
 
@@ -382,7 +356,7 @@ db.liveQuery("live select from ProcessAccess")
 db.liveQuery("live select from RawAccessRead")
   .on('live-insert', function(data){
      var RawAccessRead = data.content;
-     console.log('inserted: ' + JSON.stringify(RawAccessRead));
+     //console.log('inserted: ' + JSON.stringify(RawAccessRead));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + RawAccessRead.ProcessGuid + '" AND Hostname = "' + escapeLine(RawAccessRead.Hostname) + '"'
             ).then(function(ProcessCreate){
@@ -391,11 +365,10 @@ db.liveQuery("live select from RawAccessRead")
                           ' TO (SELECT FROM RawAccessRead WHERE RecordNumber =' + RawAccessRead.RecordNumber + 
                           ' AND ProcessGuid = "' + RawAccessRead.ProcessGuid +
                           '" AND Hostname = "' + escapeLine(RawAccessRead.Hostname) + '")';
-                    console.log('command: ' + cmd);
+                    //console.log('command: ' + cmd);
                     db.query(cmd);
                   }
-                  else
-                    console.log('ProcessCreate vertex not found...')
+                  
             });
    })
 
@@ -405,7 +378,7 @@ db.liveQuery("live select from RawAccessRead")
 db.liveQuery("live select from FileCreateTime")
   .on('live-insert', function(data){
      var FileCreateTime = data.content;
-     console.log('inserted: ' + JSON.stringify(FileCreateTime));
+     //console.log('inserted: ' + JSON.stringify(FileCreateTime));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
               + FileCreateTime.ProcessGuid + '" AND Hostname = "' + escapeLine(FileCreateTime.Hostname) + '"'
             ).then(function(ProcessCreate){
@@ -414,11 +387,10 @@ db.liveQuery("live select from FileCreateTime")
                           ' TO (SELECT FROM FileCreateTime WHERE RecordNumber =' + FileCreateTime.RecordNumber + 
                           ' AND ProcessGuid = "' + FileCreateTime.ProcessGuid +
                           '" AND Hostname = "' + escapeLine(FileCreateTime.Hostname) + '")';
-                    console.log('command: ' + cmd);
+                    //console.log('command: ' + cmd);
                     db.query(cmd);
                   }
-                  else
-                    console.log('ProcessCreate vertex not found...')
+                  
             });
    })
 
