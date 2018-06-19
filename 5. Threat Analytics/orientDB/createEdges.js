@@ -1,6 +1,14 @@
 var OrientDB = require('orientjs');
-var server = OrientDB({host: 'localhost', port: 2424});
+var server = OrientDB({host: '172.30.1.34', port: 2424});
 var db = server.use({name: 'DataFusion', username: 'root', password: 'Password1234', useToken : true});
+
+
+// === helper functions ===
+
+function escapeLine(jsonline){
+    return jsonline.replace(/\\/g, "\\\\")
+}
+
 
 // ==== Stage 2 - Run payload ====
 
@@ -15,14 +23,14 @@ db.liveQuery("live select from ProcessCreate")
      var child = inserted.content;
      console.log('inserted: ' + JSON.stringify(child));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + child.ParentProcessGuid + '" AND Hostname = "' + child.Hostname + '"'
+              + child.ParentProcessGuid + '" AND Hostname = "' + escapeLine(child.Hostname) + '"'
             ).then(function(parent){
                   if(parent.length > 0) { //when parent ProcessCreate event exist
                     console.log(JSON.stringify(parent[0].rid));
                     //create edge between parent to current vertex
                     db.query('CREATE EDGE ParentOf FROM ' + parent[0].rid + 
                     ' TO (SELECT FROM ProcessCreate WHERE ProcessGuid ="' + child.ProcessGuid + 
-                    '" AND Hostname = "' + child.Hostname + '")');
+                    '" AND Hostname = "' + escapeLine(child.Hostname) + '")');
                   }
                   else
                     console.log('no parent found...')
@@ -36,13 +44,13 @@ db.liveQuery("live select from CreateRemoteThread")
      console.log('inserted: ' + JSON.stringify(CreateRemoteThread));
      // ProcessCreate-[CreatedRemoteThread:SourceProcessGuid]->CreateRemoteThread
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + CreateRemoteThread.SourceProcessGuid + '" AND Hostname = "' + CreateRemoteThread.Hostname + '"'
+              + CreateRemoteThread.SourceProcessGuid + '" AND Hostname = "' + escapeLine(CreateRemoteThread.Hostname) + '"'
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                     cmd = 'CREATE EDGE CreatedThread FROM ' + ProcessCreate[0].rid + 
                           ' TO (SELECT FROM CreateRemoteThread WHERE RecordNumber =' + CreateRemoteThread.RecordNumber + 
                           ' AND SourceProcessGuid = "' + CreateRemoteThread.SourceProcessGuid +
-                          '" AND Hostname = "' + CreateRemoteThread.Hostname + '")';
+                          '" AND Hostname = "' + escapeLine(CreateRemoteThread.Hostname) + '")';
                     console.log('command: ' + cmd);
                     db.query(cmd);
                   }
@@ -52,12 +60,12 @@ db.liveQuery("live select from CreateRemoteThread")
 
       // CreateRemoteThread-[RemoteThreadFor:TargetProcessId]->ProcessCreate
       db.query('SELECT @rid FROM ProcessCreate WHERE ProcessId = "' 
-            + CreateRemoteThread.TargetProcessId + '" AND Hostname = "' + CreateRemoteThread.Hostname + '"'
+            + CreateRemoteThread.TargetProcessId + '" AND Hostname = "' + escapeLine(CreateRemoteThread.Hostname) + '"'
           ).then(function(ProcessCreate){
                 if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                   cmd = 'CREATE EDGE RemoteThreadFor FROM (SELECT FROM CreateRemoteThread WHERE RecordNumber = ' 
                   + CreateRemoteThread.RecordNumber + ' AND SourceProcessGuid = "' + CreateRemoteThread.SourceProcessGuid + 
-                  '" AND Hostname = "' + CreateRemoteThread.Hostname + '") TO ' + ProcessCreate[0].rid;
+                  '" AND Hostname = "' + escapeLine(CreateRemoteThread.Hostname) + '") TO ' + ProcessCreate[0].rid;
                   console.log('command: ' + cmd);
                   db.query(cmd);
                 }
@@ -74,13 +82,13 @@ db.liveQuery("live select from FileCreate")
      var FileCreate = data.content;
      console.log('inserted: ' + JSON.stringify(FileCreate));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + FileCreate.ProcessGuid + '" AND Hostname = "' + FileCreate.Hostname + '"'
+              + FileCreate.ProcessGuid + '" AND Hostname = "' + escapeLine(FileCreate.Hostname) + '"'
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                     cmd = 'CREATE EDGE WroteFile FROM ' + ProcessCreate[0].rid + 
                           ' TO (SELECT FROM FileCreate WHERE RecordNumber =' + FileCreate.RecordNumber + 
                           ' AND ProcessGuid = "' + FileCreate.ProcessGuid +
-                          '" AND Hostname = "' + FileCreate.Hostname + '")';
+                          '" AND Hostname = "' + escapeLine(FileCreate.Hostname) + '")';
                     console.log('command: ' + cmd);
                     db.query(cmd);
                   }
@@ -95,13 +103,13 @@ db.liveQuery("live select from DriverLoad")
      var DriverLoad = data.content;
      console.log('inserted: ' + JSON.stringify(DriverLoad));
      db.query('SELECT @rid FROM FileCreate WHERE TargetFilename = "' 
-              + DriverLoad.ImageLoaded + '" AND Hostname = "' + DriverLoad.Hostname + '"'
+              + escapeLine(DriverLoad.ImageLoaded) + '" AND Hostname = "' + escapeLine(DriverLoad.Hostname) + '"'
             ).then(function(FileCreate){
                   if(FileCreate.length > 0) { //when FileCreate event exist
                     cmd = 'CREATE EDGE UsedAsDriver FROM ' + FileCreate[0].rid + 
                           ' TO (SELECT FROM DriverLoad WHERE RecordNumber =' + DriverLoad.RecordNumber + 
-                          ' AND ImageLoaded = "' + DriverLoad.ImageLoaded +
-                          '" AND Hostname = "' + DriverLoad.Hostname + '")';
+                          ' AND ImageLoaded = "' + escapeLine(DriverLoad.ImageLoaded) +
+                          '" AND Hostname = "' + escapeLine(DriverLoad.Hostname) + '")';
                     console.log('command: ' + cmd);
                     db.query(cmd);
                   }
@@ -117,13 +125,13 @@ db.liveQuery("live select from ImageLoad")
      console.log('inserted: ' + JSON.stringify(ImageLoad));
      // ProcessCreate-[LoadedImage:ProcessGuid,Hostname]->ImageLoad
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + ImageLoad.ProcessGuid + '" AND Hostname = "' + ImageLoad.Hostname + '"'
+              + ImageLoad.ProcessGuid + '" AND Hostname = "' + escapeLine(ImageLoad.Hostname) + '"'
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                     cmd = 'CREATE EDGE LoadedImage FROM ' + ProcessCreate[0].rid + 
                           ' TO (SELECT FROM ImageLoad WHERE RecordNumber =' + ImageLoad.RecordNumber + 
                           ' AND ProcessGuid = "' + ImageLoad.ProcessGuid +
-                          '" AND Hostname = "' + ImageLoad.Hostname + '")';
+                          '" AND Hostname = "' + escapeLine(ImageLoad.Hostname) + '")';
                     console.log('command: ' + cmd);
                     db.query(cmd);
                   }
@@ -132,13 +140,13 @@ db.liveQuery("live select from ImageLoad")
             });
       // FileCreate-[UsedAsImage:TargetFilename=ImageLoaded]->ImageLoad
       db.query('SELECT @rid FROM FileCreate WHERE TargetFilename = "' 
-            + ImageLoad.ImageLoaded + '" AND Hostname = "' + ImageLoad.Hostname + '"'
+            + escapeLine(ImageLoad.ImageLoaded) + '" AND Hostname = "' + escapeLine(ImageLoad.Hostname) + '"'
           ).then(function(FileCreate){
                 if(FileCreate.length > 0) { //when FileCreate event exist
                   cmd = 'CREATE EDGE UsedAsImage FROM ' + FileCreate[0].rid + 
                         ' TO (SELECT FROM ImageLoad WHERE RecordNumber =' + ImageLoad.RecordNumber + 
-                        ' AND ImageLoaded = "' + ImageLoad.ImageLoaded +
-                        '" AND Hostname = "' + ImageLoad.Hostname + '")';
+                        ' AND ImageLoaded = "' + escapeLine(ImageLoad.ImageLoaded) +
+                        '" AND Hostname = "' + escapeLine(ImageLoad.Hostname) + '")';
                   console.log('command: ' + cmd);
                   db.query(cmd);
                 }
@@ -154,13 +162,13 @@ db.liveQuery("live select from RegistryEvent")
      console.log('inserted: ' + JSON.stringify(RegistryEvent));
      // ProcessCreate-[AccessedRegistry:ProcessGuid,Hostname]->RegistryEvent
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + RegistryEvent.ProcessGuid + '" AND Hostname = "' + RegistryEvent.Hostname + '"'
+              + RegistryEvent.ProcessGuid + '" AND Hostname = "' + escapeLine(RegistryEvent.Hostname) + '"'
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                     cmd = 'CREATE EDGE AccessedRegistry FROM ' + ProcessCreate[0].rid + 
                           ' TO (SELECT FROM RegistryEvent WHERE RecordNumber =' + RegistryEvent.RecordNumber + 
                           ' AND ProcessGuid = "' + RegistryEvent.ProcessGuid +
-                          '" AND Hostname = "' + RegistryEvent.Hostname + '")';
+                          '" AND Hostname = "' + escapeLine(RegistryEvent.Hostname) + '")';
                     console.log('command: ' + cmd);
                     db.query(cmd);
                   }
@@ -176,7 +184,7 @@ db.liveQuery("live select from RegistryEvent")
                     cmd = 'CREATE EDGE FoundWithin FROM ' + FileCreateStreamHash[0].rid + 
                           ' TO (SELECT FROM RegistryEvent WHERE RecordNumber =' + RegistryEvent.RecordNumber + 
                           ' AND ProcessGuid = "' + RegistryEvent.ProcessGuid +
-                          '" AND Hostname = "' + RegistryEvent.Hostname + '")';
+                          '" AND Hostname = "' + escapeLine(RegistryEvent.Hostname) + '")';
                     console.log('command: ' + cmd);
                     db.query(cmd);
                   }
@@ -192,13 +200,13 @@ db.liveQuery("live select from FileCreateStreamHash")
      var FileCreateStreamHash = data.content;
      console.log('inserted: ' + JSON.stringify(FileCreateStreamHash));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + FileCreateStreamHash.ProcessGuid + '" AND Hostname = "' + FileCreateStreamHash.Hostname + '"'
+              + FileCreateStreamHash.ProcessGuid + '" AND Hostname = "' + escapeLine(FileCreateStreamHash.Hostname) + '"'
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                     cmd = 'CREATE EDGE CreatedFileStream FROM ' + ProcessCreate[0].rid + 
                           ' TO (SELECT FROM FileCreateStreamHash WHERE RecordNumber =' + FileCreateStreamHash.RecordNumber + 
                           ' AND ProcessGuid = "' + FileCreateStreamHash.ProcessGuid +
-                          '" AND Hostname = "' + FileCreateStreamHash.Hostname + '")';
+                          '" AND Hostname = "' + escapeLine(FileCreateStreamHash.Hostname) + '")';
                     console.log('command: ' + cmd);
                     db.query(cmd);
                   }
@@ -208,12 +216,12 @@ db.liveQuery("live select from FileCreateStreamHash")
       // FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
       // this assumes registry event was created first, then the ADS   
       db.query('SELECT @rid FROM RegistryEvent WHERE Hostname = "' 
-            + FileCreateStreamHash.Hostname + '" AND Details.asString().indexOf("' + FileCreateStreamHash.TargetFilename + '") > -1'
+            + escapeLine(FileCreateStreamHash.Hostname) + '" AND Details.asString().indexOf("' + FileCreateStreamHash.TargetFilename + '") > -1'
           ).then(function(RegistryEvent){
                 if(RegistryEvent.length > 0) { //when RegistryEvent event exist
                   cmd = 'CREATE EDGE FoundWithin FROM (SELECT FROM FileCreateStreamHash WHERE RecordNumber = ' + FileCreateStreamHash.RecordNumber + 
                         ' AND ProcessGuid = "' + FileCreateStreamHash.ProcessGuid +
-                        '" AND Hostname = "' + FileCreateStreamHash.Hostname + '") TO ' + RegistryEvent[0].rid;
+                        '" AND Hostname = "' + escapeLine(FileCreateStreamHash.Hostname) + '") TO ' + RegistryEvent[0].rid;
                   console.log('command: ' + cmd);
                   db.query(cmd);
                 }
@@ -229,13 +237,13 @@ db.liveQuery("live select from WmiEvent")
      var WmiEvent = data.content;
      console.log('inserted: ' + JSON.stringify(WmiEvent));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + WmiEvent.ProcessGuid + '" AND Hostname = "' + WmiEvent.Hostname + '"'
+              + WmiEvent.ProcessGuid + '" AND Hostname = "' + escapeLine(WmiEvent.Hostname) + '"'
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                     cmd = 'CREATE EDGE AccessedWMI FROM ' + ProcessCreate[0].rid + 
                           ' TO (SELECT FROM WmiEvent WHERE RecordNumber =' + WmiEvent.RecordNumber + 
                           ' AND ProcessGuid = "' + WmiEvent.ProcessGuid +
-                          '" AND Hostname = "' + WmiEvent.Hostname + '")';
+                          '" AND Hostname = "' + escapeLine(WmiEvent.Hostname) + '")';
                     console.log('command: ' + cmd);
                     db.query(cmd);
                   }
@@ -250,13 +258,13 @@ db.liveQuery("live select from ProcessTerminate")
      var ProcessTerminate = data.content;
      console.log('inserted: ' + JSON.stringify(ProcessTerminate));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + ProcessTerminate.ProcessGuid + '" AND Hostname = "' + ProcessTerminate.Hostname + '"'
+              + ProcessTerminate.ProcessGuid + '" AND Hostname = "' + escapeLine(ProcessTerminate.Hostname) + '"'
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                     cmd = 'CREATE EDGE Terminated FROM ' + ProcessCreate[0].rid + 
                           ' TO (SELECT FROM ProcessTerminate WHERE RecordNumber =' + ProcessTerminate.RecordNumber + 
                           ' AND ProcessGuid = "' + ProcessTerminate.ProcessGuid +
-                          '" AND Hostname = "' + ProcessTerminate.Hostname + '")';
+                          '" AND Hostname = "' + escapeLine(ProcessTerminate.Hostname) + '")';
                     console.log('command: ' + cmd);
                     db.query(cmd);
                   }
@@ -273,13 +281,13 @@ db.liveQuery("live select from NetworkConnect")
      var NetworkConnect = data.content;
      console.log('inserted: ' + JSON.stringify(NetworkConnect));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + NetworkConnect.ProcessGuid + '" AND Hostname = "' + NetworkConnect.Hostname + '"'
+              + NetworkConnect.ProcessGuid + '" AND Hostname = "' + escapeLine(NetworkConnect.Hostname) + '"'
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                     cmd = 'CREATE EDGE ConnectedTo FROM ' + ProcessCreate[0].rid + 
                           ' TO (SELECT FROM NetworkConnect WHERE RecordNumber =' + NetworkConnect.RecordNumber + 
                           ' AND ProcessGuid = "' + NetworkConnect.ProcessGuid +
-                          '" AND Hostname = "' + NetworkConnect.Hostname + '")';
+                          '" AND Hostname = "' + escapeLine(NetworkConnect.Hostname) + '")';
                     console.log('command: ' + cmd);
                     db.query(cmd);
                   }
@@ -294,13 +302,13 @@ db.liveQuery("live select from PipeCreate")
      var PipeCreate = data.content;
      console.log('inserted: ' + JSON.stringify(PipeCreate));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + PipeCreate.ProcessGuid + '" AND Hostname = "' + PipeCreate.Hostname + '"'
+              + PipeCreate.ProcessGuid + '" AND Hostname = "' + escapeLine(PipeCreate.Hostname) + '"'
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                     cmd = 'CREATE EDGE CreatedPipe FROM ' + ProcessCreate[0].rid + 
                           ' TO (SELECT FROM PipeCreate WHERE RecordNumber =' + PipeCreate.RecordNumber + 
                           ' AND ProcessGuid = "' + PipeCreate.ProcessGuid +
-                          '" AND Hostname = "' + PipeCreate.Hostname + '")';
+                          '" AND Hostname = "' + escapeLine(PipeCreate.Hostname) + '")';
                     console.log('command: ' + cmd);
                     db.query(cmd);
                   }
@@ -315,13 +323,13 @@ db.liveQuery("live select from PipeConnected")
      var PipeConnected = data.content;
      console.log('inserted: ' + JSON.stringify(PipeConnected));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + PipeConnected.ProcessGuid + '" AND Hostname = "' + PipeConnected.Hostname + '"'
+              + PipeConnected.ProcessGuid + '" AND Hostname = "' + escapeLine(PipeConnected.Hostname) + '"'
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                     cmd = 'CREATE EDGE ConnectedPipe FROM ' + ProcessCreate[0].rid + 
                           ' TO (SELECT FROM PipeConnected WHERE RecordNumber =' + PipeConnected.RecordNumber + 
                           ' AND ProcessGuid = "' + PipeConnected.ProcessGuid +
-                          '" AND Hostname = "' + PipeConnected.Hostname + '")';
+                          '" AND Hostname = "' + escapeLine(PipeConnected.Hostname) + '")';
                     console.log('command: ' + cmd);
                     db.query(cmd);
                   }
@@ -337,14 +345,14 @@ db.liveQuery("live select from ProcessAccess")
      var ProcessAccess = data.content;
      console.log('inserted: ' + JSON.stringify(ProcessAccess));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + ProcessAccess.SourceProcessGuid + '" AND Hostname = "' + ProcessAccess.Hostname + '"'
+              + ProcessAccess.SourceProcessGuid + '" AND Hostname = "' + escapeLine(ProcessAccess.Hostname) + '"'
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                     // ProcessCreate-[ProcessAccessed:SourceProcessGuid]->ProcessAccess
                     cmd = 'CREATE EDGE ProcessAccessed FROM ' + ProcessCreate[0].rid + 
                           ' TO (SELECT FROM ProcessAccess WHERE RecordNumber =' + ProcessAccess.RecordNumber + 
                           ' AND SourceProcessGuid = "' + ProcessAccess.SourceProcessGuid +
-                          '" AND Hostname = "' + ProcessAccess.Hostname + '")';
+                          '" AND Hostname = "' + PescapeLine(rocessAccess.Hostname) + '")';
                     console.log('command: ' + cmd);
                     db.query(cmd);
                   }
@@ -352,13 +360,13 @@ db.liveQuery("live select from ProcessAccess")
                     console.log('ProcessCreate vertex not found...')
             });
       db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-            + ProcessAccess.TargetProcessGuid + '" AND Hostname = "' + ProcessAccess.Hostname + '"'
+            + ProcessAccess.TargetProcessGuid + '" AND Hostname = "' + escapeLine(ProcessAccess.Hostname) + '"'
           ).then(function(ProcessCreate){
                 if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                   // ProcessAccess-[ProcessAccessedFrom:TargetProcessGuid]->ProcessCreate
                   cmd = 'CREATE EDGE ProcessAccessedFrom FROM (SELECT FROM ProcessAccess WHERE RecordNumber = ' 
                   + ProcessAccess.RecordNumber + ' AND TargetProcessGuid = "' + ProcessAccess.TargetProcessGuid + 
-                  '" AND Hostname = "' + ProcessAccess.Hostname + '") TO ' + ProcessCreate[0].rid;
+                  '" AND Hostname = "' + escapeLine(ProcessAccess.Hostname) + '") TO ' + ProcessCreate[0].rid;
                   console.log('command: ' + cmd);
                   db.query(cmd);
                 }
@@ -376,13 +384,13 @@ db.liveQuery("live select from RawAccessRead")
      var RawAccessRead = data.content;
      console.log('inserted: ' + JSON.stringify(RawAccessRead));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + RawAccessRead.ProcessGuid + '" AND Hostname = "' + RawAccessRead.Hostname + '"'
+              + RawAccessRead.ProcessGuid + '" AND Hostname = "' + escapeLine(RawAccessRead.Hostname) + '"'
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                     cmd = 'CREATE EDGE RawRead FROM ' + ProcessCreate[0].rid + 
                           ' TO (SELECT FROM RawAccessRead WHERE RecordNumber =' + RawAccessRead.RecordNumber + 
                           ' AND ProcessGuid = "' + RawAccessRead.ProcessGuid +
-                          '" AND Hostname = "' + RawAccessRead.Hostname + '")';
+                          '" AND Hostname = "' + escapeLine(RawAccessRead.Hostname) + '")';
                     console.log('command: ' + cmd);
                     db.query(cmd);
                   }
@@ -399,13 +407,13 @@ db.liveQuery("live select from FileCreateTime")
      var FileCreateTime = data.content;
      console.log('inserted: ' + JSON.stringify(FileCreateTime));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + FileCreateTime.ProcessGuid + '" AND Hostname = "' + FileCreateTime.Hostname + '"'
+              + FileCreateTime.ProcessGuid + '" AND Hostname = "' + escapeLine(FileCreateTime.Hostname) + '"'
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                     cmd = 'CREATE EDGE ChangedFileCreateTime FROM ' + ProcessCreate[0].rid + 
                           ' TO (SELECT FROM FileCreateTime WHERE RecordNumber =' + FileCreateTime.RecordNumber + 
                           ' AND ProcessGuid = "' + FileCreateTime.ProcessGuid +
-                          '" AND Hostname = "' + FileCreateTime.Hostname + '")';
+                          '" AND Hostname = "' + escapeLine(FileCreateTime.Hostname) + '")';
                     console.log('command: ' + cmd);
                     db.query(cmd);
                   }
@@ -413,3 +421,4 @@ db.liveQuery("live select from FileCreateTime")
                     console.log('ProcessCreate vertex not found...')
             });
    })
+
