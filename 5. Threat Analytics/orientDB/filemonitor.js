@@ -32,6 +32,7 @@ function processFile(filepath) {
         .on('end', function(){
             console.log('Read entire file.')
             console.log('Total line count: ' + lineCount) // tally with row count
+            console.log('Total row count:' + rowCount)
             //either zip & delete the file.. after a while it's huge.
         })
     );    
@@ -39,7 +40,15 @@ function processFile(filepath) {
 
 //port the python codes here
 function processLine(eventline) {
-    e = JSON.parse(eventline)
+    try {
+        if(eventline.length > 0)
+            e = JSON.parse(eventline)
+    }
+    catch(err) {
+        console.log('invalid JSON line:')
+        console.log(eventline)
+        throw err
+    }
     classname = 'WinEvent'
     
     // Sysmon events
@@ -68,11 +77,10 @@ function processLine(eventline) {
     }
 
     stmt = 'insert into ' + classname + ' content ' + JSON.stringify(e)
-    console.log(stmt)
+    //console.log(stmt)
     db.query(stmt).then(function (response){ 
         //console.log(response)
         rowCount++
-        console.log('inserted row count: ' + rowCount)
     });
 }
 
@@ -108,5 +116,5 @@ function startFileMonitor() {
 
 var lineCount = 0
 var rowCount = 0
-//startFileMonitor() // starts directory monitoring for rotated logs
-processFile('/tmp/events.txt') // test single file
+startFileMonitor() // starts directory monitoring for rotated logs
+//processFile('/tmp/events.txt') // test single file
