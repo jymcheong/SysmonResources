@@ -1,5 +1,5 @@
 var OrientDB = require('orientjs');
-var server = OrientDB({host: '172.30.1.34', port: 2424});
+var server = OrientDB({host: 'myorientdb', port: 2424});
 var db = server.use({name: 'DataFusion', username: 'root', password: 'Password1234', useToken : true});
 
 

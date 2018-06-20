@@ -1,3 +1,45 @@
 
 *.json
 *.tmp
+5. Threat Analytics/orientDB/node_modules/nsfw/build/binding.Makefile
+5. Threat Analytics/orientDB/node_modules/nsfw/build/binding.sln
+5. Threat Analytics/orientDB/node_modules/nsfw/build/config.gypi
+5. Threat Analytics/orientDB/node_modules/nsfw/build/gyp-mac-tool
+5. Threat Analytics/orientDB/node_modules/nsfw/build/Makefile
+5. Threat Analytics/orientDB/node_modules/nsfw/build/nsfw.target.mk
+5. Threat Analytics/orientDB/node_modules/nsfw/build/nsfw.vcxproj
+5. Threat Analytics/orientDB/node_modules/nsfw/build/nsfw.vcxproj.filters
+5. Threat Analytics/orientDB/node_modules/nsfw/build/openpa/openpa.Makefile
+5. Threat Analytics/orientDB/node_modules/nsfw/build/openpa/openpa.sln
+5. Threat Analytics/orientDB/node_modules/nsfw/build/openpa/openpa.target.mk
+5. Threat Analytics/orientDB/node_modules/nsfw/build/openpa/openpa.vcxproj
+5. Threat Analytics/orientDB/node_modules/nsfw/build/openpa/openpa.vcxproj.filters
+5. Threat Analytics/orientDB/node_modules/nsfw/build/openpa/Release/obj/openpa/opa_primitives.obj
+5. Threat Analytics/orientDB/node_modules/nsfw/build/openpa/Release/obj/openpa/opa_queue.obj
+5. Threat Analytics/orientDB/node_modules/nsfw/build/openpa/Release/obj/openpa/openpa.pdb
+5. Threat Analytics/orientDB/node_modules/nsfw/build/binding.Makefile
+5. Threat Analytics/orientDB/node_modules/nsfw/build/config.gypi
+5. Threat Analytics/orientDB/node_modules/nsfw/build/gyp-mac-tool
+5. Threat Analytics/orientDB/node_modules/nsfw/build/Makefile
+5. Threat Analytics/orientDB/node_modules/nsfw/build/nsfw.target.mk
+5. Threat Analytics/orientDB/node_modules/nsfw/build/openpa/openpa.Makefile
+5. Threat Analytics/orientDB/node_modules/nsfw/build/openpa/openpa.target.mk
+5. Threat Analytics/orientDB/node_modules/nsfw/build/openpa/Release/obj/openpa/openpa.tlog/CL.command.1.tlog
+5. Threat Analytics/orientDB/node_modules/nsfw/build/openpa/Release/obj/openpa/openpa.tlog/CL.read.1.tlog
+5. Threat Analytics/orientDB/node_modules/nsfw/build/binding.Makefile
+5. Threat Analytics/orientDB/node_modules/nsfw/build/config.gypi
+5. Threat Analytics/orientDB/node_modules/nsfw/build/gyp-mac-tool
+5. Threat Analytics/orientDB/node_modules/nsfw/build/Makefile
+5. Threat Analytics/orientDB/node_modules/nsfw/build/nsfw.target.mk
+5. Threat Analytics/orientDB/node_modules/nsfw/build/openpa/openpa.Makefile
+5. Threat Analytics/orientDB/node_modules/nsfw/build/openpa/openpa.target.mk
+*.Makefile
+*.gypi
+*.tlog
+*.obj
+*.exp
+*.lib
+*.node
+*.map
+*.pdb
+*.node
