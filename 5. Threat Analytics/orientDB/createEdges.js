@@ -117,8 +117,13 @@ db.liveQuery("live select from ImageLoad")
      var ImageLoad = data.content;
      //console.log('inserted: ' + JSON.stringify(ImageLoad));
      // ProcessCreate-[LoadedImage:ProcessGuid,Hostname]->ImageLoad
-     db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + ImageLoad.ProcessGuid + '" AND Hostname = "' + escapeLine(ImageLoad.Hostname) + '"'
+     db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid AND Hostname = :hostname',
+              {params:{
+                       guid: ImageLoad.ProcessGuid,
+                       hostname: ImageLoad.Hostname
+                      },
+               limit: 1
+              }
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                     cmd = 'CREATE EDGE LoadedImage FROM ' + ProcessCreate[0].rid + 
