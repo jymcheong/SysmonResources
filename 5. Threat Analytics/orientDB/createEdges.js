@@ -6,7 +6,7 @@ var db = server.use({name: 'DataFusion', username: 'root', password: 'Password12
 // === helper functions ===
 
 function escapeLine(jsonline){
-    return jsonline.replace(/\\/g, "\\\\")
+    return jsonline
 }
 
 
@@ -21,52 +21,79 @@ function escapeLine(jsonline){
 db.liveQuery("live select from ProcessCreate")
   .on('live-insert', function(inserted){
      var child = inserted.content;
-     console.log('inserted ProcessCreate ' + child.Image);
-     db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + child.ParentProcessGuid + '" AND Hostname = "' + escapeLine(child.Hostname) + '"'
+     console.log('inserted ProcessCreate ' + child.Image);  
+     db.query("SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid \
+                  AND Hostname = :hostname",
+                  {params:{
+                        guid: child.ParentProcessGuid,
+                        hostname: child.Hostname
+                       },
+                  limit: 1}
             ).then(function(parent){
-              console.log(JSON.stringify(parent));  
                 if(parent.length > 0) { //when parent ProcessCreate event exist
                     console.log('Found ProcessCreate Parent')
-                    console.log(JSON.stringify(parent[0].rid));
+                    console.log(JSON.stringify(parent[0].rid));   
                     //create edge between parent to current vertex
-                    db.query('CREATE EDGE ParentOf FROM ' + parent[0].rid + 
-                    ' TO (SELECT FROM ProcessCreate WHERE ProcessGuid ="' + child.ProcessGuid + 
-                    '" AND Hostname = "' + escapeLine(child.Hostname) + '")');
+                    db.query('CREATE EDGE ParentOf FROM :rid TO (SELECT FROM ProcessCreate \
+                             WHERE ProcessGuid = :guid AND Hostname = :hostname)',
+                              {
+                                 params:{
+                                    rid: parent[0]['rid'],
+                                    guid: child.ProcessGuid,
+                                    hostname: child.Hostname
+                                   }
+                              }
+                    );
                   }
                   
             });
   })
 
-// Using RecordNumber together with ProcessGuid because the lack of @rid from OrientJS.
+
+
+// Using RecordNumber together with ProcessGuid because the lack of @rid from OrientJS for live-query.
 db.liveQuery("live select from CreateRemoteThread")
   .on('live-insert', function(data){
      var CreateRemoteThread = data.content;
-     //console.log('inserted: ' + JSON.stringify(CreateRemoteThread));
      // ProcessCreate-[CreatedRemoteThread:SourceProcessGuid]->CreateRemoteThread
-     db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = "' 
-              + CreateRemoteThread.SourceProcessGuid + '" AND Hostname = "' + escapeLine(CreateRemoteThread.Hostname) + '"'
+     db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid AND Hostname = :hostname',
+              {params:{
+                  guid: CreateRemoteThread.SourceProcessGuid,
+                  hostname: CreateRemoteThread.Hostname
+                 },
+               limit: 1}
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
-                    cmd = 'CREATE EDGE CreatedThread FROM ' + ProcessCreate[0].rid + 
-                          ' TO (SELECT FROM CreateRemoteThread WHERE RecordNumber =' + CreateRemoteThread.RecordNumber + 
-                          ' AND SourceProcessGuid = "' + CreateRemoteThread.SourceProcessGuid +
-                          '" AND Hostname = "' + escapeLine(CreateRemoteThread.Hostname) + '")';
-                    //console.log('command: ' + cmd);
-                    db.query(cmd);
-                  }
+                    db.query('CREATE EDGE CreatedThread FROM :rid TO \
+                     (SELECT FROM CreateRemoteThread WHERE RecordNumber = :recordno \
+                      AND SourceProcessGuid = :guid AND Hostname = :hostname',
+                    {
+                        params:{
+                           rid: ProcessCreate[0].rid,
+                           recordno: CreateRemoteThread.RecordNumber,
+                           guid: CreateRemoteThread.SourceProcessGuid,
+                           hostname: CreateRemoteThread.Hostname
+                          }
+                     }
+                  );
+              }
             });
 
       // CreateRemoteThread-[RemoteThreadFor:TargetProcessId]->ProcessCreate
-      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessId = "' 
-            + CreateRemoteThread.TargetProcessId + '" AND Hostname = "' + escapeLine(CreateRemoteThread.Hostname) + '"'
-          ).then(function(ProcessCreate){
-                if(ProcessCreate.length > 0) { //when ProcessCreate event exist
-                  cmd = 'CREATE EDGE RemoteThreadFor FROM (SELECT FROM CreateRemoteThread WHERE RecordNumber = ' 
-                  + CreateRemoteThread.RecordNumber + ' AND SourceProcessGuid = "' + CreateRemoteThread.SourceProcessGuid + 
-                  '" AND Hostname = "' + escapeLine(CreateRemoteThread.Hostname) + '") TO ' + ProcessCreate[0].rid;
-                  //console.log('command: ' + cmd);
-                  db.query(cmd);
+      // this may have a problem because what if ProcessId is being reused in same host?
+      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessId = :pid AND Hostname = :hostname',
+                        {params:{
+                              pid: CreateRemoteThread.TargetProcessId,
+                              hostname: CreateRemoteThread.Hostname
+                        },
+                        limit: 1}
+                  ).then(function(ProcessCreate){
+                        if(ProcessCreate.length > 0) { //when ProcessCreate event exist
+                              cmd = 'CREATE EDGE RemoteThreadFor FROM (SELECT FROM CreateRemoteThread WHERE RecordNumber = ' 
+                              + CreateRemoteThread.RecordNumber + ' AND SourceProcessGuid = "' + CreateRemoteThread.SourceProcessGuid + 
+                              '" AND Hostname = "' + escapeLine(CreateRemoteThread.Hostname) + '") TO ' + ProcessCreate[0].rid;
+                              //console.log('command: ' + cmd);
+                              db.query(cmd);
                 }                
           });
   })
@@ -399,3 +426,4 @@ db.liveQuery("live select from FileCreateTime")
             });
    })
 
+//*/
