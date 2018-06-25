@@ -14,7 +14,7 @@ var db = server.use({name: 'DataFusion', username: 'root', password: 'Password12
 db.liveQuery("live select from ProcessCreate")
   .on('live-insert', function(inserted){
      var child = inserted.content;
-     console.log('inserted ProcessCreate ' + child.Image);  
+     console.log('inserted ProcessCreate ' + child.Image + ' at ' + child.EventTime);  
      db.query("SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid \
                   AND Hostname = :hostname",
                   {params:{
