@@ -156,7 +156,7 @@ db.liveQuery("live select from DriverLoad")
             });
    })
 
-
+/*
 db.liveQuery("live select from ImageLoad")
   .on('live-insert', function(data){
      var ImageLoad = data.content;
@@ -210,7 +210,7 @@ db.liveQuery("live select from ImageLoad")
                 }
           });
    })
-
+*/
 
 db.liveQuery("live select from RegistryEvent")
   .on('live-insert', function(data){
@@ -481,7 +481,7 @@ db.liveQuery("live select from PipeConnected")
    })
 
 // ==== Stage 3 Capture Credentials - eg. Mimikatz ====
-
+/*
 db.liveQuery("live select from ProcessAccess")
   .on('live-insert', function(data){
      var ProcessAccess = data.content;
@@ -536,7 +536,7 @@ db.liveQuery("live select from ProcessAccess")
                 
           });
    })
-
+*/
 
 
 // Stage 4 - Steal ==== (Doesn't mean every RawAccessRead = stealing!)

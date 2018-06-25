@@ -51,12 +51,12 @@ function processLine(eventline) {
         throw err
     }
     classname = 'WinEvent'
-    
+    if(e['Keywords'] != undefined) {
+        e['Keywords'] = '' + e['Keywords']
+    }
     // Sysmon events
     if(eventline.indexOf('"SourceName":"Microsoft-Windows-Sysmon"') > -1){
-        if(e['Keywords'] != undefined) {
-            e['Keywords'] = '' + e['Keywords']
-        }
+        
         e['SysmonProcessId'] = e['ProcessID']
         delete e['ProcessID']
         var re = /ProcessId: (\d+)/g
