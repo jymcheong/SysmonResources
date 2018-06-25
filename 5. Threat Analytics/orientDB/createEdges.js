@@ -40,6 +40,7 @@ db.liveQuery("live select from ProcessCreate")
                   }
                   
             });
+      // do bulk ImageLoad linking here after some delay...
   })
 
 
