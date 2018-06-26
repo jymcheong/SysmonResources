@@ -38,4 +38,5 @@ function bulkCreateLoadedImage(pcprocessguid,pchostname) {
          })
 } 
 
-bulkCreateLoadedImage(pcprocessguid,pchostname)
+setTimeout(() => {
+      bulkCreateLoadedImage(pcprocessguid,pchostname) }, 3000);

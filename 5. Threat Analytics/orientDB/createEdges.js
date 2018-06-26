@@ -2,26 +2,60 @@ var OrientDB = require('orientjs');
 var server = OrientDB({host: 'myorientdb', port: 2424});
 var db = server.use({name: 'DataFusion', username: 'root', password: 'Password1234', useToken : true});
 
+/**
+ * Bulk create LoadedImage edges for a given ProcessCreate event
+ * @param {string} pcprocessguid inserted event's ProcessGuid
+ * @param {string} pchostname inserted event's Hostname
+ */
+function bulkCreateLoadedImage(pcprocessguid,pchostname) {
+      db.query("select count(@rid) from ImageLoad WHERE ProcessGuid = :guid \
+               AND Hostname = :hostname AND in().size() = 0",
+         {params:{ guid: pcprocessguid,hostname: pchostname},limit: 1}).then(function(data){
+                  newlimit = data[0].count
+                  console.log('Create Edge limit: ' + newlimit + " processing LoadedImage edges...");
+                  if(newlimit > 0) {
+                        db.query("select @rid from ImageLoad WHERE ProcessGuid = :guid AND \
+                                  Hostname = :hostname AND in().size() = 0",{ params:{
+                                    guid: pcprocessguid,
+                                    hostname: pchostname
+                              },limit: newlimit}).then(function(data){
+                                    var size = data.length
+                                    var TORIDs = '['
+                                    data.forEach(elem => {
+                                          TORIDs += ('#' + elem.rid.cluster + ':' + elem.rid.position)
+                                          if(size > 1) {
+                                                TORIDs += ","
+                                          } else{
+                                                TORIDs += "]"
+                                          }
+                                          size -= 1
+                                          });
+                                    //console.log(TORIDs)
+                                    db.query("create Edge LoadedImage from (SELECT FROM ProcessCreate WHERE \
+                                          ProcessGuid = :guid AND Hostname = :hostname) to " + TORIDs,
+                                          {params:{guid:pcprocessguid,hostname:pchostname}})
+                              })
+                  }
+         })
+} 
 
 // ==== Stage 2 - Run payload ====
 
-/* Legend: FromClass-[EdgeClassName:PropertiesToLinkWith]->ToClass
+/**
+ *  Legend: FromClass-[EdgeClassName:PropertiesToLinkWith]->ToClass
  * Summary: Create ParentOf Edge for ProcessCreate Parent-Child vertices.
  * Description: Uses OrientDB Live Query to create edges when vertices are inserted.
  *              ProcessCreate-[ParentOf:ProcessGuid,Hostname]->ProcessCreate 
- * @param {inserted vertex} data
+ * @param {ProcessCreate obj} inserted 
 */
 db.liveQuery("live select from ProcessCreate")
   .on('live-insert', function(inserted){
      var child = inserted.content;
-     console.log('inserted ProcessCreate ' + child.Image + ' at ' + child.EventTime);  
+     console.log(child.EventTime);
+     console.log('inserted ProcessCreate ' + child.Image);  
      db.query("SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid \
                   AND Hostname = :hostname",
-                  {params:{
-                        guid: child.ParentProcessGuid,
-                        hostname: child.Hostname
-                       },
-                  limit: 1}
+                  {params:{ guid: child.ParentProcessGuid, hostname: child.Hostname},limit: 1}
             ).then(function(parent){
                 if(parent.length > 0) { //when parent ProcessCreate event exist
                     console.log('Found ProcessCreate Parent')
@@ -41,6 +75,8 @@ db.liveQuery("live select from ProcessCreate")
                   
             });
       // do bulk ImageLoad linking here after some delay...
+      setTimeout(() => {
+            bulkCreateLoadedImage(child.ProcessGuid,child.Hostname) }, 2000);
   })
 
 
@@ -51,10 +87,7 @@ db.liveQuery("live select from CreateRemoteThread")
      var CreateRemoteThread = data.content;
      // ProcessCreate-[CreatedRemoteThread:SourceProcessGuid]->CreateRemoteThread
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid AND Hostname = :hostname',
-              {params:{
-                  guid: CreateRemoteThread.SourceProcessGuid,
-                  hostname: CreateRemoteThread.Hostname
-                 },
+              {params:{guid: CreateRemoteThread.SourceProcessGuid,hostname: CreateRemoteThread.Hostname},
                limit: 1}
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
@@ -76,12 +109,8 @@ db.liveQuery("live select from CreateRemoteThread")
       // CreateRemoteThread-[RemoteThreadFor:TargetProcessId]->ProcessCreate
       // this may have a problem because what if ProcessId is being reused in same host?
       db.query('SELECT @rid FROM ProcessCreate WHERE ProcessId = :pid AND Hostname = :hostname',
-                        {params:{
-                              pid: CreateRemoteThread.TargetProcessId,
-                              hostname: CreateRemoteThread.Hostname
-                        },
-                        limit: 1}
-                  ).then(function(ProcessCreate){
+              {params:{pid: CreateRemoteThread.TargetProcessId,hostname: CreateRemoteThread.Hostname},limit: 1}
+              ).then(function(ProcessCreate){
                         if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                               db.query('CREATE EDGE RemoteThreadFor FROM (SELECT FROM CreateRemoteThread \
                                     WHERE RecordNumber = :recordno AND SourceProcessGuid = :guid AND Hostname = :hostname) TO :rid',
@@ -104,11 +133,7 @@ db.liveQuery("live select from FileCreate")
   .on('live-insert', function(data){
      var FileCreate = data.content;
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid AND Hostname = :hostname',
-              {params:{
-                  guid: FileCreate.ProcessGuid,
-                  hostname: FileCreate.Hostname
-                 },
-               limit: 1}
+              {params:{guid: FileCreate.ProcessGuid,hostname: FileCreate.Hostname},limit: 1}
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                         db.query('CREATE EDGE WroteFile FROM :rid TO \
@@ -132,13 +157,7 @@ db.liveQuery("live select from DriverLoad")
   .on('live-insert', function(data){
      var DriverLoad = data.content;
      db.query('SELECT @rid FROM FileCreate WHERE TargetFilename = :filename AND Hostname = :hostname',
-              {
-                    params:{
-                        filename: DriverLoad.ImageLoaded,
-                        hostname: DriverLoad.Hostname
-                    },
-                    limit: 1
-              }
+              {params:{filename: DriverLoad.ImageLoaded,hostname: DriverLoad.Hostname},limit: 1}
             ).then(function(FileCreate){
                   if(FileCreate.length > 0) { //when FileCreate event exist
                         db.query('CREATE EDGE UsedAsDriver FROM :rid TO \
@@ -218,13 +237,7 @@ db.liveQuery("live select from RegistryEvent")
      var RegistryEvent = data.content;
      // ProcessCreate-[AccessedRegistry:ProcessGuid,Hostname]->RegistryEvent
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid AND Hostname = :hostname',
-              {
-                    params:{
-                        guid: RegistryEvent.ProcessGuid,
-                        hostname: RegistryEvent.Hostname
-                    },
-                    limit: 1
-              }
+              {params:{guid: RegistryEvent.ProcessGuid,hostname: RegistryEvent.Hostname},limit: 1}
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                         db.query('CREATE EDGE AccessedRegistry FROM :rid \
@@ -245,13 +258,7 @@ db.liveQuery("live select from RegistryEvent")
       db.query('SELECT @rid FROM FileCreateStreamHash \
                 LET $re = (SELECT FROM RegistryEvent WHERE Details = :details AND RecordNumber = :recordno) \
                 WHERE $re.Details.asString().indexOf(TargetFilename) > -1',
-                {
-                      params:{
-                        details: RegistryEvent.Details,
-                        recordno: RegistryEvent.RecordNumber
-                      },
-                      limit: 1
-                }
+                {params:{details: RegistryEvent.Details,recordno: RegistryEvent.RecordNumber},limit: 1}
             ).then(function(FileCreateStreamHash){
                   if(FileCreateStreamHash.length > 0) { //when FileCreateStreamHash event exist
                         db.query('CREATE EDGE FoundWithin FROM :rid \
@@ -276,13 +283,7 @@ db.liveQuery("live select from FileCreateStreamHash")
   .on('live-insert', function(data){
      var FileCreateStreamHash = data.content;
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid AND Hostname = :hostname',
-              {
-                    params:{
-                        guid: FileCreateStreamHash.ProcessGuid,
-                        hostname: FileCreateStreamHash.Hostname
-                    },
-                    limit: 1
-              }
+              {params:{guid: FileCreateStreamHash.ProcessGuid,hostname: FileCreateStreamHash.Hostname},limit: 1}
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                         db.query('CREATE EDGE CreatedFileStream FROM :rid TO \
@@ -303,13 +304,7 @@ db.liveQuery("live select from FileCreateStreamHash")
       // this assumes registry event was created first, then the ADS   
       db.query('SELECT @rid FROM RegistryEvent WHERE Hostname = :hostname \
                 AND Details.asString().indexOf(:filename) > -1',
-            {
-                  params:{
-                        hostname: FileCreateStreamHash.Hostname,
-                        filename: FileCreateStreamHash.TargetFilename
-                  },
-                  limit: 1
-            }
+               {params:{hostname: FileCreateStreamHash.Hostname,filename: FileCreateStreamHash.TargetFilename},limit: 1}
           ).then(function(RegistryEvent){
                 if(RegistryEvent.length > 0) { //when RegistryEvent event exist
                       db.query('CREATE EDGE FoundWithin FROM (SELECT FROM FileCreateStreamHash WHERE RecordNumber = :recordno \
@@ -334,13 +329,7 @@ db.liveQuery("live select from WmiEvent")
      var WmiEvent = data.content;
      //console.log('inserted: ' + JSON.stringify(WmiEvent));
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid AND Hostname = :hostname',
-              {
-                    params:{
-                        guid: WmiEvent.ProcessGuid,
-                        hostname: WmiEvent.Hostname
-                    },
-                    limit: 1
-              }
+              {params:{guid: WmiEvent.ProcessGuid,hostname: WmiEvent.Hostname},limit: 1}
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                         db.query('CREATE EDGE AccessedWMI FROM :rid \
@@ -364,13 +353,7 @@ db.liveQuery("live select from ProcessTerminate")
   .on('live-insert', function(data){
      var ProcessTerminate = data.content;
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid AND Hostname = :hostname',
-              {
-                    params:{
-                        guid: ProcessTerminate.ProcessGuid,
-                        hostname: ProcessTerminate.Hostname
-                    },
-                    limit: 1
-              }
+              {params:{guid: ProcessTerminate.ProcessGuid,hostname: ProcessTerminate.Hostname},limit: 1}
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                         db.query('CREATE EDGE Terminated FROM :rid TO \
@@ -395,13 +378,7 @@ db.liveQuery("live select from NetworkConnect")
   .on('live-insert', function(data){
      var NetworkConnect = data.content;
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid AND Hostname = :hostname',
-              {
-                    params:{
-                        guid: NetworkConnect.ProcessGuid,
-                        hostname: NetworkConnect.Hostname
-                    },
-                    limit: 1
-              }
+              {params:{guid: NetworkConnect.ProcessGuid,hostname: NetworkConnect.Hostname},limit: 1}
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                         db.query('CREATE EDGE ConnectedTo FROM :rid TO \
@@ -426,13 +403,7 @@ db.liveQuery("live select from PipeCreated")
   .on('live-insert', function(data){
      var PipeCreated = data.content;
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid AND Hostname = :hostname',
-              {
-                    params:{
-                        guid: PipeCreated.ProcessGuid, 
-                        hostname: PipeCreated.Hostname
-                    },
-                    limit: 1
-              }
+              {params:{guid: PipeCreated.ProcessGuid,hostname: PipeCreated.Hostname},limit: 1}
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                        db.query('CREATE EDGE CreatedPipe FROM :rid TO \
@@ -456,13 +427,7 @@ db.liveQuery("live select from PipeConnected")
   .on('live-insert', function(data){
      var PipeConnected = data.content;
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid AND Hostname = :hostname',
-              {
-                    params:{
-                        guid: PipeConnected.ProcessGuid, 
-                        hostname: PipeConnected.Hostname
-                    },
-                    limit: 1
-              }
+              {params:{guid: PipeConnected.ProcessGuid,hostname: PipeConnected.Hostname},limit: 1}
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                         db.query('CREATE EDGE ConnectedPipe FROM :rid \
@@ -546,13 +511,7 @@ db.liveQuery("live select from RawAccessRead")
   .on('live-insert', function(data){
      var RawAccessRead = data.content;
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid AND Hostname = :hostname',
-              {
-                    params:{
-                        guid: RawAccessRead.ProcessGuid,
-                        hostname: RawAccessRead.Hostname
-                    },
-                    limit: 1
-              }
+              {params:{guid: RawAccessRead.ProcessGuid,hostname: RawAccessRead.Hostname},limit: 1}
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                         db.query('CREATE EDGE RawRead FROM :rid TO \
@@ -578,13 +537,7 @@ db.liveQuery("live select from FileCreateTime")
   .on('live-insert', function(data){
      var FileCreateTime = data.content;
      db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid AND Hostname = :hostname',
-              {
-                    params:{
-                        guid: FileCreateTime.ProcessGuid,
-                        hostname: FileCreateTime.Hostname
-                    },
-                    limit: 1
-              }
+              {params:{guid: FileCreateTime.ProcessGuid,hostname: FileCreateTime.Hostname},limit: 1}
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
                         db.query('CREATE EDGE ChangedFileCreateTime FROM :rid TO \
