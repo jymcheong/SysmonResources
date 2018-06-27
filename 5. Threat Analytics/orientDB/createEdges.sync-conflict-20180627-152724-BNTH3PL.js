@@ -52,8 +52,8 @@ function bulkCreateLoadedImage(pcprocessguid,pchostname) {
 db.liveQuery("live select from ProcessCreate")
   .on('live-insert', function(inserted){
      var child = inserted.content
-     console.log(child.EventTime)
-     console.log('inserted ProcessCreate ' + child.Image)  
+     var dt = child.EventTime
+     console.log( dt + ' - inserted ProcessCreate ' + child.Image)  
      db.query("SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid \
                   AND Hostname = :hostname",
                   {params:{ guid: child.ParentProcessGuid, hostname: child.Hostname},limit: 1}
@@ -474,20 +474,13 @@ db.liveQuery("live select from PipeConnected")
 // ==== Stage 3 Capture Credentials - eg. Mimikatz ====
 
 function bulkCreateProcessAccessed(){
-      if(globalProcessAccessLeft > 0 || globalProcessAccessLeft == -1) return
-      console.log('Bulk processing ProcessAccess function called...')
-      globalProcessAccessLeft = -1
-      db.query("SELECT FROM ProcessAccess WHERE ToBeProcessed = true Order By EventTime LIMIT 50"
+      console.log('start bulk processing ProcessAccess')
+      db.query("SELECT FROM ProcessAccess WHERE ToBeProcessed = true Order By EventTime LIMIT 100"
               ).then(function(results){
-                  console.log('Start processing ' + results.length + ' ProcessAccess events....')
-                  globalProcessAccessLeft = results.length
+                  console.log('Start processing ' + results.length + 'ProcessAccess events....')
                   results.forEach(item => {
                         // this timestamp will always increase whenever there's processing
                         db.query("update ProcessAccess set ToBeProcessed = false WHERE @rid = :rid",{params:{rid:item["@rid"]}})
-                                .then(function(){ 
-                                      globalProcessAccessLeft -= 1
-                                      console.log('Process Access left to process: ' + globalProcessAccessLeft)
-                                })
 
                         // create edge ProcessAccess -[ProcessAccessedTo]-> ProcessCreate
                         db.query("create Edge ProcessAccessedTo from :rid to (SELECT FROM ProcessCreate WHERE \
@@ -501,10 +494,8 @@ function bulkCreateProcessAccessed(){
                   })
                })
 }
-
-var globalProcessAccessLeft = 0
 // every minute
-setInterval(bulkCreateProcessAccessed,30000)
+setInterval(bulkCreateProcessAccessed,60*1000)
 
 /*
 db.liveQuery("live select from ProcessAccess")

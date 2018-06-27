@@ -49,18 +49,21 @@ function bulkCreateProcessAccessed(){
                         // create edge ProcessAccess -[ProcessAccessedTo]-> ProcessCreate
                         db.query("create Edge ProcessAccessedTo from :rid to (SELECT FROM ProcessCreate WHERE \
                               ProcessGuid = :guid AND Hostname = :hostname Order By EventTime LIMIT 1)",
-                              {params:{rid: item["@rid"], guid:item.TargetProcessGUID, hostname:item.Hostname}})
+                              {params:{rid:item["@rid"], guid:item.TargetProcessGUID, hostname:item.Hostname}})
                         // create edge ProcessCreate -[ProcessAccessedFrom]-> ProcessAccess
                         db.query("create Edge ProcessAccessedFrom from (SELECT FROM ProcessCreate WHERE \
                               ProcessGuid = :guid AND Hostname = :hostname Order By EventTime LIMIT 1) to :rid",
-                              {params:{guid:item.SourceProcessGUID, hostname:item.Hostname, rid: item["@rid"]}})
+                              {params:{guid:item.SourceProcessGUID, hostname:item.Hostname, rid:item["@rid"]}})
                         db.query("update ProcessAccess set ToBeProcessed = false WHERE @rid = :rid",{params:{rid:item["@rid"]}})
+                               .then(function(){ globalProcessAccessLastProcessed = Date.now() })
+
                   })
                })
 }
 
 //setTimeout(() => { bulkCreateLoadedImage(pcprocessguid,pchostname) }, 3000);
 
-db.query('SELECT FROM ProcessAccess WHERE RecordNumber = 17177333').then(function(data){
-      bulkCreateProcessAccessed()
-})
+db.query("SELECT count(*) FROM ProcessAccess WHERE ToBeProcessed = true Order By EventTime"
+              ).then(function(results){
+                    console.log('ProcessAccess events found :' + results[0])
+              })
