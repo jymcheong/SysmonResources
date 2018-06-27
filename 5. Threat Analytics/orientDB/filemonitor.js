@@ -34,6 +34,7 @@ function processFile(filepath) {
             console.log('Read entire file.')
             console.log('Total line count: ' + lineCount) // tally with row count
             console.log('Total row count:' + rowCount)
+            db.query('DECLARE INTENT NULL')
             //either zip & delete the file.. after a while it's huge.
         })
     );    
@@ -99,7 +100,11 @@ function startFileMonitor() {
                     console.log(elem)
                     var newfile = "" + elem['directory'] + "/" + elem['newFile']
                     if(newfile.indexOf('rotated') > -1){
-                        processFile(newfile)
+                        db.query('DECLARE INTENT MASSIVEINSERT')
+                            .then(function(){
+                                processFile(newfile)
+                            })
+                        
                     }
                 }
             }

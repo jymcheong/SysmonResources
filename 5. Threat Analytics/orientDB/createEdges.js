@@ -476,7 +476,7 @@ db.liveQuery("live select from PipeConnected")
 function bulkCreateProcessAccessed(){
       if(globalProcessAccessLeft > 0 || globalProcessAccessLeft == -1) return
       console.log('Bulk processing ProcessAccess function called...')
-      globalProcessAccessLeft = -1
+      globalProcessAccessLeft = -1 // such that it won't repeated call while waiting for Promise to complete
       db.query("SELECT FROM ProcessAccess WHERE ToBeProcessed = true Order By EventTime LIMIT 50"
               ).then(function(results){
                   console.log('Start processing ' + results.length + ' ProcessAccess events....')
@@ -503,7 +503,7 @@ function bulkCreateProcessAccessed(){
 }
 
 var globalProcessAccessLeft = 0
-// every minute
+// every 30 secs
 setInterval(bulkCreateProcessAccessed,30000)
 
 /*
