@@ -44,6 +44,7 @@ function processLine(eventline) {
     try {
         if(eventline.length > 0)
             e = JSON.parse(eventline)
+            e['ToBeProcessed'] = true
     }
     catch(err) {
         console.log('invalid JSON line:')

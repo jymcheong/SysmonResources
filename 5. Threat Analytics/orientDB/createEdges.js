@@ -12,7 +12,7 @@ function bulkCreateLoadedImage(pcprocessguid,pchostname) {
                AND Hostname = :hostname AND in().size() = 0",
          {params:{ guid: pcprocessguid,hostname: pchostname},limit: 1}).then(function(data){
                   newlimit = data[0].count
-                  console.log('Create Edge limit: ' + newlimit + " processing LoadedImage edges...");
+                  console.log('Processing LoadedImage edges... Create Edge limit: ' + newlimit);
                   if(newlimit > 0) {
                         db.query("select @rid from ImageLoad WHERE ProcessGuid = :guid AND \
                                   Hostname = :hostname AND in().size() = 0",{ params:{
@@ -277,6 +277,32 @@ db.liveQuery("live select from RegistryEvent")
             });
 
    })
+
+// ProcessCreate-[CreatedFile:ProcessGuid,Hostname]->FileCreate
+db.liveQuery("live select from FileCreate")
+  .on('live-insert', function(data){
+     var FileCreate = data.content;
+     db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid AND Hostname = :hostname',
+              {params:{guid:FileCreate.ProcessGuid, hostname:FileCreate.Hostname},limit: 1}
+            ).then(function(ProcessCreate){
+                  if(ProcessCreate.length > 0) { //when ProcessCreate event exist
+                        db.query('CREATE EDGE CreatedFile FROM :rid TO \
+                                 (SELECT FROM FileCreate WHERE RecordNumber = :recordno \
+                                 AND ProcessGuid = :guid AND Hostname = :hostname)',
+                         {
+                               params:{
+                                    rid: ProcessCreate[0].rid,
+                                    recordno: FileCreate.RecordNumber,
+                                    guid: FileCreate.ProcessGuid,
+                                    hostname: FileCreate.Hostname
+                               }
+                         }
+                        );
+                  }
+            });            
+      
+   })
+
 
 // ProcessCreate-[CreatedFileStream:ProcessGuid,Hostname]->FileCreateStreamHash   
 db.liveQuery("live select from FileCreateStreamHash")
