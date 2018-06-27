@@ -488,23 +488,34 @@ function bulkCreateProcessAccessed(){
                                       globalProcessAccessLeft -= 1
                                       console.log('Process Access left to process: ' + globalProcessAccessLeft)
                                 })
-
-                        // create edge ProcessAccess -[ProcessAccessedTo]-> ProcessCreate
-                        db.query("create Edge ProcessAccessedTo from :rid to (SELECT FROM ProcessCreate WHERE \
-                                    ProcessGuid = :guid AND Hostname = :hostname Order By EventTime LIMIT 1)",
-                                    {params:{rid:item["@rid"], guid:item.TargetProcessGUID, hostname:item.Hostname}})
                         
-                        // create edge ProcessCreate -[ProcessAccessedFrom]-> ProcessAccess
-                        db.query("create Edge ProcessAccessedFrom from (SELECT FROM ProcessCreate WHERE \
-                                    ProcessGuid = :guid AND Hostname = :hostname Order By EventTime LIMIT 1) to :rid",
-                                    {params:{guid:item.SourceProcessGUID, hostname:item.Hostname, rid:item["@rid"]}})
+                        try {
+                              // create edge ProcessAccess -[ProcessAccessedTo]-> ProcessCreate
+                              db.query("create Edge ProcessAccessedTo from :rid to (SELECT FROM ProcessCreate WHERE \
+                              ProcessGuid = :guid AND Hostname = :hostname Order By EventTime LIMIT 1)",
+                              {params:{rid:item["@rid"], guid:item.TargetProcessGUID, hostname:item.Hostname}})
+                  
+                        }
+                        catch(err){
+                        }
+                        
+                        try{
+                              // create edge ProcessCreate -[ProcessAccessedFrom]-> ProcessAccess
+                              db.query("create Edge ProcessAccessedFrom from (SELECT FROM ProcessCreate WHERE \
+                              ProcessGuid = :guid AND Hostname = :hostname Order By EventTime LIMIT 1) to :rid",
+                              {params:{guid:item.SourceProcessGUID, hostname:item.Hostname, rid:item["@rid"]}})
+                        }
+                        catch(err){
+
+                        }
+                        
                   })
                })
 }
 
 var globalProcessAccessLeft = 0
 // every 30 secs
-setInterval(bulkCreateProcessAccessed,30000)
+//setInterval(bulkCreateProcessAccessed,30000)
 
 /*
 db.liveQuery("live select from ProcessAccess")
