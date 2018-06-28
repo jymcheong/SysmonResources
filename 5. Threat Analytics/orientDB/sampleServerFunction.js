@@ -2,7 +2,7 @@
  *
  * EXPORT command does not save server functions out
  * Here's a basic javascript example. 
- * Need to turn 'on' javascript language since it is disabled by default (less secure if clients are untrusted)
+ * Need to turn 'on' javascript language since it is disabled by default due to security
  * Paste the whole thing into Function Management script editor & so on to 'install' 
  */
 
