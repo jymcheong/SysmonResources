@@ -347,6 +347,8 @@ db.liveQuery("live select from FileCreateStreamHash")
             });
    })
 
+/*
+WMIevent has no exact link to ProcessCreate, this block is wrong
 
 // ProcessCreate-[AccessedWMI:ProcessGuid,Hostname]->WmiEvent
 db.liveQuery("live select from WmiEvent")
@@ -372,6 +374,7 @@ db.liveQuery("live select from WmiEvent")
                   
             });
    })
+*/
 
 // ProcessCreate-[Terminated:ProcessGuid,Hostname]->ProcessTerminate     
 db.liveQuery("live select from ProcessTerminate")
