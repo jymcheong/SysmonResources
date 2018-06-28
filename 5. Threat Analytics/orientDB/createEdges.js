@@ -516,7 +516,7 @@ function bulkCreateProcessAccessed(){
                })
 }
 
-var globalProcessAccessLeft = 0
+//var globalProcessAccessLeft = 0
 // every 30 secs
 //setInterval(bulkCreateProcessAccessed,30000)
 
