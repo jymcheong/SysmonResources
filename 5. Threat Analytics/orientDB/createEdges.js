@@ -129,7 +129,7 @@ db.liveQuery("live select from CreateRemoteThread")
 
 // ==== Stage 2 - Install Payload / Persistence ====
 
-// ProcessCreate-[WroteFile:ProcessGuid,Hostname]->FileCreate
+// ProcessCreate-[CreatedFile:ProcessGuid,Hostname]->FileCreate
 db.liveQuery("live select from FileCreate")
   .on('live-insert', function(data){
      var FileCreate = data.content;
@@ -137,7 +137,7 @@ db.liveQuery("live select from FileCreate")
               {params:{guid: FileCreate.ProcessGuid,hostname: FileCreate.Hostname},limit: 1}
             ).then(function(ProcessCreate){
                   if(ProcessCreate.length > 0) { //when ProcessCreate event exist
-                        db.query('CREATE EDGE WroteFile FROM :rid TO \
+                        db.query('CREATE EDGE CreatedFile FROM :rid TO \
                         (SELECT FROM FileCreate WHERE RecordNumber = :recordno \
                               AND ProcessGuid = :guid AND Hostname = :hostname)',
                          {
@@ -278,30 +278,6 @@ db.liveQuery("live select from RegistryEvent")
             });
 
    })
-
-// ProcessCreate-[CreatedFile:ProcessGuid,Hostname]->FileCreate
-db.liveQuery("live select from FileCreate")
-  .on('live-insert', function(data){
-     var FileCreate = data.content;
-     db.query('SELECT @rid FROM ProcessCreate WHERE ProcessGuid = :guid AND Hostname = :hostname',
-              {params:{guid:FileCreate.ProcessGuid, hostname:FileCreate.Hostname},limit: 1}).
-              then(function(ProcessCreate){
-                  if(ProcessCreate.length > 0) { //when ProcessCreate event exist
-                        db.query('CREATE EDGE CreatedFile FROM :rid TO \
-                                 (SELECT FROM FileCreate WHERE RecordNumber = :recordno \
-                                 AND ProcessGuid = :guid AND Hostname = :hostname)',{
-                                 params:{
-                                    rid: ProcessCreate[0].rid,
-                                    recordno: FileCreate.RecordNumber,
-                                    guid: FileCreate.ProcessGuid,
-                                    hostname: FileCreate.Hostname
-                                  }
-                              });
-                  }
-            });            
-      
-   })
-
 
 // ProcessCreate-[CreatedFileStream:ProcessGuid,Hostname]->FileCreateStreamHash   
 db.liveQuery("live select from FileCreateStreamHash")
