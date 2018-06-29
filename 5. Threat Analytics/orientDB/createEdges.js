@@ -402,7 +402,7 @@ db.liveQuery("live select from NetworkConnect")
             });
    })
 
-// ProcessCreate-[CreatedPipe:ProcessGuid,Hostname]->PipeCreate
+// ProcessCreate-[CreatedPipe:ProcessGuid,Hostname]->PipeCreated
 db.liveQuery("live select from PipeCreated")
   .on('live-insert', function(data){
      var PipeCreated = data.content;
