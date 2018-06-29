@@ -55,27 +55,26 @@ function processLine(eventline) {
     if(e['Keywords'] != undefined) {
         e['Keywords'] = '' + e['Keywords']
     }
+    
     // Sysmon events
-    if(eventline.indexOf('"SourceName":"Microsoft-Windows-Sysmon"') > -1){
-        
+    if(e["SourceName"] == "Microsoft-Windows-Sysmon"){
+        classname = eventIdLookup[e['EventID']]
         e['SysmonProcessId'] = e['ProcessID']
         delete e['ProcessID']
         var re = /ProcessId: (\d+)/g
         var match = re.exec(eventline)
         if(match != null)
-            e['ProcessId'] = parseInt(match[1])
-
-        classname = eventIdLookup[e['EventID']]
+            e['ProcessId'] = parseInt(match[1])        
     }
     
     // DataFusion events
-    if(eventline.indexOf('"SourceName":"DataFuseUserActions"') > -1){
+    if(e["SourceName"] == "DataFuseUserActions"){
+        classname = 'UserActionTracking'
         delete e['ProcessID']
         uat = JSON.parse(e['Message'])
         for(var k in uat){
             e[k] = uat[k]
         }
-        classname = 'UserActionTracking'
     }
 
     delete e['Message'] // this field is problematic to parse at server side... it is repeated data anyway
