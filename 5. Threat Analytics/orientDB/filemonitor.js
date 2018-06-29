@@ -42,9 +42,10 @@ function processFile(filepath) {
 //port the python codes here
 function processLine(eventline) {
     try {
-        if(eventline.length > 0)
+        if(eventline.length > 0) {
             e = JSON.parse(eventline)
             e['ToBeProcessed'] = true
+        }
     }
     catch(err) {
         console.log('invalid JSON line:')
@@ -55,7 +56,7 @@ function processLine(eventline) {
     if(e['Keywords'] != undefined) {
         e['Keywords'] = '' + e['Keywords']
     }
-    
+
     // Sysmon events
     if(e["SourceName"] == "Microsoft-Windows-Sysmon"){
         classname = eventIdLookup[e['EventID']]
