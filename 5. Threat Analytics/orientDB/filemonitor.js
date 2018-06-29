@@ -78,6 +78,7 @@ function processLine(eventline) {
         classname = 'UserActionTracking'
     }
 
+    delete e['Message'] // this field is problematic to parse at server side... it is repeated data anyway
     stmt = 'insert into ' + classname + ' content ' + JSON.stringify(e)
     //console.log(stmt)
     db.query(stmt).then(function (response){ 

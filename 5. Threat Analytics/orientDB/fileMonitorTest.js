@@ -78,8 +78,7 @@ function processLine(eventline) {
         classname = 'UserActionTracking'
     }
 
-    //delete e['Message'] // this /r/n cause alot of problems... it is repeated data anyway
-    e['Message'] = e['Message'].replace(/(?:\\[rn])+/g, "wtv");
+    delete e['Message'] //problematic for server-side parsing... it is repeated data anyway
     stmt = "select addEvent(:cn, '" + JSON.stringify(e) +  "')"
     //console.log(stmt)
     // using parameter for JSON string will fail... 
