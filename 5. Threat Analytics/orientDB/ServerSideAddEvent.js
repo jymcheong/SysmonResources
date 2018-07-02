@@ -53,7 +53,7 @@ switch(classname) {
         }        
 		break;
     
-  case "DriverLoad": // ID 6
+  case "DriverLoad": //ID6
     	// FileCreate-[UsedAsDriver:TargetFilename=ImageLoaded]->DriverLoad
     	stmt = 'CREATE EDGE UsedAsDriver FROM \
         		(SELECT FROM FileCreate WHERE Hostname = ? AND TargetFilename.toLowerCase() = ?) TO ?'
@@ -64,10 +64,31 @@ switch(classname) {
           //print(err)
         }
     	break;
-
-    // ProcessCreate-[CreatedRemoteThread:SourceProcessGuid]->CreateRemoteThread
-    // CreateRemoteThread-[RemoteThreadFor:TargetProcessId]->ProcessCreate
+    
+    
   case "CreateRemoteThread": //ID8
+        // ProcessCreate-[CreatedThread:SourceProcessGuid]->CreateRemoteThread
+    	stmt = 'CREATE EDGE CreatedThread FROM \
+        		(SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessGuid = ?) TO ?'
+    	try{
+          db.command(stmt,e['Hostname'],e['SourceProcessGuid'],r[0].getProperty('@rid'))
+        }
+    	catch(err){
+          //print(err)
+        }
+    	// CreateRemoteThread-[RemoteThreadFor:TargetProcessId]->ProcessCreate
+    	stmt = 'CREATE EDGE RemoteThreadFor FROM ? TO \
+        		(SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessId = ?)'
+    	try{
+          db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['TargetProcessId'])
+        }
+    	catch(err){
+          //print(err)
+        }
+    	break;
+
+  case 'UserActionTracking':
+    //  Linked to ProcessId except Foreground Transition which has FromProcessId & ToProcessId
     	break;
     
     // ProcessCreate-[LoadedImage:ProcessGuid,Hostname]->ImageLoad
@@ -78,11 +99,9 @@ switch(classname) {
 	// ProcessAccess-[ProcessAccessedFrom:L.TargetProcessGUID = R.ProcessGuid]->ProcessCreate
 //  case "ProcessAccess": // ID 10 for bulk process function
 
-//	case 'UserActionTracking':    
+  
 }
 
-print(classname)
-    
 //classes inside edgeLookUp table with 2nd possible edge
 if(classname == "NetworkConnect"){
 // NetworkConnect-[ConnectedTo:(L.Hostname = R.SourceHostname) & L.Hostname != R.Hostname]->NetworkConnect
