@@ -28,7 +28,6 @@ switch(classname) {
     	catch(err){
         	//print('parent process not found')
         }
-    	db.command('update ProcessCreate set ToBeProcessed = false where @rid = ?',r[0].getProperty('@rid'))
     	break;
 
 // the following classes are linked to ProcessCreate via ProcessGuid + Hostname index
@@ -51,9 +50,7 @@ switch(classname) {
         }
     	catch(err){
           //print(err)
-        }
-        db.command('update '+ edgeLookup[classname] +' \
-		set ToBeProcessed = false where @rid = ?',r[0].getProperty('@rid'))
+        }        
 		break;
     
   case "DriverLoad": // ID 6
@@ -66,7 +63,6 @@ switch(classname) {
     	catch(err){
           //print(err)
         }
-    	db.command('update DriverLoad set ToBeProcessed = false where @rid = ?',r[0].getProperty('@rid')) 
     	break;
 
     // ProcessCreate-[CreatedRemoteThread:SourceProcessGuid]->CreateRemoteThread
@@ -100,4 +96,6 @@ if(classname == "FileCreateStreamHash"){
 // FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
 }
 
-//return r 
+db.command('update '+ classname +' set ToBeProcessed = false where @rid = ?',r[0].getProperty('@rid'))
+
+return r 
