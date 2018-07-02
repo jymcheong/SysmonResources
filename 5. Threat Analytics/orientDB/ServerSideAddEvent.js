@@ -78,7 +78,7 @@ switch(classname) {
         }
     	// CreateRemoteThread-[RemoteThreadFor:TargetProcessId]->ProcessCreate
     	stmt = 'CREATE EDGE RemoteThreadFor FROM ? TO \
-        		(SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessId = ?)'
+        		(SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessId = ? Order By EventTime Desc LIMIT 1)'
     	try{
           db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['TargetProcessId'])
         }
@@ -88,7 +88,27 @@ switch(classname) {
     	break;
 
   case 'UserActionTracking':
-    //  Linked to ProcessId except Foreground Transition which has FromProcessId & ToProcessId
+    	//  Linked to ProcessId except Foreground Transition which has FromProcessId & ToProcessId
+    	if(e['Action']=='Foreground Transition'){
+          stmt = 'CREATE EDGE ActedOn FROM ? TO \
+        		(SELECT FROM ProcessCreate WHERE Hostname = ? AND (ProcessId = ? OR ProcessId = ?) Order By EventTime Desc LIMIT 2)'
+          try{
+            db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['FromProcessId'],e['ToProcessId'])
+          }
+          catch(err){
+            //print(err)
+          }
+        }
+    	else { // other UAT actions
+          stmt = 'CREATE EDGE ActedOn FROM ? TO \
+        		(SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessId = ? Order By EventTime Desc LIMIT 1)'
+          try{
+            db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['ProcessId'])
+          }
+          catch(err){
+            //print(err)
+          }
+        }
     	break;
     
     // ProcessCreate-[LoadedImage:ProcessGuid,Hostname]->ImageLoad
@@ -115,6 +135,9 @@ if(classname == "FileCreateStreamHash"){
 // FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
 }
 
-db.command('update '+ classname +' set ToBeProcessed = false where @rid = ?',r[0].getProperty('@rid'))
+// Let's bulk processing for ProcessAccess only
+if(classname != "ProcessAccess"){
+	db.command('update '+ classname +' set ToBeProcessed = false where @rid = ?',r[0].getProperty('@rid'))
+}
 
 return r 
