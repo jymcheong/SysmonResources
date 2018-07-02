@@ -137,7 +137,8 @@
   }
 
   // Bulk processing for ProcessAccess (& maybe ImageLoad)
-  if(classname != "ProcessAccess"){
+  if(classname != "ProcessAccess" && classname != "ImageLoad"){
+      print(classname)
       db.command('update '+ classname +' set ToBeProcessed = false where @rid = ?',r[0].getProperty('@rid'))
   }
 

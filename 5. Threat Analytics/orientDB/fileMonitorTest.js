@@ -1,7 +1,7 @@
 const directory_to_monitor = "C:/Windows/Datafusion/logs";
 var OrientDB = require('orientjs');
 var server = OrientDB({host: 'myorientdb', port: 2424});
-var db = server.use({name: 'DataFusion', username: 'root', password: 'Password1234', useToken : true});
+var db = server.use({name: 'df', username: 'root', password: 'Password1234', useToken : true});
 var fs = require('fs')
 , es = require('event-stream'); //install first: npm i event-stream
 
@@ -84,7 +84,6 @@ function processLine(eventline) {
     // using parameter with JSON string will fail... 
     db.query(stmt,{params:{cn:classname}})
         .then(function(response){ 
-        console.log(response)
         rowCount++
     });
 }
@@ -121,5 +120,5 @@ function startFileMonitor() {
 
 var lineCount = 0
 var rowCount = 0
-//startFileMonitor() // starts directory monitoring for rotated logs
-processFile('/Users/jymcheong/Desktop/samplelog2.txt') // test single file
+startFileMonitor() // starts directory monitoring for rotated logs
+//processFile('/Users/jymcheong/Desktop/samplelog2.txt') // test single file
