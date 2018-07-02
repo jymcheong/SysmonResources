@@ -26,7 +26,7 @@ switch(classname) {
     		db.command(stmt,e['ParentProcessGuid'], e['Hostname'],r[0].getProperty('@rid'))
         }
     	catch(err){
-        	//print('parent process not found')
+        	print(err)
         }
     	break;
 
@@ -46,7 +46,7 @@ switch(classname) {
     	stmt = 'CREATE EDGE ' + edgeLookup[classname] + 
                ' FROM (SELECT FROM ProcessCreate WHERE ProcessGuid = ? AND Hostname = ?) TO ?'
     	try{
-          db.command(stmt,e['ProcessGuid'],e['Hostname'],r[0].getProperty('@rid'))
+          	db.command(stmt,e['ProcessGuid'],e['Hostname'],r[0].getProperty('@rid'))
         }
     	catch(err){
           //print(err)
@@ -58,7 +58,7 @@ switch(classname) {
     	stmt = 'CREATE EDGE UsedAsDriver FROM \
         		(SELECT FROM FileCreate WHERE Hostname = ? AND TargetFilename.toLowerCase() = ?) TO ?'
     	try{
-          db.command(stmt,e['Hostname'],e['ImageLoaded'].toLowerCase() ,r[0].getProperty('@rid'))
+          	db.command(stmt,e['Hostname'],e['ImageLoaded'].toLowerCase() ,r[0].getProperty('@rid'))
         }
     	catch(err){
           //print(err)
@@ -71,7 +71,7 @@ switch(classname) {
     	stmt = 'CREATE EDGE CreatedThread FROM \
         		(SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessGuid = ?) TO ?'
     	try{
-          db.command(stmt,e['Hostname'],e['SourceProcessGuid'],r[0].getProperty('@rid'))
+           db.command(stmt,e['Hostname'],e['SourceProcessGuid'],r[0].getProperty('@rid'))
         }
     	catch(err){
           //print(err)
@@ -80,7 +80,7 @@ switch(classname) {
     	stmt = 'CREATE EDGE RemoteThreadFor FROM ? TO \
         		(SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessId = ? Order By EventTime Desc LIMIT 1)'
     	try{
-          db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['TargetProcessId'])
+           db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['TargetProcessId'])
         }
     	catch(err){
           //print(err)
@@ -93,7 +93,7 @@ switch(classname) {
           stmt = 'CREATE EDGE ActedOn FROM ? TO \
         		(SELECT FROM ProcessCreate WHERE Hostname = ? AND (ProcessId = ? OR ProcessId = ?) Order By EventTime Desc LIMIT 2)'
           try{
-            db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['FromProcessId'],e['ToProcessId'])
+          	db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['FromProcessId'],e['ToProcessId'])
           }
           catch(err){
             //print(err)
@@ -101,7 +101,8 @@ switch(classname) {
         }
     	else { // other UAT actions
           stmt = 'CREATE EDGE ActedOn FROM ? TO \
-        		(SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessId = ? Order By EventTime Desc LIMIT 1)'
+        			(SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessId = ? \
+					Order By EventTime Desc LIMIT 1)'
           try{
             db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['ProcessId'])
           }
@@ -122,22 +123,21 @@ switch(classname) {
   
 }
 
-//classes inside edgeLookUp table with 2nd possible edge
-if(classname == "NetworkConnect"){
-// NetworkConnect-[ConnectedTo:(L.Hostname = R.SourceHostname) & L.Hostname != R.Hostname]->NetworkConnect
-}
-    
-if(classname == "RegistryEvent"){
-// FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
-}
-    
-if(classname == "FileCreateStreamHash"){
-// FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
+//Class with 2nd edge
+switch(classname) {
+  case "NetworkConnect":// NetworkConnect-[ConnectedTo:(L.Hostname = R.SourceHostname) & L.Hostname != R.Hostname]->NetworkConnect
+    	break;
+
+  case "RegistryEvent":// FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
+    	break;
+
+  case "FileCreateStreamHash":// FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
+    	break;
 }
 
-// Let's bulk processing for ProcessAccess only
+// Bulk processing for ProcessAccess (& maybe ImageLoad)
 if(classname != "ProcessAccess"){
-	db.command('update '+ classname +' set ToBeProcessed = false where @rid = ?',r[0].getProperty('@rid'))
+    db.command('update '+ classname +' set ToBeProcessed = false where @rid = ?',r[0].getProperty('@rid'))
 }
 
-return r 
+print(r)

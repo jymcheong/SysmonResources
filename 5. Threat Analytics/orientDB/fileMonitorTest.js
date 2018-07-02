@@ -81,9 +81,9 @@ function processLine(eventline) {
     delete e['Message'] //problematic for server-side parsing... it is repeated data anyway
     stmt = "select addEvent(:cn, '" + JSON.stringify(e) +  "')"
     //console.log(stmt)
-    // using parameter for JSON string will fail... 
+    // using parameter with JSON string will fail... 
     db.query(stmt,{params:{cn:classname}})
-        .then(function (response){ 
+        .then(function(response){ 
         console.log(response)
         rowCount++
     });
