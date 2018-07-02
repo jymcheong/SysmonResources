@@ -20,54 +20,58 @@ switch(classname) {
 
     // ProcessCreate-[ParentOf:ParentProcessGuid,Hostname]->ProcessCreate
   case "ProcessCreate": // ID 1
-    	stmt = 'CREATE EDGE ParentOf FROM (SELECT FROM ProcessCreate WHERE ProcessGuid = ? AND Hostname = ?) TO ?'
+    	stmt = 'CREATE EDGE ParentOf FROM \
+				(SELECT FROM ProcessCreate WHERE ProcessGuid = ? AND Hostname = ?) TO ?'
         try{
     		db.command(stmt,e['ParentProcessGuid'], e['Hostname'],r[0].getProperty('@rid'))
         }
     	catch(err){
-        	print('parent process not found')
+        	//print('parent process not found')
         }
+    	db.command('update ProcessCreate set ToBeProcessed = false where @rid = ?',r[0].getProperty('@rid'))
     	break;
 
-    // ProcessCreate-[Terminated:ProcessGuid,Hostname]->ProcessTerminate
-  case "ProcessTerminate": // ID 5     	
-    // ProcessCreate-[CreatedPipe:ProcessGuid,Hostname]->PipeCreated
-  case "PipeCreated": // ID 17	
-    // ProcessCreate-[ConnectedPipe:ProcessGuid,Hostname]->PipeConnected
-  case "PipeConnected": // ID 18
-    // ProcessCreate-[RawRead:ProcessGuid,Hostname]->RawAccessRead
-  case "RawAccessRead": // ID 9
-	// ProcessCreate-[ChangedFileCreateTime:ProcessGuid,Hostname]->FileCreateTime
-  case "FileCreateTime": // ID 2		
-    // ProcessCreate-[CreatedFile:ProcessGuid,Hostname]->FileCreate
-  case "FileCreate": // ID 11
-	// ProcessCreate-[CreatedFileStream:ProcessGuid,Hostname]->FileCreateStreamHash   
-  case "FileCreateStreamHash": // ID 15    
-    // ProcessCreate-[AccessedRegistry:ProcessGuid,Hostname]->RegistryEvent
-  case "RegistryEvent": // ID 13 & 14
-    // ProcessCreate-[ConnectedTo:ProcessGuid,Hostname]->NetworkConnect
-  case "NetworkConnect": // ID 3
-	// ProcessCreate-[LoadedImage:ProcessGuid,Hostname]->ImageLoad    
-  case "ImageLoad": // ID 7
+// the following classes are linked to ProcessCreate via ProcessGuid + Hostname index
+  case "ProcessTerminate"://ID5: ProcessCreate-[Terminated]->ProcessTerminate     	
+  case "PipeCreated":	  //ID17: ProcessCreate-[CreatedPipe]->PipeCreated	
+  case "PipeConnected":   //ID18: ProcessCreate-[ConnectedPipe]->PipeConnected
+  case "RawAccessRead":   //ID9: ProcessCreate-[RawRead]->RawAccessRead
+  case "FileCreateTime":  //ID2: ProcessCreate-[ChangedFileCreateTime]->FileCreateTime	
+  case "FileCreate": 	  //ID11: ProcessCreate-[CreatedFile]->FileCreate 
+  case "FileCreateStreamHash": //ID15: ProcessCreate-[CreatedFileStream]->FileCreateStreamHash    
+  case "RegistryEvent": //ID13&14: ProcessCreate-[AccessedRegistry]->RegistryEvent
+  case "NetworkConnect"://ID3: ProcessCreate-[ConnectedTo]->NetworkConnect 
+  case "ImageLoad": //ID7: ProcessCreate-[LoadedImage]->ImageLoad
     
-    	// generalized query for various classes linking to ProcessCreate class
+    	// generalized query for above classes linking to ProcessCreate class
     	stmt = 'CREATE EDGE ' + edgeLookup[classname] + 
                ' FROM (SELECT FROM ProcessCreate WHERE ProcessGuid = ? AND Hostname = ?) TO ?'
     	try{
           db.command(stmt,e['ProcessGuid'],e['Hostname'],r[0].getProperty('@rid'))
         }
     	catch(err){
-          print(err)
+          //print(err)
         }
+        db.command('update '+ edgeLookup[classname] +' \
+		set ToBeProcessed = false where @rid = ?',r[0].getProperty('@rid'))
 		break;
     
-    // FileCreate-[UsedAsDriver:TargetFilename=ImageLoaded]->DriverLoad
   case "DriverLoad": // ID 6
+    	// FileCreate-[UsedAsDriver:TargetFilename=ImageLoaded]->DriverLoad
+    	stmt = 'CREATE EDGE UsedAsDriver FROM \
+        		(SELECT FROM FileCreate WHERE Hostname = ? AND TargetFilename.toLowerCase() = ?) TO ?'
+    	try{
+          db.command(stmt,e['Hostname'],e['ImageLoaded'].toLowerCase() ,r[0].getProperty('@rid'))
+        }
+    	catch(err){
+          //print(err)
+        }
+    	db.command('update DriverLoad set ToBeProcessed = false where @rid = ?',r[0].getProperty('@rid')) 
     	break;
 
     // ProcessCreate-[CreatedRemoteThread:SourceProcessGuid]->CreateRemoteThread
     // CreateRemoteThread-[RemoteThreadFor:TargetProcessId]->ProcessCreate
-  case "CreateRemoteThread": // ID 8
+  case "CreateRemoteThread": //ID8
     	break;
     
     // ProcessCreate-[LoadedImage:ProcessGuid,Hostname]->ImageLoad
