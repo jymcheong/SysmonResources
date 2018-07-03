@@ -12,22 +12,27 @@
                     'FileCreateTime':'ChangedFileCreateTime', 'FileCreate':'CreatedFile',
                     'FileCreateStreamHash':'CreatedFileStream', 'RegistryEvent':'AccessedRegistry',
                     'NetworkConnect':'ConnectedTo', 'ImageLoad':'LoadedImage'}
-
+try {
   var e = JSON.parse(jsondata); 
-  var r = db.command('insert into '+ classname + ' content ' + jsondata);
-  var stmt = ''
-
+  var stmt = 'insert into '+ classname + ' content ' + jsondata
+  var r = db.command(stmt);
+}
+catch(err) {
+	print(stmt)
+  	print(err)
+}
+  
   switch(classname) {
 
       // ProcessCreate-[ParentOf:ParentProcessGuid,Hostname]->ProcessCreate
     case "ProcessCreate": // ID 1
           stmt = 'CREATE EDGE ParentOf FROM \
-                  (SELECT FROM ProcessCreate WHERE ProcessGuid = ? AND Hostname = ?) TO ?'
+                  (SELECT FROM ProcessCreate WHERE ProcessGuid = ? AND Hostname = ? LIMIT 1) TO ?'
           try{
               db.command(stmt,e['ParentProcessGuid'], e['Hostname'],r[0].getProperty('@rid'))
           }
           catch(err){
-              print(err)
+              //print(err)
           }
           break;
 
@@ -41,11 +46,11 @@
     case "FileCreateStreamHash": //ID15: ProcessCreate-[CreatedFileStream]->FileCreateStreamHash    
     case "RegistryEvent": //ID13&14: ProcessCreate-[AccessedRegistry]->RegistryEvent
     case "NetworkConnect"://ID3: ProcessCreate-[ConnectedTo]->NetworkConnect 
-    case "ImageLoad": //ID7: ProcessCreate-[LoadedImage]->ImageLoad
+    //case "ImageLoad": //ID7: ProcessCreate-[LoadedImage]->ImageLoad
 
           // generalized query for above classes linking to ProcessCreate class
           stmt = 'CREATE EDGE ' + edgeLookup[classname] + 
-                 ' FROM (SELECT FROM ProcessCreate WHERE ProcessGuid = ? AND Hostname = ?) TO ?'
+                 ' FROM (SELECT FROM ProcessCreate WHERE ProcessGuid = ? AND Hostname = ? LIMIT 1) TO ?'
           try{
               db.command(stmt,e['ProcessGuid'],e['Hostname'],r[0].getProperty('@rid'))
           }
@@ -70,7 +75,7 @@
     case "CreateRemoteThread": //ID8
           // ProcessCreate-[CreatedThread:SourceProcessGuid]->CreateRemoteThread
           stmt = 'CREATE EDGE CreatedThread FROM \
-                  (SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessGuid = ?) TO ?'
+                  (SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessGuid = ? LIMIT 1) TO ?'
           try{
              db.command(stmt,e['Hostname'],e['SourceProcessGuid'],r[0].getProperty('@rid'))
           }
@@ -92,7 +97,7 @@
           //  Linked to ProcessId except Foreground Transition which has FromProcessId & ToProcessId
           if(e['Action']=='Foreground Transition'){
             stmt = 'CREATE EDGE ActedOn FROM ? TO \
-                  (SELECT FROM ProcessCreate WHERE Hostname = ? AND (ProcessId = ? OR ProcessId = ?) Order By EventTime Desc LIMIT 2)'
+                  (SELECT FROM ProcessCreate WHERE Hostname = ? AND (ProcessId = ? OR ProcessId = ? LIMIT 1) Order By EventTime Desc LIMIT 2)'
             try{
               db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['FromProcessId'],e['ToProcessId'])
             }
@@ -138,7 +143,6 @@
 
   // Bulk processing for ProcessAccess (& maybe ImageLoad)
   if(classname != "ProcessAccess" && classname != "ImageLoad"){
-      print(classname)
       db.command('update '+ classname +' set ToBeProcessed = false where @rid = ?',r[0].getProperty('@rid'))
   }
 
