@@ -32,15 +32,15 @@
           break;
 
   // the following classes are linked to ProcessCreate via ProcessGuid + Hostname index
-    case "ProcessTerminate":  //ID5: ProcessCreate-[Terminated]->ProcessTerminate     	
-    case "PipeCreated":	      //ID17: ProcessCreate-[CreatedPipe]->PipeCreated	
-    case "PipeConnected":     //ID18: ProcessCreate-[ConnectedPipe]->PipeConnected
-    case "RawAccessRead":     //ID9: ProcessCreate-[RawRead]->RawAccessRead
-    case "FileCreateTime":    //ID2: ProcessCreate-[ChangedFileCreateTime]->FileCreateTime	
-    case "FileCreate": 	      //ID11: ProcessCreate-[CreatedFile]->FileCreate 
+    case "ProcessTerminate"://ID5: ProcessCreate-[Terminated]->ProcessTerminate     	
+    case "PipeCreated":	    //ID17: ProcessCreate-[CreatedPipe]->PipeCreated	
+    case "PipeConnected":   //ID18: ProcessCreate-[ConnectedPipe]->PipeConnected
+    case "RawAccessRead":   //ID9: ProcessCreate-[RawRead]->RawAccessRead
+    case "FileCreateTime":  //ID2: ProcessCreate-[ChangedFileCreateTime]->FileCreateTime	
+    case "FileCreate": 	    //ID11: ProcessCreate-[CreatedFile]->FileCreate 
     case "FileCreateStreamHash": //ID15: ProcessCreate-[CreatedFileStream]->FileCreateStreamHash    
-    case "RegistryEvent":     //ID13&14: ProcessCreate-[AccessedRegistry]->RegistryEvent
-    case "NetworkConnect":    //ID3: ProcessCreate-[ConnectedTo]->NetworkConnect 
+    case "RegistryEvent":   //ID13&14: ProcessCreate-[AccessedRegistry]->RegistryEvent
+    case "NetworkConnect":  //ID3: ProcessCreate-[ConnectedTo]->NetworkConnect 
 
           // generalized query for above classes linking to ProcessCreate class
           stmt = 'CREATE EDGE ' + edgeLookup[classname] + 
@@ -90,10 +90,9 @@
     case 'UserActionTracking':
           //  Linked to ProcessId except Foreground Transition which has FromProcessId & ToProcessId
           if(e['Action']=='Foreground Transition'){
-            print('linking app transition')
             stmt = 'CREATE EDGE ActedOn FROM ? TO \
                   (SELECT FROM ProcessCreate WHERE Hostname = ? AND \
-                  (ProcessId = ? OR ProcessId = ?) Order By EventTime Desc LIMIT 2)'
+					(ProcessId = ? OR ProcessId = ?) Order By EventTime Desc LIMIT 2)'
             try{
               db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['FromProcessId'],e['ToProcessId'])
             }
@@ -122,18 +121,20 @@
       // ProcessAccess-[ProcessAccessedFrom:L.TargetProcessGUID = R.ProcessGuid]->ProcessCreate
   //  case "ProcessAccess": // ID 10 for bulk process function
 
-
   }
 
   //Class with 2nd edge
   switch(classname) {
     case "NetworkConnect":// NetworkConnect-[ConnectedTo:(L.Hostname = R.SourceHostname) & L.Hostname != R.Hostname]->NetworkConnect
-          break;
+          //TODO
+      	  break;
 
     case "RegistryEvent":// FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
+          //TODO
           break;
 
     case "FileCreateStreamHash":// FileCreateStreamHash-[FoundWithin:TargetFilename in Details]->RegistryEvent
+          //TODO
           break;
   }
 
@@ -141,7 +142,7 @@
   if(classname != "ProcessAccess" && classname != "ImageLoad"){
       db.command('update '+ classname +' set ToBeProcessed = false where @rid = ?',r[0].getProperty('@rid'))
   }
-
   return r
+  
 
 
