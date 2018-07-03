@@ -97,7 +97,7 @@ catch(err) {
           //  Linked to ProcessId except Foreground Transition which has FromProcessId & ToProcessId
           if(e['Action']=='Foreground Transition'){
             stmt = 'CREATE EDGE ActedOn FROM ? TO \
-                  (SELECT FROM ProcessCreate WHERE Hostname = ? AND (ProcessId = ? OR ProcessId = ? LIMIT 1) Order By EventTime Desc LIMIT 2)'
+                  (SELECT FROM ProcessCreate WHERE Hostname = ? AND (ProcessId = ? OR ProcessId = ?) Order By EventTime Desc LIMIT 2)'
             try{
               db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['FromProcessId'],e['ToProcessId'])
             }
@@ -147,4 +147,5 @@ catch(err) {
   }
 
   return r
+
 
