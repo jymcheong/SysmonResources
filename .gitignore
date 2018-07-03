@@ -43,3 +43,4 @@
 *.map
 *.pdb
 *.node
+.stignore
