@@ -1,7 +1,7 @@
 const directory_to_monitor = "C:/Windows/Datafusion/logs";
 var OrientDB = require('orientjs');
 var server = OrientDB({host: 'myorientdb', port: 2424});
-var db = server.use({name: 'df', username: 'root', password: 'Password1234', useToken : true});
+var db = server.use({name: 'DataFusion', username: 'root', password: 'Password1234', useToken : true});
 var fs = require('fs')
 , es = require('event-stream'); //install first: npm i event-stream
 
