@@ -12,4 +12,4 @@
 // 4. Select ProcessCreate RID, Hostname & ProcessGuid matching first N ImageLoad rows sorted by EventTime >= startTime
 // 5. Foreach rid & ProcessGuid, create edges from ProcessCreate RID to (ImageLoad with matching Hostname, ProcessGuid and EventTime >= startTime sorted by EventTime LIMIT N)
 // 6. Update ToBeProcessed = false where EventTime >= startTime sorted by EventTime LIMIT N
-// 7. Update Function Status to "stopped" state
+// 7. Update Function Status to "stopped" state when no more ProcessCreate to link
