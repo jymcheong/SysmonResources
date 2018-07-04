@@ -90,15 +90,24 @@
     case 'UserActionTracking':
           //  Linked to ProcessId except Foreground Transition which has FromProcessId & ToProcessId
           if(e['Action']=='Foreground Transition'){
-            stmt = 'CREATE EDGE ActedOn FROM ? TO \
-                  (SELECT FROM ProcessCreate WHERE Hostname = ? AND \
-					(ProcessId = ? OR ProcessId = ?) Order By EventTime Desc LIMIT 2)'
-            try{
-              db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['FromProcessId'],e['ToProcessId'])
-            }
-            catch(err){
-              //print(err)
-            }
+              stmt = 'CREATE EDGE SwitchedFrom FROM \
+                      (SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessId = ?  \
+                       Order By EventTime Desc LIMIT 1) TO ?'
+              try{
+                db.command(stmt,e['Hostname'],e['FromProcessId'],r[0].getProperty('@rid'))
+              }
+              catch(err){
+                //print(err)
+              }
+              stmt = 'CREATE EDGE SwitchedTo FROM ? TO \
+                      (SELECT FROM ProcessCreate WHERE Hostname = ? AND \
+                      ProcessId = ? Order By EventTime Desc LIMIT 1)'
+              try{
+                db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['ToProcessId'])
+              }
+              catch(err){
+                //print(err)
+              }
           }
           else { // other UAT actions
             stmt = 'CREATE EDGE ActedOn FROM ? TO \
