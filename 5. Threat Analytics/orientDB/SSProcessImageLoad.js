@@ -19,14 +19,14 @@
   var r = db.query('SELECT count(1) FROM FunctionStatus WHERE name = "ProcessImageLoad" AND status = "running"');
   if(r.length) {
     print('ProcessImageLoad still running...')
-      return r
+      return
   }
   
   // step 1 - find the earliest record time
   r = db.query('SELECT EventTime FROM ImageLoad WHERE ToBeProcessed = true Order By EventTime ASC LIMIT ?', N);
   if(r.length == 0) { // step 2
-    print('ProcessImageLoad nothing to do')
-      return
+    print(Date() + ' ProcessImageLoad nothing to do')
+      return 
   }
   var startTime = r[0].getProperty('EventTime')
   
