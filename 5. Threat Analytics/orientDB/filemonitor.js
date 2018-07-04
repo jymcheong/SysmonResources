@@ -85,7 +85,7 @@ function processLine(eventline) {
     db.query(stmt,{params:{cn:classname}})
         .then(function(response){ 
         rowCount++
-    });
+       });
 }
 
 function startFileMonitor() {

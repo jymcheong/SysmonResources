@@ -84,7 +84,9 @@ function processLine(eventline) {
     db.query(stmt,{params:{cn:classname}})
         .then(function(response){ 
         rowCount++
-    });
+    }).catch(function(error) {
+        //console.log(error);
+      });;
 }
 
 function startFileMonitor() {
@@ -119,5 +121,5 @@ function startFileMonitor() {
 
 var lineCount = 0
 var rowCount = 0
-startFileMonitor() // starts directory monitoring for rotated logs
-//processFile('/Users/jymcheong/Desktop/samplelog2.txt') // test single file
+//startFileMonitor() // starts directory monitoring for rotated logs
+processFile('c://windows//datafusion//logs//DESKTOP-O153T4R_EventLog_rotated_2018_07_04_140151.txt') // test single file
