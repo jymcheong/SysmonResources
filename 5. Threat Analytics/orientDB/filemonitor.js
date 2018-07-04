@@ -68,7 +68,7 @@ function processLine(eventline) {
             e['ProcessId'] = parseInt(match[1])        
     }
     
-    // DataFusion events
+    // DataFusion UAT events
     if(e["SourceName"] == "DataFuseUserActions"){
         classname = 'UserActionTracking'
         delete e['ProcessID']
@@ -77,6 +77,16 @@ function processLine(eventline) {
             e[k] = uat[k]
         }
     }
+
+     // DataFusion network events
+     if(e["SourceName"] == "DataFuseNetwork"){
+        classname = 'NetworkDetails'
+        delete e['ProcessID']
+        uat = JSON.parse(e['Message'])
+        for(var k in uat){
+            e[k] = uat[k]
+        }
+    }   
 
     delete e['Message'] //problematic for server-side parsing... it is repeated data anyway
     stmt = "select addEvent(:cn, '" + JSON.stringify(e) +  "')"
