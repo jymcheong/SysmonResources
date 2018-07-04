@@ -40,7 +40,6 @@
           WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime limit ?)', startTime, N)
   if(r.length == 0) { 
     print('ProcessImageLoad did not find ProcessCreate')
-      return
   }
   print(Date() + ' ProcessImageLoad found ' + r.length + ' ProcessCreate to process')
   
@@ -55,7 +54,7 @@
               r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'), N)
   }
   
-  // step 6 2018-06-29 11:28:36
+  // step 6 
   db.command('UPDATE ImageLoad SET ToBeProcessed = false \
         WHERE ToBeProcessed = true AND EventTime >= ? LIMIT ?',startTime, N)
   
