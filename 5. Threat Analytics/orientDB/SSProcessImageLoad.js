@@ -34,7 +34,7 @@
   db.command('UPDATE FunctionStatus SET status = "running" WHERE name = "ProcessImageLoad"')
   print(Date() + ' changed ProcessImageLoad status to running...')
   
-  // step 4 - find those ProcessCreate
+  // step 4a - find those ProcessCreate
   r = db.query('SELECT @rid, ProcessGuid, Hostname FROM processcreate \
           WHERE ProcessGuid in (SELECT ProcessGuid FROM ImageLoad \
           WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime limit ?)', startTime, N)
@@ -44,7 +44,28 @@
   else {
     print(Date() + ' ProcessImageLoad found ' + r.length + ' ProcessCreate to process')
   }
-  // step 5 - bulk edge creation
+  // step 5a - bulk edge creation
+  for(var i=0; i < r.length; i++){
+    print('Creating edges for ' + r[i].getProperty('@rid') + 
+            ' ' + r[i].getProperty('Hostname') + ' ' + r[i].getProperty('ProcessGuid') )
+      db.command('CREATE EDGE LoadedImage FROM ? TO \
+           (SELECT FROM ImageLoad WHERE ToBeProcessed = true AND \
+          EventTime >= ? AND Hostname = ? AND ProcessGuid = ? ORDER BY EventTime limit ?)',
+                  r[i].getProperty('@rid'), startTime, 
+              r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'), N)
+  }
+  
+  // step 4b - find those FileCreate
+  r = db.query('SELECT @rid, ProcessGuid, Hostname FROM FileCreate \
+          WHERE TargetFilename.toLowerCase() in (SELECT ImageLoaded.toLowerCase() FROM ImageLoad \
+          WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime limit ?)', startTime, N)
+  if(r.length == 0) { 
+    print('ProcessImageLoad did not find FileCreate')
+  }
+  else {
+    print(Date() + ' ProcessImageLoad found ' + r.length + ' FileCreate to process')
+  }
+  // step 5b - bulk edge creation
   for(var i=0; i < r.length; i++){
     print('Creating edges for ' + r[i].getProperty('@rid') + 
             ' ' + r[i].getProperty('Hostname') + ' ' + r[i].getProperty('ProcessGuid') )
