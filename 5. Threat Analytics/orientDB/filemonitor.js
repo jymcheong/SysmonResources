@@ -78,11 +78,12 @@ function processLine(eventline) {
         }
     }
 
-    delete e['Message'] // this field is problematic to parse at server side... it is repeated data anyway
-    stmt = 'insert into ' + classname + ' content ' + JSON.stringify(e)
+    delete e['Message'] //problematic for server-side parsing... it is repeated data anyway
+    stmt = "select addEvent(:cn, '" + JSON.stringify(e) +  "')"
     //console.log(stmt)
-    db.query(stmt).then(function (response){ 
-        //console.log(response)
+    // using parameter with JSON string will fail... 
+    db.query(stmt,{params:{cn:classname}})
+        .then(function(response){ 
         rowCount++
     });
 }
@@ -121,3 +122,7 @@ var lineCount = 0
 var rowCount = 0
 startFileMonitor() // starts directory monitoring for rotated logs
 //processFile('/tmp/events.txt') // test single file
+
+setInterval(function(){ 
+    db.query('select ProcessImageLoad()')
+}, 3000);

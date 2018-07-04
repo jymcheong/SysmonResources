@@ -25,21 +25,21 @@
   // step 1 - find the earliest record time
   r = db.query('SELECT EventTime FROM ImageLoad WHERE ToBeProcessed = true Order By EventTime ASC LIMIT ?', N);
   if(r.length == 0) { // step 2
-    print(Date() + ' ProcessImageLoad nothing to do')
+    //print(Date() + ' ProcessImageLoad nothing to do')
       return 
   }
   var startTime = r[0].getProperty('EventTime')
   
   // step 3 - start running state
   db.command('UPDATE FunctionStatus SET status = "running" WHERE name = "ProcessImageLoad"')
-  print(Date() + ' changed ProcessImageLoad status to running...')
+  //print(Date() + ' changed ProcessImageLoad status to running...')
   
   // step 4a - find those ProcessCreate
   r = db.query('SELECT @rid, ProcessGuid, Hostname FROM processcreate \
           WHERE ProcessGuid in (SELECT ProcessGuid FROM ImageLoad \
           WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime limit ?)', startTime, N)
   if(r.length == 0) { 
-    print('ProcessImageLoad did not find ProcessCreate')
+    //print('ProcessImageLoad did not find ProcessCreate')
   }
   else {
     print(Date() + ' ProcessImageLoad found ' + r.length + ' ProcessCreate to process')
@@ -60,7 +60,7 @@
           WHERE TargetFilename.toLowerCase() in (SELECT ImageLoaded.toLowerCase() FROM ImageLoad \
           WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime limit ?)', startTime, N)
   if(r.length == 0) { 
-    print('ProcessImageLoad did not find FileCreate')
+    //print('ProcessImageLoad did not find FileCreate')
   }
   else {
     print(Date() + ' ProcessImageLoad found ' + r.length + ' FileCreate to process')
@@ -82,6 +82,6 @@
   
   // step 7 - update function status
   db.command('UPDATE FunctionStatus SET status = "stopped" WHERE name = "ProcessImageLoad"')
-  print(Date() + ' changed ProcessImageLoad status to stopped...')
+  //print(Date() + ' changed ProcessImageLoad status to stopped...')
   
   return r
