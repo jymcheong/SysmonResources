@@ -15,14 +15,14 @@
   // 6. Update ToBeProcessed = false where EventTime >= startTime sorted by EventTime LIMIT N
   // 7. Update Function Status to "stopped" state when no more ProcessCreate to link
   
-  // step 0
+  // step 0 - don't run if it has already started
   var r = db.query('SELECT count(1) FROM FunctionStatus WHERE name = "ProcessImageLoad" AND status = "running"');
   if(r.length) {
     print('ProcessImageLoad still running...')
       return r
   }
   
-  // step 1
+  // step 1 - find the earliest record time
   r = db.query('SELECT EventTime FROM ImageLoad WHERE ToBeProcessed = true Order By EventTime ASC LIMIT ?', N);
   if(r.length == 0) { // step 2
     print('ProcessImageLoad nothing to do')
@@ -30,20 +30,21 @@
   }
   var startTime = r[0].getProperty('EventTime')
   
-  // step 3
-  //db.command('UPDATE FunctionStatus SET status = "running" WHERE name = "ProcessImageLoad"')
+  // step 3 - start running state
+  db.command('UPDATE FunctionStatus SET status = "running" WHERE name = "ProcessImageLoad"')
   print(Date() + ' changed ProcessImageLoad status to running...')
   
-  // step 4
+  // step 4 - find those ProcessCreate
   r = db.query('SELECT @rid, ProcessGuid, Hostname FROM processcreate \
           WHERE ProcessGuid in (SELECT ProcessGuid FROM ImageLoad \
           WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime limit ?)', startTime, N)
   if(r.length == 0) { 
     print('ProcessImageLoad did not find ProcessCreate')
   }
-  print(Date() + ' ProcessImageLoad found ' + r.length + ' ProcessCreate to process')
-  
-  // step 5
+  else {
+    print(Date() + ' ProcessImageLoad found ' + r.length + ' ProcessCreate to process')
+  }
+  // step 5 - bulk edge creation
   for(var i=0; i < r.length; i++){
     print('Creating edges for ' + r[i].getProperty('@rid') + 
             ' ' + r[i].getProperty('Hostname') + ' ' + r[i].getProperty('ProcessGuid') )
@@ -54,11 +55,11 @@
               r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'), N)
   }
   
-  // step 6 
+  // step 6 - update ToBeProcessed
   db.command('UPDATE ImageLoad SET ToBeProcessed = false \
         WHERE ToBeProcessed = true AND EventTime >= ? LIMIT ?',startTime, N)
   
-  // step 7
+  // step 7 - update function status
   db.command('UPDATE FunctionStatus SET status = "stopped" WHERE name = "ProcessImageLoad"')
   print(Date() + ' changed ProcessImageLoad status to stopped...')
   
