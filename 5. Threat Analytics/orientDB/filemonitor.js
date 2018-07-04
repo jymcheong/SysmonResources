@@ -124,5 +124,5 @@ startFileMonitor() // starts directory monitoring for rotated logs
 //processFile('/tmp/events.txt') // test single file
 
 setInterval(function(){ 
-    db.query('select ProcessImageLoad()')
+    db.query('select ConnectImageLoad()')
 }, 3000);
