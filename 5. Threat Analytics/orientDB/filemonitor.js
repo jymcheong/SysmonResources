@@ -87,9 +87,8 @@ function processLine(eventline) {
             if(classname == 'WinEvent'){ // only modify winEvent. Look at Taiga DataFusion issue #92
                 l = l.replace(/(?:\\[rn])+/g, "\\\\r").replace(/(?:\\n)+/g, "\\\\n").replace(/(?:\\t)+/g, "\\\\t")
             }
-            stmt = "select addEvent(:cn, '" + l +  "')"
-            //console.log(stmt)
-            // using parameter with JSON string will fail... 
+            stmt = "select addEvent(:cn, '" + l +  "')" // using parameter with JSON string will fail...
+            //console.log(stmt)  
             db.query(stmt,{params:{cn:classname}})
                 .then(function(response){ 
                 rowCount++
