@@ -1,6 +1,6 @@
   /**
    * 1. Use ODB WebStudio Function Management
-   * 2. Create a function ProcessImageLoad with NO parameters
+   * 2. Create a function ConnectImageLoad with NO parameters
    * 3. Paste the codes below into the FM's editor & save  
    */
   var db = orient.getDatabase();
@@ -41,7 +41,7 @@
   if(r.length > 0){   
       // step 5a - bulk edge creation
       for(var i=0; i < r.length; i++){
-          print(Date() + ' Creating LoadedImage edges for ' + r[i].getProperty('ProcessGuid') )
+          //print(Date() + ' Creating LoadedImage edges for ' + r[i].getProperty('ProcessGuid') )
           db.command('CREATE EDGE LoadedImage FROM ? TO (SELECT FROM ImageLoad \
                       WHERE ToBeProcessed = true AND EventTime >= ? AND Hostname = ? \
                       AND ProcessGuid = ? ORDER BY EventTime LIMIT ?)',
@@ -56,12 +56,13 @@
   if(r.length > 0){ 
       // step 5b - bulk edge creation
       for(var i=0; i < r.length; i++){
-        print(Date() + ' Creating edges for ' + r[i].getProperty('ProcessGuid') )
-          db.command('CREATE EDGE LoadedImage FROM ? TO (SELECT FROM ImageLoad \
+          var filePath = '' + r[i].getProperty('TargetFilename')
+          print(Date() + ' Creating UsedAsImage edges for ' + r[i].getProperty('ProcessGuid') )
+          db.command('CREATE EDGE UsedAsImage FROM ? TO (SELECT FROM ImageLoad \
                       WHERE ToBeProcessed = true AND EventTime >= ? AND Hostname = ? \
-                      AND ProcessGuid = ? ORDER BY EventTime LIMIT ?)',
-                      r[i].getProperty('@rid'), startTime, 
-                      r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'), N)
+                      AND ProcessGuid = ? AND ImageLoaded.toLowerCase() = ? ORDER BY EventTime LIMIT ?)',
+                      r[i].getProperty('@rid'), startTime,r[i].getProperty('Hostname'), 
+                      r[i].getProperty('ProcessGuid'), filePath.toLowerCase(), N)
       }
   }
 
