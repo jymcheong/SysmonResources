@@ -7,7 +7,7 @@
   var N = 1000 // limit the number of records to process
   
   // 0. Check Function Status table, if running, quit
-  // 1. Get ToBeProcessed 1st row's EventTime (startTime) ordered by EventTime ascending
+  // 1. Get first (sorted by time) 1st row ToBeProcessed EventTime (startTime)
   // 2. If no result, quit since nothing to do
   // 3. Update Function Status to "running" state
   // 4. Select ProcessCreate RID, Hostname & ProcessGuid matching first N ProcessAccess rows sorted by EventTime >= startTime
@@ -17,65 +17,53 @@
   
   // step 0 - don't run if it has already started
   var r = db.query('SELECT count(1) FROM FunctionStatus WHERE name = "ConnectProcessAccess" AND status = "running"');
-  if(r.length) {
-    print('ConnectProcessAccess still running...')
+  if(r.length > 0) {
+      print('ConnectProcessAccess still running...')
       return
   }
   
   // step 1 - find the earliest record time
   r = db.query('SELECT EventTime FROM ProcessAccess WHERE ToBeProcessed = true Order By EventTime ASC LIMIT ?', N);
   if(r.length == 0) { // step 2
-    //print(Date() + ' ConnectProcessAccess nothing to do')
       return 
   }
-  var startTime = r[0].getProperty('EventTime')
+  var startTime = r[0].getProperty('EventTime') //time of earliest ToBeProcessed event
   
   // step 3 - start running state
   db.command('UPDATE FunctionStatus SET status = "running" WHERE name = "ConnectProcessAccess"')
-  //print(Date() + ' changed ConnectProcessAccess status to running...')
   
   // step 4a - find those ProcessCreate in SourceProcessGUID
   r = db.query('SELECT @rid, ProcessGuid, Hostname FROM ProcessCreate \
-          WHERE ProcessGuid in (SELECT SourceProcessGUID FROM ProcessAccess \
-          WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime limit ?)', startTime, N)
-  if(r.length == 0) { 
-    //print('ConnectProcessAccess did not find ProcessCreate from SourceProcessGUID')
-  }
-  else {
-    print(Date() + ' ConnectProcessAccess found ' + r.length + ' ProcessCreate to process')
-  }
-  // step 5a - bulk edge creation
-  for(var i=0; i < r.length; i++){
-    print('Creating edges for ' + r[i].getProperty('@rid') + 
-            ' ' + r[i].getProperty('Hostname') + ' ' + r[i].getProperty('ProcessGuid') )
-      db.command('CREATE EDGE ProcessAccessedFrom FROM ? TO \
-           (SELECT FROM ProcessAccess WHERE ToBeProcessed = true AND \
-          EventTime >= ? AND Hostname = ? AND ProcessGuid = ? ORDER BY EventTime limit ?)',
-                  r[i].getProperty('@rid'), startTime, 
-              r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'), N)
+                WHERE ProcessGuid in (SELECT SourceProcessGUID FROM ProcessAccess \
+                WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime limit ?)', startTime, N)
+  if(r.length > 0){ 
+      // step 5a - bulk edge creation
+      for(var i=0; i < r.length; i++){
+          print(Date() + ' Creating ProcessAccessedFrom edges for ' + r[i].getProperty('ProcessGuid') )
+          db.command('CREATE EDGE ProcessAccessedFrom FROM (SELECT FROM ProcessAccess \
+                      WHERE ToBeProcessed = true AND EventTime >= ? AND Hostname = ? \
+                      AND SourceProcessGUID = ? ORDER BY EventTime limit ?) TO ?', 
+                      startTime, r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'),
+                      N, r[i].getProperty('@rid'))
+      }
   }
   
 // step 4b - find those ProcessCreate in TargetProcessGUID
   r = db.query('SELECT @rid, ProcessGuid, Hostname FROM ProcessCreate \
-  WHERE ProcessGuid in (SELECT TargetProcessGUID FROM ProcessAccess \
-  WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime limit ?)', startTime, N)
-  if(r.length == 0) { 
-  //print('ConnectProcessAccess did not find ProcessCreate from SourceProcessGUID')
+                WHERE ProcessGuid in (SELECT TargetProcessGUID FROM ProcessAccess \
+                WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime limit ?)', startTime, N)
+  if(r.length > 0){ 
+      // step 5b - bulk edge creation
+      for(var i=0; i < r.length; i++){
+        print(Date() + ' Creating ProcessAccessedTo edges for ' + r[i].getProperty('ProcessGuid') )
+        db.command('CREATE EDGE ProcessAccessedTo FROM ? TO (SELECT FROM ProcessAccess \
+                    WHERE ToBeProcessed = true AND EventTime >= ? AND Hostname = ? \
+                    AND TargetProcessGUID = ? ORDER BY EventTime limit ?)',
+                    r[i].getProperty('@rid'), startTime, r[i].getProperty('Hostname'), 
+                    r[i].getProperty('ProcessGuid'), N)
+        
+      }
   }
-  else {
-    print(Date() + ' ConnectProcessAccess found ' + r.length + ' ProcessCreate to process')
-  }
-  // step 5b - bulk edge creation
-  for(var i=0; i < r.length; i++){
-    print('Creating edges for ' + r[i].getProperty('@rid') + 
-        ' ' + r[i].getProperty('Hostname') + ' ' + r[i].getProperty('ProcessGuid') )
-    db.command('CREATE EDGE ProcessAccessedTo FROM \
-              (SELECT FROM ProcessAccess WHERE ToBeProcessed = true AND \
-              EventTime >= ? AND Hostname = ? AND ProcessGuid = ? ORDER BY EventTime limit ?) TO ?', 
-              startTime, r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'), 
-              N, r[i].getProperty('@rid'))
-  }
-  
   // step 6 - update ToBeProcessed
   db.command('UPDATE ProcessAccess SET ToBeProcessed = false \
               WHERE ToBeProcessed = true AND EventTime >= ? LIMIT ?',startTime, N)
