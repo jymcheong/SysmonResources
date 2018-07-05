@@ -82,7 +82,8 @@ function processLine(eventline) {
             }   
 
             delete e['Message'] //problematic for server-side parsing... it is repeated data anyway
-            stmt = "select addEvent(:cn, '" + JSON.stringify(e) +  "')"
+            // \r\n\t in fields will break ODB. If we replace b4 JSON parsing, it affects parsing of DataFusion events.
+            stmt = "select addEvent(:cn, '" + JSON.stringify(e).replace(/(?:\\r)+/g, "\\\\r").replace(/(?:\\n)+/g, "\\\\n").replace(/(?:\\t)+/g, "\\\\t") +  "')"
             //console.log(stmt)
             // using parameter with JSON string will fail... 
             db.query(stmt,{params:{cn:classname}})
