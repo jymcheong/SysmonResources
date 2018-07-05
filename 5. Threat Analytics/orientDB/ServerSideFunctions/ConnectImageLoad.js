@@ -50,19 +50,19 @@
       }
   }
   // step 4b for FileCreate 
-  r = db.query('SELECT @rid, ProcessGuid, Hostname FROM FileCreate \
+  r = db.query('SELECT @rid, TargetFilename, Hostname FROM FileCreate \
                 WHERE TargetFilename.toLowerCase() in (SELECT ImageLoaded.toLowerCase() FROM ImageLoad \
                 WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime LIMIT ?)', startTime, N)
   if(r.length > 0){ 
       // step 5b - bulk edge creation
       for(var i=0; i < r.length; i++){
           var filePath = '' + r[i].getProperty('TargetFilename')
-          print(Date() + ' Creating UsedAsImage edges for ' + r[i].getProperty('ProcessGuid') )
+          print(Date() + ' Creating UsedAsImage edges for ' + r[i].getProperty('TargetFilename') )
           db.command('CREATE EDGE UsedAsImage FROM ? TO (SELECT FROM ImageLoad \
                       WHERE ToBeProcessed = true AND EventTime >= ? AND Hostname = ? \
-                      AND ProcessGuid = ? AND ImageLoaded.toLowerCase() = ? ORDER BY EventTime LIMIT ?)',
-                      r[i].getProperty('@rid'), startTime,r[i].getProperty('Hostname'), 
-                      r[i].getProperty('ProcessGuid'), filePath.toLowerCase(), N)
+                      AND ImageLoaded.toLowerCase() = ? ORDER BY EventTime LIMIT ?)',
+                      r[i].getProperty('@rid'), startTime, r[i].getProperty('Hostname'), 
+                      filePath.toLowerCase(), N)
       }
   }
 
