@@ -45,6 +45,50 @@ function processLine(eventline) {
         if(eventline.length > 0) {
             e = JSON.parse(eventline)
             e['ToBeProcessed'] = true
+            classname = 'WinEvent'
+            if(e['Keywords'] != undefined) {
+                e['Keywords'] = '' + e['Keywords']
+            }
+
+            // Sysmon events
+            if(e["SourceName"] == "Microsoft-Windows-Sysmon"){
+                classname = eventIdLookup[e['EventID']]
+                e['SysmonProcessId'] = e['ProcessID']
+                delete e['ProcessID']
+                var re = /ProcessId: (\d+)/g
+                var match = re.exec(eventline)
+                if(match != null)
+                    e['ProcessId'] = parseInt(match[1])        
+            }
+            
+            // DataFusion UAT events
+            if(e["SourceName"] == "DataFuseUserActions"){
+                classname = 'UserActionTracking'
+                delete e['ProcessID']
+                uat = JSON.parse(e['Message'])
+                for(var k in uat){
+                    e[k] = uat[k]
+                }
+            }
+
+            // DataFusion network events
+            if(e["SourceName"] == "DataFuseNetwork"){
+                classname = 'NetworkDetails'
+                delete e['ProcessID']
+                uat = JSON.parse(e['Message'])
+                for(var k in uat){
+                    e[k] = uat[k]
+                }
+            }   
+
+            delete e['Message'] //problematic for server-side parsing... it is repeated data anyway
+            stmt = "select addEvent(:cn, '" + JSON.stringify(e) +  "')"
+            //console.log(stmt)
+            // using parameter with JSON string will fail... 
+            db.query(stmt,{params:{cn:classname}})
+                .then(function(response){ 
+                rowCount++
+            });
         }
     }
     catch(err) {
@@ -52,50 +96,6 @@ function processLine(eventline) {
         console.log(eventline)
         throw err
     }
-    classname = 'WinEvent'
-    if(e['Keywords'] != undefined) {
-        e['Keywords'] = '' + e['Keywords']
-    }
-
-    // Sysmon events
-    if(e["SourceName"] == "Microsoft-Windows-Sysmon"){
-        classname = eventIdLookup[e['EventID']]
-        e['SysmonProcessId'] = e['ProcessID']
-        delete e['ProcessID']
-        var re = /ProcessId: (\d+)/g
-        var match = re.exec(eventline)
-        if(match != null)
-            e['ProcessId'] = parseInt(match[1])        
-    }
-    
-    // DataFusion UAT events
-    if(e["SourceName"] == "DataFuseUserActions"){
-        classname = 'UserActionTracking'
-        delete e['ProcessID']
-        uat = JSON.parse(e['Message'])
-        for(var k in uat){
-            e[k] = uat[k]
-        }
-    }
-
-     // DataFusion network events
-     if(e["SourceName"] == "DataFuseNetwork"){
-        classname = 'NetworkDetails'
-        delete e['ProcessID']
-        uat = JSON.parse(e['Message'])
-        for(var k in uat){
-            e[k] = uat[k]
-        }
-    }   
-
-    delete e['Message'] //problematic for server-side parsing... it is repeated data anyway
-    stmt = "select addEvent(:cn, '" + JSON.stringify(e) +  "')"
-    //console.log(stmt)
-    // using parameter with JSON string will fail... 
-    db.query(stmt,{params:{cn:classname}})
-        .then(function(response){ 
-        rowCount++
-       });
 }
 
 function startFileMonitor() {
@@ -130,9 +130,16 @@ function startFileMonitor() {
 
 var lineCount = 0
 var rowCount = 0
+
 startFileMonitor() // starts directory monitoring for rotated logs
 //processFile('/tmp/events.txt') // test single file
 
+// tried ODB scheduler but it throws error due to "return"s within the scripts
+// but runs fine from client.
 setInterval(function(){ 
     db.query('select ConnectImageLoad()')
+}, 3000);
+
+setInterval(function(){ 
+    db.query('select ConnectProcessAccess()')
 }, 3000);

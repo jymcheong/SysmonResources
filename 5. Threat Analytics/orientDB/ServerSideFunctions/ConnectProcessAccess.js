@@ -7,12 +7,12 @@
   var N = 1000 // limit the number of records to process
   
   // 0. Check Function Status table, if running, quit
-  // 1. Get first (sorted by time) 1st row ToBeProcessed EventTime (startTime)
-  // 2. If no result, quit since nothing to do
+  // 1. Get first (sorted by EventTime) 1st row ToBeProcessed (assign to startTime)
+  // 2. If no result, quit 
   // 3. Update Function Status to "running" state
   // 4. Select ProcessCreate RID, Hostname & ProcessGuid matching first N ProcessAccess rows sorted by EventTime >= startTime
   // 5. Foreach rid & ProcessGuid, create edges from ProcessCreate RID to (ProcessAccess with matching Hostname, ProcessGuid and EventTime >= startTime sorted by EventTime LIMIT N)
-  // 6. Update ToBeProcessed = false where EventTime >= startTime sorted by EventTime LIMIT N
+  // 6. Update ToBeProcessed = false for N rows starting from startTime, avoid repeated processing
   // 7. Update Function Status to "stopped" state when no more ProcessCreate to link
   
   // step 0 - don't run if it has already started
@@ -35,36 +35,37 @@
   // step 4a - find those ProcessCreate in SourceProcessGUID
   r = db.query('SELECT @rid, ProcessGuid, Hostname FROM ProcessCreate \
                 WHERE ProcessGuid in (SELECT SourceProcessGUID FROM ProcessAccess \
-                WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime limit ?)', startTime, N)
+                WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime LIMIT ?)', startTime, N)
   if(r.length > 0){ 
       // step 5a - bulk edge creation
       for(var i=0; i < r.length; i++){
           print(Date() + ' Creating ProcessAccessedFrom edges for ' + r[i].getProperty('ProcessGuid') )
-          db.command('CREATE EDGE ProcessAccessedFrom FROM (SELECT FROM ProcessAccess \
+          db.command('CREATE EDGE ProcessAccessedFrom FROM ? TO (SELECT FROM ProcessAccess \
                       WHERE ToBeProcessed = true AND EventTime >= ? AND Hostname = ? \
-                      AND SourceProcessGUID = ? ORDER BY EventTime limit ?) TO ?', 
-                      startTime, r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'),
-                      N, r[i].getProperty('@rid'))
+                      AND SourceProcessGUID = ? ORDER BY EventTime LIMIT ?)',
+                      r[i].getProperty('@rid'), startTime, r[i].getProperty('Hostname'), 
+                      r[i].getProperty('ProcessGuid'), N)
+          
       }
   }
   
 // step 4b - find those ProcessCreate in TargetProcessGUID
   r = db.query('SELECT @rid, ProcessGuid, Hostname FROM ProcessCreate \
                 WHERE ProcessGuid in (SELECT TargetProcessGUID FROM ProcessAccess \
-                WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime limit ?)', startTime, N)
+                WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime LIMIT ?)', startTime, N)
   if(r.length > 0){ 
       // step 5b - bulk edge creation
       for(var i=0; i < r.length; i++){
         print(Date() + ' Creating ProcessAccessedTo edges for ' + r[i].getProperty('ProcessGuid') )
-        db.command('CREATE EDGE ProcessAccessedTo FROM ? TO (SELECT FROM ProcessAccess \
+        db.command('CREATE EDGE ProcessAccessedTo FROM (SELECT FROM ProcessAccess \
                     WHERE ToBeProcessed = true AND EventTime >= ? AND Hostname = ? \
-                    AND TargetProcessGUID = ? ORDER BY EventTime limit ?)',
-                    r[i].getProperty('@rid'), startTime, r[i].getProperty('Hostname'), 
-                    r[i].getProperty('ProcessGuid'), N)
+                    AND TargetProcessGUID = ? ORDER BY EventTime limit ?) TO ?', 
+                    startTime, r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'),
+                    N, r[i].getProperty('@rid'))
         
       }
   }
-  // step 6 - update ToBeProcessed
+  // step 6 - update ToBeProcessed N rows starting from startTime
   db.command('UPDATE ProcessAccess SET ToBeProcessed = false \
               WHERE ToBeProcessed = true AND EventTime >= ? LIMIT ?',startTime, N)
   

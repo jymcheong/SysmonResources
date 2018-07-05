@@ -8,7 +8,7 @@
   
   // 0. Check Function Status table, if running, quit
   // 1. Get 1st row's EventTime (startTime) ordered by EventTime ascending
-  // 2. If no result, quit since nothing to do
+  // 2. If no result, quit 
   // 3. Update Function Status to "running" state
   // 4. Select ProcessCreate RID, Hostname & ProcessGuid matching first N ImageLoad rows sorted by EventTime >= startTime
   // 5. Foreach rid & ProcessGuid, create edges from ProcessCreate RID to (ImageLoad with matching Hostname, ProcessGuid and EventTime >= startTime sorted by EventTime LIMIT N)
@@ -44,7 +44,7 @@
           print(Date() + ' Creating LoadedImage edges for ' + r[i].getProperty('ProcessGuid') )
           db.command('CREATE EDGE LoadedImage FROM ? TO (SELECT FROM ImageLoad \
                       WHERE ToBeProcessed = true AND EventTime >= ? AND Hostname = ? \
-                      AND ProcessGuid = ? ORDER BY EventTime limit ?)',
+                      AND ProcessGuid = ? ORDER BY EventTime LIMIT ?)',
                       r[i].getProperty('@rid'), startTime, 
                       r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'), N)
       }
@@ -52,20 +52,20 @@
   // step 4b for FileCreate 
   r = db.query('SELECT @rid, ProcessGuid, Hostname FROM FileCreate \
                 WHERE TargetFilename.toLowerCase() in (SELECT ImageLoaded.toLowerCase() FROM ImageLoad \
-                WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime limit ?)', startTime, N)
+                WHERE ToBeProcessed = true AND EventTime >= ? ORDER BY EventTime LIMIT ?)', startTime, N)
   if(r.length > 0){ 
       // step 5b - bulk edge creation
       for(var i=0; i < r.length; i++){
         print(Date() + ' Creating edges for ' + r[i].getProperty('ProcessGuid') )
           db.command('CREATE EDGE LoadedImage FROM ? TO (SELECT FROM ImageLoad \
                       WHERE ToBeProcessed = true AND EventTime >= ? AND Hostname = ? \
-                      AND ProcessGuid = ? ORDER BY EventTime limit ?)',
+                      AND ProcessGuid = ? ORDER BY EventTime LIMIT ?)',
                       r[i].getProperty('@rid'), startTime, 
                       r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'), N)
       }
   }
 
-  // step 6 - update ToBeProcessed
+  // step 6 - update ToBeProcessed N rows starting from startTime
   db.command('UPDATE ImageLoad SET ToBeProcessed = false \
         WHERE ToBeProcessed = true AND EventTime >= ? LIMIT ?',startTime, N)
   
