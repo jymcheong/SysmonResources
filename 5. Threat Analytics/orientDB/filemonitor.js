@@ -140,10 +140,6 @@ startFileMonitor() // starts directory monitoring for rotated logs
 
 // tried ODB scheduler but it throws error due to "return"s within the scripts
 // but runs fine from client.
-setInterval(function(){ 
-    db.query('select ConnectImageLoad()')
-}, 3000);
+setInterval(function(){ db.query('select ConnectImageLoad()')}, 3000);
 
-setInterval(function(){ 
-    db.query('select ConnectProcessAccess()')
-}, 3000);
+setInterval(function(){ db.query('select ConnectProcessAccess()')}, 3000);
