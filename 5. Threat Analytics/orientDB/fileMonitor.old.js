@@ -39,13 +39,57 @@ function processFile(filepath) {
     );    
 }
 
-//push most of the logic into server side function
+//port the python codes here
 function processLine(eventline) {
     try {
         if(eventline.length > 0) {
-            JSON.parse(eventline) //to test if it is valid JSON            
-            stmt = "select AddEvent(:data)"
-            db.query(stmt,{params:{data:escape(eventline)}})
+            e = JSON.parse(eventline)
+            e['ToBeProcessed'] = true
+            classname = 'WinEvent'
+            if(e['Keywords'] != undefined) {
+                e['Keywords'] = '' + e['Keywords']
+            }
+
+            // Sysmon events
+            if(e["SourceName"] == "Microsoft-Windows-Sysmon"){
+                classname = eventIdLookup[e['EventID']]
+                e['SysmonProcessId'] = e['ProcessID']
+                delete e['ProcessID']
+                var re = /ProcessId: (\d+)/g
+                var match = re.exec(eventline)
+                if(match != null)
+                    e['ProcessId'] = parseInt(match[1])        
+            }
+            
+            // DataFusion UAT events
+            if(e["SourceName"] == "DataFuseUserActions"){
+                classname = 'UserActionTracking'
+                delete e['ProcessID']
+                uat = JSON.parse(e['Message'])
+                for(var k in uat){
+                    e[k] = uat[k]
+                }
+            }
+
+            // DataFusion network events
+            if(e["SourceName"] == "DataFuseNetwork"){
+                classname = 'NetworkDetails'
+                delete e['ProcessID']
+                uat = JSON.parse(e['Message'])
+                for(var k in uat){
+                    e[k] = uat[k]
+                }
+            }   
+
+            delete e['Message'] //problematic for server-side parsing... it is repeated data anyway
+            var l = JSON.stringify(e)
+            // \r\n\t in fields will break ODB. If we replace b4 JSON parsing, it affects parsing of DataFusion events.
+            if(classname == 'WinEvent'){ // only modify winEvent. Look at Taiga DataFusion issue #92
+                l = l.replace(/(?:\\[rn])+/g, "\\\\r").replace(/(?:\\n)+/g, "\\\\n").replace(/(?:\\t)+/g, "\\\\t")
+            }
+            stmt = "select addEvent(:cn, '" + l.replace(/(?:\')+/g, "<quote>") + "')"
+            //console.log(stmt)  
+            db.query(stmt,{params:{cn:classname}})
                 .then(function(response){ 
                 rowCount++
             });

@@ -4,7 +4,6 @@
    * 3. Paste the codes below into the FM's editor & save  
    */
   var db = orient.getDatabase();
-
   
   // edge class look up table to minimize repeated queries; vertex-class to edge-class
   var edgeLookup = {'ProcessTerminate':'Terminated', 'PipeCreated':'CreatedPipe',
@@ -12,9 +11,63 @@
                     'FileCreateTime':'ChangedFileCreateTime', 'FileCreate':'CreatedFile',
                     'FileCreateStreamHash':'CreatedFileStream', 'RegistryEvent':'AccessedRegistry',
                     'NetworkConnect':'ConnectedTo', 'ImageLoad':'LoadedImage'}
+  
+  var eventIdLookup = {1:'ProcessCreate', 2:'FileCreateTime', 3:'NetworkConnect', 
+                        4:'SysmonStatus', 5:'ProcessTerminate',6:'DriverLoad', 
+                        7:'ImageLoad', 8:'CreateRemoteThread', 9:'RawAccessRead', 
+                        10:'ProcessAccess', 11:'FileCreate', 12:'RegistryEvent', 
+                        13:'RegistryEvent', 14:'RegistryEvent', 15:'FileCreateStreamHash', 
+                        16:'ConfigChanged', 17:'PipeCreated', 18:'PipeConnected', 
+                        19:'WmiEvent', 20:'WmiEvent', 21:'WmiEvent', 255:'Error' }
+  
+  var logline = unescape(jsondata)
+  var e = JSON.parse(logline); 
+  
+  e['ToBeProcessed'] = true
+  classname = 'WinEvent'
+  
+  if(e['Keywords'] != undefined) {
+  	e['Keywords'] = '' + e['Keywords']
+  }
 
-  var e = JSON.parse(jsondata); 
-  var stmt = 'insert into '+ classname + ' content ' + jsondata
+  // Sysmon events
+  if(e["SourceName"] == "Microsoft-Windows-Sysmon"){
+      classname = eventIdLookup[e['EventID']]
+      e['SysmonProcessId'] = e['ProcessID']
+      delete e['ProcessID']
+      var re = /ProcessId: (\d+)/g
+      var match = re.exec(logline)
+      if(match != null)
+          e['ProcessId'] = parseInt(match[1])        
+  }
+
+  // DataFusion UAT events
+  if(e["SourceName"] == "DataFuseUserActions"){
+      classname = 'UserActionTracking'
+      delete e['ProcessID']
+      uat = JSON.parse(e['Message'])
+      for(var k in uat){
+          e[k] = uat[k]
+      }
+  }
+
+  // DataFusion network events
+  if(e["SourceName"] == "DataFuseNetwork"){
+      classname = 'NetworkDetails'
+      delete e['ProcessID']
+      uat = JSON.parse(e['Message'])
+      for(var k in uat){
+          e[k] = uat[k]
+      }
+  }   
+
+  delete e['Message'] //problematic for server-side parsing... it is repeated data anyway
+  
+  var jsonstring = JSON.stringify(e)
+  //work around the inconsistent behavior of INSERT .. CONTENT
+  if(classname == 'ImageLoad') jsonstring = jsonstring.slice(0,-1) + ",\"id\":sequence('ImageLoad_idseq').next()}"
+  if(classname == 'ProcessAccess') jsonstring = jsonstring.slice(0,-1) + ",\"id\":sequence('ProcessAccess_idseq').next()}"    
+  var stmt = 'INSERT INTO '+ classname + ' CONTENT ' + jsonstring
   var r = db.command(stmt);
   
   switch(classname) {
@@ -124,18 +177,18 @@
 
       // ProcessCreate-[LoadedImage:ProcessGuid,Hostname]->ImageLoad
       // FileCreate-[UsedAsImage:TargetFilename=ImageLoaded]->ImageLoad
-    case "ImageLoad": // ID7 for bulk process function    
+    //case "ImageLoad": // ID7 for bulk process function    
           // why not use default value? I had problems expand JSON into name=value pairs. filepath names \\ cause problems
-          stmt = 'UPDATE ImageLoad SET id = sequence("ImageLoad_idseq").next() WHERE @rid = ?'
-          db.command(stmt,r[0].getProperty('@rid'))
-          break;
+          //stmt = 'UPDATE ImageLoad SET id = sequence("ImageLoad_idseq").next() WHERE @rid = ?'
+          //db.command(stmt,r[0].getProperty('@rid'))
+         // break;
 
       // ProcessCreate-[ProcessAccessed:L.ProcessGuid = R.SourceProcessGUID]->ProcessAccess
       // ProcessAccess-[ProcessAccessedFrom:L.TargetProcessGUID = R.ProcessGuid]->ProcessCreate
-    case "ProcessAccess": // ID 10 for bulk process function
-          stmt = 'UPDATE ProcessAccess SET id = sequence("ProcessAccess_idseq").next() WHERE @rid = ?'
-          db.command(stmt,r[0].getProperty('@rid'))      
-          break;
+    //case "ProcessAccess": // ID 10 for bulk process function
+          //stmt = 'UPDATE ProcessAccess SET id = sequence("ProcessAccess_idseq").next() WHERE @rid = ?'
+          //db.command(stmt,r[0].getProperty('@rid'))      
+          //break;
   }
 
   //Class with 2nd edge
@@ -161,3 +214,4 @@
   
 
 
+ 
