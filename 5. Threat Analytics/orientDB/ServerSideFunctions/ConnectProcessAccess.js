@@ -27,7 +27,7 @@
   if(r.length == 0) { // step 2
       return 
   }
-  var startID = r[r.length - 1].getProperty('id') //time of earliest ToBeProcessed event
+  var endID = r[r.length - 1].getProperty('id') //time of earliest ToBeProcessed event
   
   // step 3 - start running state
   db.command('UPDATE FunctionStatus SET status = "running" WHERE name = "ConnectProcessAccess"')
@@ -35,7 +35,7 @@
   // step 4a - find those ProcessCreate in SourceProcessGUID
   r = db.query('SELECT @rid, ProcessGuid, Hostname FROM ProcessCreate \
                 WHERE ProcessGuid in (SELECT SourceProcessGUID FROM ProcessAccess \
-                WHERE ToBeProcessed = true AND id <= ? ORDER BY id LIMIT ?)', startID, N)
+                WHERE ToBeProcessed = true AND id <= ? ORDER BY id LIMIT ?)', endID, N)
   if(r.length > 0){ 
       // step 5a - bulk edge creation
       for(var i=0; i < r.length; i++){
@@ -43,7 +43,7 @@
           db.command('CREATE EDGE ProcessAccessedFrom FROM ? TO (SELECT FROM ProcessAccess \
                       WHERE ToBeProcessed = true AND id <= ? AND Hostname = ? \
                       AND SourceProcessGUID = ? ORDER BY id LIMIT ?)',
-                      r[i].getProperty('@rid'), startID, r[i].getProperty('Hostname'), 
+                      r[i].getProperty('@rid'), endID, r[i].getProperty('Hostname'), 
                       r[i].getProperty('ProcessGuid'), N)
           
       }
@@ -52,7 +52,7 @@
 // step 4b - find those ProcessCreate in TargetProcessGUID
   r = db.query('SELECT @rid, ProcessGuid, Hostname FROM ProcessCreate \
                 WHERE ProcessGuid in (SELECT TargetProcessGUID FROM ProcessAccess \
-                WHERE ToBeProcessed = true AND id <= ? ORDER BY id LIMIT ?)', startID, N)
+                WHERE ToBeProcessed = true AND id <= ? ORDER BY id LIMIT ?)', endID, N)
   if(r.length > 0){ 
       // step 5b - bulk edge creation
       for(var i=0; i < r.length; i++){
@@ -60,14 +60,14 @@
         db.command('CREATE EDGE ProcessAccessedTo FROM (SELECT FROM ProcessAccess \
                     WHERE ToBeProcessed = true AND id <= ? AND Hostname = ? \
                     AND TargetProcessGUID = ? ORDER BY id LIMIT ?) TO ?', 
-                    startID, r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'),
+                    endID, r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'),
                     N, r[i].getProperty('@rid'))
         
       }
   }
   // step 6 - update ToBeProcessed N rows starting from startTime
   db.command('UPDATE ProcessAccess SET ToBeProcessed = false \
-              WHERE ToBeProcessed = true AND id <= ? LIMIT ?',startID, N)
+              WHERE ToBeProcessed = true AND id <= ? LIMIT ?',endID, N)
   
   // step 7 - update function status
   db.command('UPDATE FunctionStatus SET status = "stopped" WHERE name = "ConnectProcessAccess"')

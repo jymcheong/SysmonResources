@@ -28,7 +28,7 @@
     //print(Date() + ' ConnectImageLoad nothing to do')
       return 
   }
-  var startID = r[r.length - 1].getProperty('id')
+  var endID = r[r.length - 1].getProperty('id')
   
   // step 3 - start running state
   db.command('UPDATE FunctionStatus SET status = "running" WHERE name = "ConnectImageLoad"')
@@ -37,7 +37,7 @@
   // step 4a for ProcessCreate
   r = db.query('SELECT @rid, ProcessGuid, Hostname FROM processcreate \
           WHERE ProcessGuid in (SELECT ProcessGuid FROM ImageLoad \
-          WHERE ToBeProcessed = true AND id <= ? ORDER BY id limit ?)', startID, N)
+          WHERE ToBeProcessed = true AND id <= ? ORDER BY id limit ?)', endID, N)
   if(r.length > 0){   
       // step 5a - bulk edge creation
       for(var i=0; i < r.length; i++){
@@ -45,14 +45,14 @@
           db.command('CREATE EDGE LoadedImage FROM ? TO (SELECT FROM ImageLoad \
                       WHERE ToBeProcessed = true AND id <= ? AND Hostname = ? \
                       AND ProcessGuid = ? ORDER BY id LIMIT ?)',
-                      r[i].getProperty('@rid'), startID, 
+                      r[i].getProperty('@rid'), endID, 
                       r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'), N)
       }
   }
   // step 4b for FileCreate 
   r = db.query('SELECT @rid, TargetFilename, Hostname FROM FileCreate \
                 WHERE TargetFilename.toLowerCase() in (SELECT ImageLoaded.toLowerCase() FROM ImageLoad \
-                WHERE ToBeProcessed = true AND id <= ? ORDER BY id LIMIT ?)', startID, N)
+                WHERE ToBeProcessed = true AND id <= ? ORDER BY id LIMIT ?)', endID, N)
   if(r.length > 0){ 
       // step 5b - bulk edge creation
       for(var i=0; i < r.length; i++){
@@ -61,14 +61,14 @@
           db.command('CREATE EDGE UsedAsImage FROM ? TO (SELECT FROM ImageLoad \
                       WHERE ToBeProcessed = true AND id <= ? AND Hostname = ? \
                       AND ImageLoaded.toLowerCase() = ? ORDER BY id LIMIT ?)',
-                      r[i].getProperty('@rid'), startID, r[i].getProperty('Hostname'), 
+                      r[i].getProperty('@rid'), endID, r[i].getProperty('Hostname'), 
                       filePath.toLowerCase(), N)
       }
   }
 
   // step 6 - update ToBeProcessed N rows starting from startTime
   db.command('UPDATE ImageLoad SET ToBeProcessed = false \
-        WHERE ToBeProcessed = true AND id <= ? LIMIT ?',startID, N)
+        WHERE ToBeProcessed = true AND id <= ? LIMIT ?',endID, N)
   
   // step 7 - update function status
   db.command('UPDATE FunctionStatus SET status = "stopped" WHERE name = "ConnectImageLoad"')
