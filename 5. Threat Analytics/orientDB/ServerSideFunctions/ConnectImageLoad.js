@@ -23,6 +23,7 @@
   }
   
   // step 1 - find the earliest record time
+  r = null
   r = db.query('SELECT id FROM ImageLoad WHERE ToBeProcessed = true Order By id ASC LIMIT ?', N);
   if(r.length == 0) { // step 2
     //print(Date() + ' ConnectImageLoad nothing to do')
@@ -34,35 +35,50 @@
   db.command('UPDATE FunctionStatus SET status = "running" WHERE name = "ConnectImageLoad"')
   //print(Date() + ' changed ConnectImageLoad status to running...')
   
-  // step 4a for ProcessCreate
-  r = db.query('SELECT @rid, ProcessGuid, Hostname FROM processcreate \
-          WHERE ProcessGuid in (SELECT ProcessGuid FROM ImageLoad \
-          WHERE ToBeProcessed = true AND id <= ? ORDER BY id limit ?)', endID, N)
-  if(r.length > 0){   
-      // step 5a - bulk edge creation
-      for(var i=0; i < r.length; i++){
-          //print(Date() + ' Creating LoadedImage edges for ' + r[i].getProperty('ProcessGuid') )
-          db.command('CREATE EDGE LoadedImage FROM ? TO (SELECT FROM ImageLoad \
-                      WHERE ToBeProcessed = true AND id <= ? AND Hostname = ? \
-                      AND ProcessGuid = ? ORDER BY id LIMIT ?)',
-                      r[i].getProperty('@rid'), endID, 
-                      r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'), N)
+  // step 4a find ImageLoad that has ProcessCreate
+  r = null
+  var r = db.query('SELECT @rid, ProcessGuid, Hostname FROM ImageLoad WHERE ToBeProcessed = true \
+                       AND id <= ? AND in().size() = 0 AND ProcessGuid in (SELECT ProcessGuid FROM ProcessCreate) GROUP BY ProcessGuid ORDER BY id limit ?', endID, N)
+  if(r.length > 0){   // step 5a - bulk edge creation      
+      var prev_guids = []
+      for(var i=0; i < r.length; i++){          
+          if(prev_guids.indexOf(r[i].getProperty('ProcessGuid')) < 0 ) {
+            print(Date() + ' Creating LoadedImage edges for ' + r[i].getProperty('ProcessGuid') )
+            try {
+                db.command('CREATE EDGE LoadedImage FROM (SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessGuid = ?) \
+                        TO (SELECT FROM ImageLoad WHERE Hostname = ? AND ProcessGuid = ? AND id <= ? AND in().size() = 0)', 
+                        r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'), r[i].getProperty('Hostname'), 
+                        r[i].getProperty('ProcessGuid'), endID)
+            }
+            catch(err){
+
+            }
+          }
+          prev_guids.push(r[i].getProperty('ProcessGuid'))
       }
   }
+ 
   // step 4b for FileCreate 
-  r = db.query('SELECT @rid, TargetFilename, Hostname FROM FileCreate \
-                WHERE TargetFilename.toLowerCase() in (SELECT ImageLoaded.toLowerCase() FROM ImageLoad \
-                WHERE ToBeProcessed = true AND id <= ? ORDER BY id LIMIT ?)', endID, N)
-  if(r.length > 0){ 
-      // step 5b - bulk edge creation
+  r = null
+  r = db.query('SELECT @rid, Hostname, ImageLoaded FROM ImageLoad WHERE ToBeProcessed = true AND id <= ? \
+                AND ImageLoaded.toLowerCase() in (SELECT TargetFilename.toLowerCase() FROM FileCreate) \
+                GROUP BY ImageLoaded ORDER BY id LIMIT ?', endID, N)
+  if(r.length > 0){ // step 5b - bulk edge creation
+      var prev_files = []
       for(var i=0; i < r.length; i++){
-          var filePath = '' + r[i].getProperty('TargetFilename')
-          print(Date() + ' Creating UsedAsImage edges for ' + r[i].getProperty('TargetFilename') )
-          db.command('CREATE EDGE UsedAsImage FROM ? TO (SELECT FROM ImageLoad \
-                      WHERE ToBeProcessed = true AND id <= ? AND Hostname = ? \
-                      AND ImageLoaded.toLowerCase() = ? ORDER BY id LIMIT ?)',
-                      r[i].getProperty('@rid'), endID, r[i].getProperty('Hostname'), 
-                      filePath.toLowerCase(), N)
+          var filePath = '' + r[i].getProperty('ImageLoaded')
+          if(prev_files.indexOf(filePath) < 0) { // avoid repeated create...
+            //print(Date() + ' Creating UsedAsImage edges for ' + r[i].getProperty('TargetFilename') )
+            try {
+                db.command('CREATE EDGE UsedAsImage FROM (SELECT FROM FileCreate WHERE Hostname = ? AND TargetFilename.toLowerCase() = ?) \
+                      TO (SELECT FROM ImageLoad WHERE Hostname = ? AND ImageLoaded.toLowerCase() = ? AND id <= ?)',
+                      r[i].getProperty('Hostname'),filePath.toLowerCase(), r[i].getProperty('Hostname'),filePath.toLowerCase(), endID)
+            }
+            catch(err){
+
+            }
+          }
+          prev_files.push(filePath)
       }
   }
 

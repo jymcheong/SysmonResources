@@ -39,8 +39,8 @@
   if(r.length > 0){ // ProcessCreate-[ProcessAccessedFrom:L.ProcessGuid = R.SourceProcessGUID]->ProcessAccess
       var prev_guids = []
       for(var i=0; i < r.length; i++){  // step 5a - bulk edge creation
+          print(Date() + ' Creating ProcessAccessedFrom edges for ' + r[i].getProperty('ProcessGuid') )
           if(prev_guids.indexOf(r[i].getProperty('SourceProcessGUID')) < 0 ) {
-                //print(Date() + ' Creating ProcessAccessedFrom edges for ' + r[i].getProperty('ProcessGuid') )
                 try{
                     db.command('CREATE EDGE ProcessAccessedFrom FROM (SELECT FROM ProcessCreate WHERE Hostname = ? AND \
                         ProcessGuid = ?) TO (SELECT FROM ProcessAccess WHERE ToBeProcessed = true AND id <= ? \
@@ -63,12 +63,12 @@
   if(r.length > 0){ // ProcessAccess-[ProcessAccessedTo:L.TargetProcessGUID = R.ProcessGuid]->ProcessCreate
     var prev_guids = [] 
       for(var i=0; i < r.length; i++){ // step 5b - bulk edge creation 
+        print(Date() + ' Creating ProcessAccessedTo edges for ' + r[i].getProperty('ProcessGuid') )
         if(prev_guids.indexOf(r[i].getProperty('TargetProcessGUID')) < 0 ) {
-            //print(Date() + ' Creating ProcessAccessedTo edges for ' + r[i].getProperty('ProcessGuid') )
             try {
                 db.command('CREATE EDGE ProcessAccessedTo FROM (SELECT FROM ProcessAccess \
                     WHERE ToBeProcessed = true AND id <= ? AND Hostname = ? \
-                    AND TargetProcessGUID = ? AND out().size = 0 ORDER BY id LIMIT ?) TO \
+                    AND TargetProcessGUID = ? AND in().size = 0 ORDER BY id LIMIT ?) TO \
                     (SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessGuid = ?)', 
                     endID, r[i].getProperty('Hostname'), r[i].getProperty('TargetProcessGUID'),
                     N, r[i].getProperty('Hostname'), r[i].getProperty('TargetProcessGUID'))
