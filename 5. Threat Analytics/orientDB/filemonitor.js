@@ -98,4 +98,4 @@ startFileMonitor() // starts directory monitoring for rotated logs
 // but runs fine from client.
 setInterval(function(){ db.query('select ConnectImageLoad()')}, 5000);
 
-setInterval(function(){ db.query('select ConnectProcessAccess()')}, 10000);
+setInterval(function(){ db.query('select ConnectProcessAccess()')}, 5000);
