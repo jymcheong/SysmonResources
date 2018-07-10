@@ -40,7 +40,7 @@
   }
   source_guids2find = source_guids2find.slice(0,-18) // get rid of the last " OR ProcessGuid = "
   target_guids2find = target_guids2find.slice(0,-18) // get rid of the last " OR ProcessGuid = "
-  print(target_guids2find)
+  //print(target_guids2find)
   // step 3 - start running state
   db.command('UPDATE FunctionStatus SET status = "running" WHERE name = "ConnectProcessAccess"')
   
@@ -63,8 +63,8 @@
                 catch(err){
 
                 }
+                prev_guids.push(r[i].getProperty('SourceProcessGUID'))
           }
-          prev_guids.push(r[i].getProperty('SourceProcessGUID'))
         }
   }
   
@@ -76,7 +76,7 @@
     var prev_guids = [] 
       for(var i=0; i < r.length; i++){ // step 5b - bulk edge creation 
         if(prev_guids.indexOf(r[i].getProperty('TargetProcessGUID')) < 0 ) {
-            print(Date() + ' Creating ProcessAccessedTo edges for ' + r[i].getProperty('TargetProcessGUID') )
+            //print(Date() + ' Creating ProcessAccessedTo edges for ' + r[i].getProperty('TargetProcessGUID') )
             try {
                 db.command('CREATE EDGE ProcessAccessedTo FROM (SELECT FROM ProcessAccess \
                     WHERE ToBeProcessed = true AND id <= ? AND Hostname = ? \
@@ -88,8 +88,9 @@
             catch(err){
 
             }
+            prev_guids.push(r[i].getProperty('TargetProcessGUID'))
         }
-        prev_guids.push(r[i].getProperty('TargetProcessGUID'))
+
       }
   }
   // step 6 - update ToBeProcessed N rows starting from startTime
