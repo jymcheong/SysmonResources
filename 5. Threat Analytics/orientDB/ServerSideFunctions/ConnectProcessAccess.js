@@ -23,24 +23,36 @@
   }
   
   // step 1 - find the earliest record time
-  r = db.query('SELECT id FROM ProcessAccess WHERE ToBeProcessed = true Order By id ASC LIMIT ?', N);
+  r = db.query('SELECT id, SourceProcessGUID, TargetProcessGUID FROM ProcessAccess WHERE ToBeProcessed = true Order By id ASC LIMIT ?', N);
   if(r.length == 0) { // step 2
       return 
   }
   var endID = r[r.length - 1].getProperty('id') //time of earliest ToBeProcessed event
   
+  var source_guids2find = 'ProcessGuid = "'
+  var target_guids2find = 'ProcessGuid = "'
+  for(var i=0; i < r.length; i++){
+      if(source_guids2find.indexOf(r[i].getProperty('SourceProcessGUID')) < 0)
+            source_guids2find += r[i].getProperty('SourceProcessGUID') + '" OR ProcessGuid = "' 
+      if(target_guids2find.indexOf(r[i].getProperty('TargetProcessGUID')) < 0)
+            target_guids2find += r[i].getProperty('TargetProcessGUID') + '" OR ProcessGuid = "' 
+
+  }
+  source_guids2find = source_guids2find.slice(0,-18) // get rid of the last " OR ProcessGuid = "
+  target_guids2find = target_guids2find.slice(0,-18) // get rid of the last " OR ProcessGuid = "
+  print(target_guids2find)
   // step 3 - start running state
   db.command('UPDATE FunctionStatus SET status = "running" WHERE name = "ConnectProcessAccess"')
   
   // step 4a - find those ProcessCreate in SourceProcessGUID
   r = db.query('SELECT SourceProcessGUID, Hostname FROM ProcessAccess \
                 WHERE ToBeProcessed = true AND id <= ? AND SourceProcessGUID in \
-               (SELECT ProcessGuid FROM ProcessCreate) GROUP BY SourceProcessGUID ORDER BY id LIMIT ?', endID, N)
+               (SELECT ProcessGuid FROM ProcessCreate WHERE ' + source_guids2find + ') GROUP BY SourceProcessGUID ORDER BY id LIMIT ?', endID, N)
   if(r.length > 0){ // ProcessCreate-[ProcessAccessedFrom:L.ProcessGuid = R.SourceProcessGUID]->ProcessAccess
       var prev_guids = []
       for(var i=0; i < r.length; i++){  // step 5a - bulk edge creation
           if(prev_guids.indexOf(r[i].getProperty('SourceProcessGUID')) < 0 ) {
-                //print(Date() + ' Creating ProcessAccessedFrom edges for ' + r[i].getProperty('ProcessGuid') )
+                print(Date() + ' Creating ProcessAccessedFrom edges for ' + r[i].getProperty('SourceProcessGUID') )
                 try{
                     db.command('CREATE EDGE ProcessAccessedFrom FROM (SELECT FROM ProcessCreate WHERE Hostname = ? AND \
                         ProcessGuid = ?) TO (SELECT FROM ProcessAccess WHERE ToBeProcessed = true AND id <= ? \
@@ -59,16 +71,16 @@
 // step 4b - find those ProcessCreate in TargetProcessGUID
   r = db.query('SELECT TargetProcessGUID, Hostname FROM ProcessAccess \
                 WHERE ToBeProcessed = true AND id <= ? AND TargetProcessGUID in \
-               (SELECT ProcessGuid FROM ProcessCreate) GROUP BY TargetProcessGUID ORDER BY id LIMIT ?', endID, N)
+               (SELECT ProcessGuid FROM ProcessCreate WHERE '+ target_guids2find +') GROUP BY TargetProcessGUID ORDER BY id LIMIT ?', endID, N)
   if(r.length > 0){ // ProcessAccess-[ProcessAccessedTo:L.TargetProcessGUID = R.ProcessGuid]->ProcessCreate
     var prev_guids = [] 
       for(var i=0; i < r.length; i++){ // step 5b - bulk edge creation 
         if(prev_guids.indexOf(r[i].getProperty('TargetProcessGUID')) < 0 ) {
-            //print(Date() + ' Creating ProcessAccessedTo edges for ' + r[i].getProperty('ProcessGuid') )
+            print(Date() + ' Creating ProcessAccessedTo edges for ' + r[i].getProperty('TargetProcessGUID') )
             try {
                 db.command('CREATE EDGE ProcessAccessedTo FROM (SELECT FROM ProcessAccess \
                     WHERE ToBeProcessed = true AND id <= ? AND Hostname = ? \
-                    AND TargetProcessGUID = ? AND out().size = 0 ORDER BY id LIMIT ?) TO \
+                    AND TargetProcessGUID = ? AND out().size() = 0 ORDER BY id LIMIT ?) TO \
                     (SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessGuid = ?)', 
                     endID, r[i].getProperty('Hostname'), r[i].getProperty('TargetProcessGUID'),
                     N, r[i].getProperty('Hostname'), r[i].getProperty('TargetProcessGUID'))

@@ -22,15 +22,23 @@
       return
   }
   
-  // step 1 - find the earliest record time
+  // step 1 - find the last record time
   r = null
-  r = db.query('SELECT id FROM ImageLoad WHERE ToBeProcessed = true Order By id ASC LIMIT ?', N);
+  r = db.query('SELECT id, ProcessGuid FROM ImageLoad WHERE ToBeProcessed = true Order By id ASC LIMIT ?', N);
   if(r.length == 0) { // step 2
     //print(Date() + ' ConnectImageLoad nothing to do')
       return 
   }
   var endID = r[r.length - 1].getProperty('id')
   
+  // used for filtering ProcessCreate, we don't want the entire set which can be huge!
+  var guids2find = 'ProcessGuid = "'
+  for(var i=0; i < r.length; i++){
+      if(guids2find.indexOf(r[i].getProperty('ProcessGuid')) < 0)
+        guids2find += r[i].getProperty('ProcessGuid') + '" OR ProcessGuid = "' 
+  }
+  guids2find = guids2find.slice(0,-18) // get rid of the last " OR ProcessGuid = "
+  //print(guids2find)
   // step 3 - start running state
   db.command('UPDATE FunctionStatus SET status = "running" WHERE name = "ConnectImageLoad"')
   //print(Date() + ' changed ConnectImageLoad status to running...')
@@ -38,23 +46,24 @@
   // step 4a find ImageLoad that has ProcessCreate
   r = null
   var r = db.query('SELECT @rid, ProcessGuid, Hostname FROM ImageLoad WHERE ToBeProcessed = true \
-                       AND id <= ? AND in().size() = 0 AND ProcessGuid in (SELECT ProcessGuid FROM ProcessCreate) GROUP BY ProcessGuid ORDER BY id limit ?', endID, N)
-  if(r.length > 0){   // step 5a - bulk edge creation      
-      var prev_guids = []
-      for(var i=0; i < r.length; i++){          
-          if(prev_guids.indexOf(r[i].getProperty('ProcessGuid')) < 0 ) {
-            print(Date() + ' Creating LoadedImage edges for ' + r[i].getProperty('ProcessGuid') )
-            try {
-                db.command('CREATE EDGE LoadedImage FROM (SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessGuid = ?) \
-                        TO (SELECT FROM ImageLoad WHERE Hostname = ? AND ProcessGuid = ? AND id <= ? AND in().size() = 0)', 
-                        r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'), r[i].getProperty('Hostname'), 
-                        r[i].getProperty('ProcessGuid'), endID)
-            }
-            catch(err){
+                       AND id <= ? AND in().size() = 0 AND ProcessGuid in (SELECT ProcessGuid FROM ProcessCreate WHERE ' 
+                     + guids2find + ') GROUP BY ProcessGuid ORDER BY id limit ?', endID, N)
+  if(r.length > 0){   // step 5a - bulk edge creation
+      var prev_guids = [] // prevent repeated edge creation
+      for(var i=0; i < r.length; i++){
+          if(prev_guids.indexOf(r[i].getProperty('ProcessGuid')) < 0 ) { // not in the array
+                //print(Date() + ' Creating LoadedImage edges for ' + r[i].getProperty('ProcessGuid') )
+                try {
+                    db.command('CREATE EDGE LoadedImage FROM (SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessGuid = ?) \
+                            TO (SELECT FROM ImageLoad WHERE Hostname = ? AND ProcessGuid = ? AND id <= ? AND in().size() = 0)', 
+                            r[i].getProperty('Hostname'), r[i].getProperty('ProcessGuid'), r[i].getProperty('Hostname'), 
+                            r[i].getProperty('ProcessGuid'), endID)
+                }
+                catch(err){
 
+                }
+                prev_guids.push(r[i].getProperty('ProcessGuid'))
             }
-          }
-          prev_guids.push(r[i].getProperty('ProcessGuid'))
       }
   }
  
