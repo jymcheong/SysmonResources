@@ -51,3 +51,4 @@ npm install orientjs
 
 $filemonscript = Get-Content filemonitor.js
 $filemonscript = $filemonscript -replace 'C:/Windows/Datafusion/logs', 'C:/sysmonviz/logs'
+$filemonscript | Set-Content "$p\filemonitor.js"
