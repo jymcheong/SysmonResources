@@ -1,4 +1,3 @@
-# Run as ADMINISTRATOR
 $nxlogpath = "c:\sysmonviz\nxlog"
 $p = [Environment]::GetFolderPath("Desktop") + "\sysmonviz"
 New-Item -Force -ItemType directory -Path $p
@@ -25,7 +24,7 @@ New-Item -Force -ItemType directory -Path "$nxlogpath\logs"
 ii "$nxlogpath\logs" # use explorer to open logs folder, you should see logs rotated
 
 # copies custom nxlog
-$confcontents = Get-Content nxlog.conf
+$confcontents = Get-Content "$p\nxlog.conf"
 $confcontents = $confcontents -replace 'TARGETDIR', $nxlogpath 
 $nxlogpath = $nxlogpath + 'nxlog\conf\nxlog.conf'
 $confcontents |  Set-Content $nxlogpath
