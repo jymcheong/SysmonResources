@@ -25,6 +25,7 @@ function processFile(filepath) {
             // processLine(line)
             lineCount++
             // resume the readstream, possibly from a callback
+            
             s.resume();
         })
         .on('error', function(err){
@@ -40,6 +41,11 @@ function processFile(filepath) {
             if (err) throw err;
             console.log('successfully deleted ' + filepath);
             });
+            if(lineCount % 10 == 0){
+                console.log("reconnect DB...")
+                db = null
+                db = server.use({name: 'DataFusion', username: 'root', password: 'Password1234', useToken : true});
+            }               
         })
     );    
 }

@@ -39,10 +39,8 @@ $wshell = New-Object -ComObject Wscript.Shell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 choco install nodejs --version 8.2.0 -y
 
-choco install microsoft-build-tools -y
+# install nodejs
 choco install microsoft-visual-cpp-build-tools -y 
-# requires reboot & re-run the above line
-
 npm install --global --production windows-build-tools
 npm install --global node-gyp
 
