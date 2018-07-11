@@ -41,6 +41,10 @@ function processFile(filepath) {
             console.log('Total line count: ' + lineCount) // tally with row count
             console.log('Total row count:' + rowCount)
             //either zip & delete the file.. after a while it's huge.
+            fs.unlink(filepath, (err) => {
+                if (err) console.log(filepath + ' delete error');
+                console.log(filepath + ' was deleted');
+              });
             if(reconnectCount % 12 == 0){
                 db = null
                 db = server.use({name: 'DataFusion', username: ODB_User, password: ODB_pass, useToken : true});
@@ -82,7 +86,7 @@ function startFileMonitor() {
                     var newfile = "" + elem['directory'] + "/" + elem['newFile']
                     // expecting 'rotated' in the nxlog log file
                     if(newfile.indexOf('rotated') > -1){ 
-                        processFile(newfile)
+                        setTimeout(function(){ processFile(newfile); }, 200)
                     }
                 }
             }
