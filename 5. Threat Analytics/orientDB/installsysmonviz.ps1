@@ -1,3 +1,4 @@
+# Use a Admin CMD console & type:  powershell -ExecutionPolicy Bypass -File installsysmonviz.ps1
 $nxlogpath = "c:\sysmonviz\nxlog"
 $p = [Environment]::GetFolderPath("Desktop") + "\sysmonviz"
 New-Item -Force -ItemType directory -Path $p
