@@ -37,9 +37,19 @@ $wshell = New-Object -ComObject Wscript.Shell
 
 # install chocolatey 
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-choco install nodejs --force
+choco install nodejs --version 8.2.0 -y
+
+choco install microsoft-build-tools -y
+choco install microsoft-visual-cpp-build-tools -y 
+# requires reboot & re-run the above line
+
 npm install --global --production windows-build-tools
 npm install --global node-gyp
-npm install --global nsfw
-npm install --global event-stream
-npm install --global orientjs
+
+# something wrong with global in windows... install as local modules
+npm install nsfw
+npm install event-stream
+npm install orientjs
+
+$filemonscript = Get-Content filemonitor.js
+$filemonscript = $filemonscript -replace 'C:/Windows/Datafusion/logs', 'C:/sysmonviz/logs'
