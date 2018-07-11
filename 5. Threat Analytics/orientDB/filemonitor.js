@@ -1,8 +1,10 @@
 const directory_to_monitor = "C:/Windows/Datafusion/logs";
 // Start ODB stuff -----------------------
+var ODB_User = 'root'
+var ODB_pass = 'Password1234'
 var OrientDB = require('orientjs');
 var server = OrientDB({host: 'myorientdb', port: 2424});
-var db = server.use({name: 'DataFusion', username: 'root', password: 'Password1234', useToken : true});
+var db = server.use({name: 'DataFusion', username: ODB_User, password: ODB_pass, useToken : true});
 // End ODB stuff -------------------------
 // Use npm local install XXX instead of global, especially in Windoze!
 var fs = require('fs'), es = require('event-stream'); //install first: npm i event-stream
@@ -41,7 +43,7 @@ function processFile(filepath) {
             //either zip & delete the file.. after a while it's huge.
             if(reconnectCount % 12 == 0){
                 db = null
-                db = server.use({name: 'DataFusion', username: 'root', password: 'Password1234', useToken : true});
+                db = server.use({name: 'DataFusion', username: ODB_User, password: ODB_pass, useToken : true});
             }
         })
     );    
