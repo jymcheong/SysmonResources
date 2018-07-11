@@ -8,13 +8,14 @@ var db = server.use({name: 'DataFusion', username: 'root', password: 'Password12
 var fs = require('fs'), es = require('event-stream'); //install first: npm i event-stream
 var lineCount = 0
 var rowCount = 0
+var reconnectCount = 0
 
 startFileMonitor() // starts directory monitoring for rotated logs
 //processFile('/tmp/events.txt') // test single file
 
 // tried ODB scheduler but it throws error due to "return"s within the scripts.
 // A security hazard if client script runs in untrusted environment + server-side javascipt is enabled
-setInterval(function(){ db.query('select ConnectImageLoad()')}, 5000);
+setInterval(function(){ reconnectCount++; db.query('select ConnectImageLoad()')}, 5000);
 setInterval(function(){ db.query('select ConnectProcessAccess()')}, 5000);
 
 //https://stackoverflow.com/questions/16010915/parsing-huge-logfiles-in-node-js-read-in-line-by-line
@@ -38,6 +39,10 @@ function processFile(filepath) {
             console.log('Total line count: ' + lineCount) // tally with row count
             console.log('Total row count:' + rowCount)
             //either zip & delete the file.. after a while it's huge.
+            if(reconnectCount % 12 == 0){
+                db = null
+                db = server.use({name: 'DataFusion', username: 'root', password: 'Password1234', useToken : true});
+            }
         })
     );    
 }
