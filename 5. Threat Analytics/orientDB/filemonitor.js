@@ -45,8 +45,9 @@ function processFile(filepath) {
                 if (err) console.log(filepath + ' delete error');
                 console.log(filepath + ' was deleted');
               });
-            if(reconnectCount % 12 == 0){
-                db = null
+            if(reconnectCount > 12){
+                reconnectCount = 0
+                db.close()
                 db = server.use({name: 'DataFusion', username: ODB_User, password: ODB_pass, useToken : true});
             }
         })
