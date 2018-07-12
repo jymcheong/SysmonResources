@@ -42,14 +42,13 @@ function processFile(filepath) {
             console.log('Total row count:' + rowCount)
             //either zip & delete the file.. after a while it's huge.
             fs.unlink(filepath, (err) => {
-                if (err) console.log(filepath + ' delete error');
-                console.log(filepath + ' was deleted');
-              });
-            if(reconnectCount > 12){
-                reconnectCount = 0
-                db.close()
-                db = server.use({name: 'DataFusion', username: ODB_User, password: ODB_pass, useToken : true});
-            }
+                if (err) {
+                    console.log(filepath + ' delete error');
+                }
+                else {
+                    console.log(filepath + ' was deleted');
+                }    
+            });
         })
     );    
 }
