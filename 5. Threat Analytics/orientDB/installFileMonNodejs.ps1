@@ -17,3 +17,5 @@ npm install --global node-gyp
 npm install nsfw
 npm install event-stream
 npm install orientjs
+
+nodejs filemonitor.js
