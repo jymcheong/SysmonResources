@@ -15,7 +15,7 @@ $zip = $shell.NameSpace($p + “\Sysmon.zip"); foreach($item in $zip.items()) { 
 
 # tries to uninstall sysmon, then installs latest Sysmon
 Start-Process -FilePath "Sysmon.exe" -Wait -ArgumentList "-u"
-Start-Process -FilePath "sysmon.exe" -Wait -ArgumentList "-accepteula -l -n -i smconfig.xml"
+Start-Process -FilePath "Sysmon.exe" -Wait -ArgumentList "-accepteula -l -n -i $p\smconfig.xml"
 
 # installs Nxlog
 $arg = '/c msiexec /i nxlog.msi INSTALLDIR="' + $nxlogpath + '" /qb'
@@ -41,6 +41,9 @@ choco install nodejs --version 8.2.0 -y
 
 # install nodejs
 choco install microsoft-visual-cpp-build-tools -y 
+
+# make sure nodejs enviroment is correctly setup
+"%PROGRAMFILES%\nodejs\nodevars.bat"
 npm install --global --production windows-build-tools
 npm install --global node-gyp
 
