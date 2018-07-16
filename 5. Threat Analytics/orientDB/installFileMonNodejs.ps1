@@ -10,6 +10,9 @@ choco install nodejs --version 8.2.0 -y
 
 # install nodejs
 choco install microsoft-visual-cpp-build-tools -y 
+
+# make sure nodejs enviroment is correctly setup
+"%PROGRAMFILES%\nodejs\nodevars.bat"
 npm install --global --production windows-build-tools
 npm install --global node-gyp
 
