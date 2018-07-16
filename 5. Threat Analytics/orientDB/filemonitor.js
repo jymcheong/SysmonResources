@@ -108,7 +108,7 @@ function startFileMonitor() {
                         fileQueue.push(newfile)
                         //setTimeout(function(){ processFile(newfile); }, 200)
                         if(fileQueue.length > 0)
-                            processFile(fileQueue.shift())
+                             setTimeout(function(){ processFile(fileQueue.shift()); }, 500)
                     }
                 }
             }
