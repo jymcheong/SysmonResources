@@ -20,8 +20,23 @@
                         16:'ConfigChanged', 17:'PipeCreated', 18:'PipeConnected', 
                         19:'WmiEvent', 20:'WmiEvent', 21:'WmiEvent', 255:'Error' }
   
+  // fix issue #104 - illegal field names
+  function rewriteProperties(obj) {
+    let notValid = /[\W_]+/g
+    if (typeof obj !== "object") return obj; //that is not a typo, it checks value & type
+    for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+            obj[prop.replace(notValid, "")] = rewriteProperties(obj[prop]);
+            if (notValid.test(prop)) {
+                delete obj[prop];
+            }
+        }
+    }
+    return obj;
+  }                       
+  
   var logline = unescape(jsondata)
-  var e = JSON.parse(logline); 
+  var e = rewriteProperties(JSON.parse(logline)); 
   
   e['ToBeProcessed'] = true
   classname = 'WinEvent'
@@ -191,7 +206,7 @@
           //break;
   }
 
-  //Class with 2nd edge
+  //Classes that may have 2nd edge
   switch(classname) {
     case "NetworkConnect":// NetworkConnect-[ConnectedTo:(L.Hostname = R.SourceHostname) & L.Hostname != R.Hostname]->NetworkConnect
           //TODO
