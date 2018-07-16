@@ -22,7 +22,7 @@
   
   // fix issue #104 - illegal field names
   function rewriteProperties(obj) {
-    let notValid = /[\W_]+/g
+    var notValid = /[\W_]+/g
     if (typeof obj !== "object") return obj; //that is not a typo, it checks value & type
     for (var prop in obj) {
         if (obj.hasOwnProperty(prop)) {
