@@ -20,7 +20,9 @@ echo "AllowTcpForwarding no" >> /etc/ssh/sshd_config
 echo "X11Forwarding no " >> /etc/ssh/sshd_config
 sudo systemctl restart sshd
 
-# log all SFTP activities, we can use it to detect intrusions
+# Log all SFTP activities, we can use it to detect intrusions
+# Suppose machine being monitored is compromised. At some juncture,
+# attacker will use the uploader SFTP credentials
 mkdir -m2755 /var/sftp/dev
 echo 'input(type="imuxsock" Socket="/path/to/anotherdirectory/dev/log" CreatePath="on")' >> /etc/rsyslog.d/sftp.conf
 echo "if $programname == 'internal-sftp' then /var/log/sftp.log" >> /etc/rsyslog.d/sftp.conf
