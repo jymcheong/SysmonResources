@@ -192,18 +192,13 @@
 
       // ProcessCreate-[LoadedImage:ProcessGuid,Hostname]->ImageLoad
       // FileCreate-[UsedAsImage:TargetFilename=ImageLoaded]->ImageLoad
-    //case "ImageLoad": // ID7 for bulk process function    
-          // why not use default value? I had problems expand JSON into name=value pairs. filepath names \\ cause problems
-          //stmt = 'UPDATE ImageLoad SET id = sequence("ImageLoad_idseq").next() WHERE @rid = ?'
-          //db.command(stmt,r[0].getProperty('@rid'))
-         // break;
+    //case "ImageLoad": // ID7 see server-side function ConnectImageLoad    
+    
 
       // ProcessCreate-[ProcessAccessed:L.ProcessGuid = R.SourceProcessGUID]->ProcessAccess
       // ProcessAccess-[ProcessAccessedFrom:L.TargetProcessGUID = R.ProcessGuid]->ProcessCreate
-    //case "ProcessAccess": // ID 10 for bulk process function
-          //stmt = 'UPDATE ProcessAccess SET id = sequence("ProcessAccess_idseq").next() WHERE @rid = ?'
-          //db.command(stmt,r[0].getProperty('@rid'))      
-          //break;
+    //case "ProcessAccess": // ID10 see server-side function ConnectProcessAccess
+          
   }
 
   //Classes that may have 2nd edge
