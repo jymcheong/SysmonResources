@@ -39,4 +39,4 @@ cd bindfs-1.13.9
 make
 make install
 mkdir ~uploader/winevents
-bindfs --perm=a-r --delete-deny ~uploader/winevents /var/sftp/uploads
+bindfs --perms=a-r --delete-deny ~uploader/winevents /var/sftp/uploads
