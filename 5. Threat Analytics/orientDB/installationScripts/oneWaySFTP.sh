@@ -23,8 +23,9 @@ sudo systemctl restart sshd
 # Log all SFTP activities, we can use it to detect intrusions
 # Suppose machine being monitored is compromised. At some juncture,
 # attacker will use the uploader SFTP credentials
+# Due to chroot, a socket folder needs to be created for 
 mkdir -m2755 /var/sftp/dev
-echo 'input(type="imuxsock" Socket="/path/to/anotherdirectory/dev/log" CreatePath="on")' >> /etc/rsyslog.d/sftp.conf
+echo 'input(type="imuxsock" Socket="/var/sftp/dev/log" CreatePath="on")' >> /etc/rsyslog.d/sftp.conf
 echo "if $programname == 'internal-sftp' then /var/log/sftp.log" >> /etc/rsyslog.d/sftp.conf
 echo '& stop' >> /etc/rsyslog.d/sftp.conf
 systemctl reload-or-restart rsyslog
