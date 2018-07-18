@@ -4,7 +4,7 @@ var ODB_User = 'root'
 var ODB_pass = 'Password1234'
 var OrientDB = require('orientjs');
 var server = OrientDB({host: 'myorientdb', port: 2424});
-var db = server.use({name: 'DataFusion', username: ODB_User, password: ODB_pass, useToken : true});
+var db = server.use({name: 'DataFusion', username: ODB_User, password: ODB_pass, useToken : false});
 // End ODB stuff -------------------------
 // Use npm local install XXX instead of global, especially in Windoze!
 var fs = require('fs'), es = require('event-stream'); //install first: npm i event-stream
@@ -27,7 +27,6 @@ fs.readdir(directory_to_monitor, function(err, items) {
 //
 startFileMonitor() // starts directory monitoring for rotated logs
 //processFile('/tmp/events.txt') // test single file
-
 
 //https://stackoverflow.com/questions/16010915/parsing-huge-logfiles-in-node-js-read-in-line-by-line
 function processFile(filepath) {
@@ -90,7 +89,7 @@ function processLine(eventline) {
     }
 }
 
-// this is based on https://github.com/Axosoft/nsfw example
+// based on https://github.com/Axosoft/nsfw example
 function startFileMonitor() {
     var nsfw = require('nsfw');
     var watcher2;
@@ -99,7 +98,7 @@ function startFileMonitor() {
         function(events) { // array of file action events
             for(i = 0, len = events.length; i < len; i++){
                 elem = events[i]
-                if(elem['action'] == 3) {
+                if(elem['action'] == 3) { // only interested with file renamed
                     console.log(elem)
                     var newfile = "" + elem['directory'] + "/" + elem['newFile']
                     // expecting 'rotated' in the nxlog log file

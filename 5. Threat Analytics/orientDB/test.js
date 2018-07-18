@@ -5,10 +5,9 @@ var OrientDB = require('orientjs');
 var server = OrientDB({host: 'myorientdb', port: 2424});
 var db = server.use({name: 'DataFusion', username: ODB_User, password: ODB_pass, useToken : true});
 
-db.open().then(function(){
-    db.query("select from functionstatus").then(function(res){
-        console.log(res)
-    }).then(function(){
-        db.close()
-    })
-})
+setInterval(function(){
+        db.query("select from functionstatus").then(function(res){
+            console.log(res)
+        })
+},100)
+
