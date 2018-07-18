@@ -1,10 +1,7 @@
 # Visualizing Sysmon Event
 
 ## Why not Neo4J?
-Neo4j is a very popular graph database but there's some learning curve to the query syntax. I prefer OrientDB because it uses SQL like syntax & also it is a multi-modal (document, graph..) database.
-
-## Caveats
-[http://orientdbleaks.blogspot.sg/2015/06/the-orientdb-issues-that-made-us-give-up.html](http://orientdbleaks.blogspot.sg/2015/06/the-orientdb-issues-that-made-us-give-up.html) has plenty of bad things to say about OrientDB for production use. Nothing is free in life.
+Neo4j is a very popular graph database but there's some learning curve to the query syntax. I prefer OrientDB because it uses SQL like syntax & also it is a multi-modal (document, graph..) database. More importantly, the insertion speed is FAST!
 
 ## How does it look like?
 ![](samplegraph.png)
