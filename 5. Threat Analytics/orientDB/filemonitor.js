@@ -56,15 +56,18 @@ function processFile(filepath) {
             console.log('Files in queue: ' + fileQueue.length)
             console.log('Total line count: ' + lineCount) // tally with row count
             console.log('Total row count:' + rowCount)
-            //either zip & delete the file.. after a while it's huge.
-            fs.unlink(filepath, (err) => {
-                if (err) {
+
+            setTimeout(function(){ // delayed delete to mitigate any file contention
+            	fs.unlink(filepath, (err) => {
+                  if (err) {
                     console.log(filepath + ' delete error');
-                }
-                else {
+                  }
+                  else {
                     console.log(filepath + ' was deleted');
-                }    
-            });
+                  }    
+                });
+            },200)
+         
             if(fileQueue.length > 0){
                 processFile(fileQueue.shift())
             }
