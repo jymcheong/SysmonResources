@@ -28,10 +28,6 @@ fs.readdir(directory_to_monitor, function(err, items) {
 startFileMonitor() // starts directory monitoring for rotated logs
 //processFile('/tmp/events.txt') // test single file
 
-// tried ODB scheduler but it throws error due to "return"s within the scripts.
-// A security hazard if client script runs in untrusted environment + server-side javascipt is enabled
-setInterval(function(){ db.query('select ConnectImageLoad()')}, 5000);
-setInterval(function(){ db.query('select ConnectProcessAccess()')}, 5000);
 
 //https://stackoverflow.com/questions/16010915/parsing-huge-logfiles-in-node-js-read-in-line-by-line
 function processFile(filepath) {
@@ -56,7 +52,7 @@ function processFile(filepath) {
             console.log('Files in queue: ' + fileQueue.length)
             console.log('Total line count: ' + lineCount) // tally with row count
             console.log('Total row count:' + rowCount)
-
+            
             setTimeout(function(){ // delayed delete to mitigate any file contention
             	fs.unlink(filepath, (err) => {
                   if (err) {
@@ -109,22 +105,20 @@ function startFileMonitor() {
                     // expecting 'rotated' in the nxlog log file
                     if(newfile.indexOf('rotated') > -1){ 
                         fileQueue.push(newfile)
-                        //setTimeout(function(){ processFile(newfile); }, 200)
-                        if(fileQueue.length > 0)
-                             setTimeout(function(){ processFile(fileQueue.shift()); }, 500)
+                        if(fileQueue.length > 0) setTimeout(function(){ processFile(fileQueue.shift()); }, 500)
                     }
                 }
             }
         },
         {
-        debounceMS: 250,
-        errorCallback(errors) {
-            //handle errors
-        }
+            debounceMS: 250,
+            errorCallback(errors) {
+                console.log(errors)
+            }
         })
         .then(function(watcher) {
-        watcher2 = watcher;
-        return watcher.start();
+            watcher2 = watcher;
+            return watcher.start();
         })
 }
 
