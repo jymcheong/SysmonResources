@@ -40,7 +40,6 @@ function processFile(filepath) {
             s.pause();
             // process line here and call s.resume() when rdy
             processLine(line)
-            lineCount++
             // resume the readstream, possibly from a callback
             s.resume();
         })
@@ -76,6 +75,7 @@ function processLine(eventline) {
         if(eventline.length > 0) {
             JSON.parse(eventline) //to test if it is valid JSON            
             stmt = "select AddEvent(:data)"
+            lineCount++
             db.query(stmt,{params:{data:escape(eventline)}})
                 .then(function(response){ 
                 rowCount++
