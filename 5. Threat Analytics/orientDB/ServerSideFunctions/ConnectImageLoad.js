@@ -99,4 +99,4 @@
   db.command('UPDATE FunctionStatus SET status = "stopped" WHERE name = "ConnectImageLoad"')
   //print(Date() + ' changed ConnectImageLoad status to stopped...')
   
-  return r
+  return 0

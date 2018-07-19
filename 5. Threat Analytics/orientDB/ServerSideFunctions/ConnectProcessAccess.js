@@ -101,4 +101,4 @@
   db.command('UPDATE FunctionStatus SET status = "stopped" WHERE name = "ConnectProcessAccess"')
   //print(Date() + ' changed ConnectProcessAccess status to stopped...')
   
-  return r
+  return 0

@@ -220,7 +220,7 @@
   if(classname != "ProcessAccess" && classname != "ImageLoad"){
       db.command('update '+ classname +' set ToBeProcessed = false where @rid = ?',r[0].getProperty('@rid'))
   }
-  return r
+  return 0
   
 
 
