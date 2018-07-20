@@ -7,7 +7,7 @@ cd $p
 
 # download ODB 3.0.3
 Import-Module BitsTransfer
-Start-BitsTransfer -Source https://s3.us-east-2.amazonaws.com/orientdb3/releases/3.0.3/orientdb-3.0.3.zip -Destination "$p\orientdb.zip"
+Start-BitsTransfer -Source https://s3.us-east-2.amazonaws.com/orientdb3/releases/3.0.4/orientdb-3.0.4.zip -Destination "$p\orientdb.zip"
 
 # unzip orientdb.zip
 $shell = New-Object -ComObject Shell.Application
