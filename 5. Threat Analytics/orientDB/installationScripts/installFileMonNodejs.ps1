@@ -11,7 +11,7 @@ choco install nodejs --version 8.2.0 -y
 # install nodejs
 choco install microsoft-visual-cpp-build-tools -y 
 
-# make sure nodejs enviroment is correctly setup
+# nodejs enviroment needs to be setup
 "%PROGRAMFILES%\nodejs\nodevars.bat"
 npm install --global --production windows-build-tools
 npm install --global node-gyp
@@ -21,4 +21,4 @@ npm install nsfw
 npm install event-stream
 npm install orientjs
 
-nodejs filemonitor.js
+node filemonitor.js
