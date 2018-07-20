@@ -15,12 +15,12 @@ $zip = $shell.NameSpace(“$p\orientdb.zip"); foreach($item in $zip.items()) { $
 
 # start orientDB with root pass configured above
 [Environment]::SetEnvironmentVariable("ORIENTDB_ROOT_PASSWORD",$root_pass)
-[Environment]::SetEnvironmentVariable("ORIENTDB_HOME", "$p\orientdb-3.0.3")
+[Environment]::SetEnvironmentVariable("ORIENTDB_HOME", "$p\orientdb-3.0.4")
 
 # check for java in path, quit if don't exist, no point continuing
-Start-Process -FilePath "$env:comspec"  -ArgumentList "/c orientdb-3.0.3\bin\server.bat"
+Start-Process -FilePath "$env:comspec"  -ArgumentList "/c orientdb-3.0.4\bin\server.bat"
 
 Write-host "\n"
 Read-Host -Prompt  "Please check the orientDB server console for 'Server is Active' before pressing any key to continue"
 Start-BitsTransfer -Source https://github.com/jymcheong/SysmonResources/raw/master/5.%20Threat%20Analytics/orientDB/schema_and_functions.gz -Destination "$p\schema_and_functions.gz"
-orientdb-3.0.3\bin\console.bat "create database remote:localhost\DataFusion root $root_pass; import database schema_and_functions.gz; INSERT INTO oschedule SET name = 'ConnectEdges', function = (SELECT FROM ofunction WHERE name = 'RunEdgeConnection'), rule = '0/5 * * * * ?'"
+orientdb-3.0.4\bin\console.bat "create database remote:localhost\DataFusion root $root_pass; import database schema_and_functions.gz; INSERT INTO oschedule SET name = 'ConnectEdges', function = (SELECT FROM ofunction WHERE name = 'RunEdgeConnection'), rule = '0/5 * * * * ?'"
