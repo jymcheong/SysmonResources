@@ -99,7 +99,7 @@
           }
           break;
 
-  // the following classes are linked to ProcessCreate via ProcessGuid + Hostname index
+  // the following are linked via [ProcessGuid + Hostname] index specific to ProcessCreate class
     case "ProcessTerminate"://ID5: ProcessCreate-[Terminated]->ProcessTerminate     	
     case "PipeCreated":	    //ID17: ProcessCreate-[CreatedPipe]->PipeCreated	
     case "PipeConnected":   //ID18: ProcessCreate-[ConnectedPipe]->PipeConnected
@@ -116,7 +116,7 @@
           try{
               db.command(stmt,e['ProcessGuid'],e['Hostname'],r[0].getProperty('@rid'))
           }
-          catch(err){
+          catch(err){ // usually when source vertex is not found
             //print(err)
           }        
           break;
@@ -216,10 +216,6 @@
           break;
   }
 
-  // Bulk processing for ProcessAccess & ImageLoad
-  if(classname != "ProcessAccess" && classname != "ImageLoad"){
-      db.command('update '+ classname +' set ToBeProcessed = false where @rid = ?',r[0].getProperty('@rid'))
-  }
   return 0
   
 
