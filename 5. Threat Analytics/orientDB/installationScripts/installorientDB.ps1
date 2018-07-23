@@ -5,7 +5,7 @@ $p = [Environment]::GetFolderPath("Desktop") + "\orientDBsetup"
 New-Item -Force -ItemType directory -Path $p
 cd $p
 
-# download ODB 3.0.3
+# download ODB 3.0.4
 Import-Module BitsTransfer
 Start-BitsTransfer -Source https://s3.us-east-2.amazonaws.com/orientdb3/releases/3.0.4/orientdb-3.0.4.zip -Destination "$p\orientdb.zip"
 
