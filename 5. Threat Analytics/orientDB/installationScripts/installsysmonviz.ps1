@@ -11,7 +11,7 @@ cd $p
 
 # unzip Sysmon.zip
 $shell = New-Object -ComObject Shell.Application
-$zip = $shell.NameSpace($p + “\Sysmon.zip"); foreach($item in $zip.items()) { $shell.Namespace($p).copyhere($item) }
+$zip = $shell.NameSpace($p + "\Sysmon.zip"); foreach($item in $zip.items()) { $shell.Namespace($p).copyhere($item) }
 
 # tries to uninstall sysmon, then installs latest Sysmon
 Start-Process -FilePath "Sysmon.exe" -Wait -ArgumentList "-u"
