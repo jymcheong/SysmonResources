@@ -1,5 +1,5 @@
   /**
-   * 1. Use ODB WebStudio Function Management
+   * 1. Use ODB WebStudio Function Management (FM)
    * 2. Create a function AddEvent with two parameters: classname, jsondata
    * 3. Paste the codes below into the FM's editor & save  
    */

@@ -11,7 +11,7 @@ Start-BitsTransfer -Source https://s3.us-east-2.amazonaws.com/orientdb3/releases
 
 # unzip orientdb.zip
 $shell = New-Object -ComObject Shell.Application
-$zip = $shell.NameSpace(“$p\orientdb.zip"); foreach($item in $zip.items()) { $shell.Namespace($p).copyhere($item) }
+$zip = $shell.NameSpace("$p\orientdb.zip"); foreach($item in $zip.items()) { $shell.Namespace($p).copyhere($item) }
 
 # start orientDB with root pass configured above
 [Environment]::SetEnvironmentVariable("ORIENTDB_ROOT_PASSWORD",$root_pass)
