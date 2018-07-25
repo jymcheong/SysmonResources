@@ -1,5 +1,5 @@
 const directory_to_monitor = "C:/Windows/Datafusion/logs";
-// Start ODB stuff -----------------------
+// Start ODB stuff ---CHANGE IT TO SUIT YOUR ENVIRONMENT!---
 var ODB_User = 'root'
 var ODB_pass = 'Password1234'
 var OrientDB = require('orientjs');
