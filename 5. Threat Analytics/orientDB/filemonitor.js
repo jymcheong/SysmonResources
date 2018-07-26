@@ -12,6 +12,19 @@ var lineCount = 0
 var rowCount = 0
 var fileQueue = []
 
+// https://stackoverflow.com/questions/14031763/doing-a-cleanup-action-just-before-node-js-exits
+process.stdin.resume();//so the program will not close instantly
+function exitHandler(options, err) {
+    db.close().then(function(){
+        process.exit();
+    })
+}
+process.on('exit', exitHandler.bind(null,{cleanup:true}));
+process.on('SIGINT', exitHandler.bind(null, {exit:true}));
+process.on('SIGUSR1', exitHandler.bind(null, {exit:true}));
+process.on('SIGUSR2', exitHandler.bind(null, {exit:true}));
+process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
+
 // please quickly start this script after VM starts up
 // ODB cannot cope with too many backlog files
 fs.readdir(directory_to_monitor, function(err, items) {

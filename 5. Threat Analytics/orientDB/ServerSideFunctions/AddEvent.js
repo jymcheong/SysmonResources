@@ -79,16 +79,19 @@
   delete e['Message'] //problematic for server-side parsing... it is repeated data anyway
   
   var jsonstring = JSON.stringify(e)
+  
   //work around the inconsistent behavior of INSERT .. CONTENT
+  if(classname == 'ProcessCreate') jsonstring = jsonstring.slice(0,-1) + ",\"id\":sequence('ProcessCreate_idseq').next()}"
   if(classname == 'ImageLoad') jsonstring = jsonstring.slice(0,-1) + ",\"id\":sequence('ImageLoad_idseq').next()}"
   if(classname == 'ProcessAccess') jsonstring = jsonstring.slice(0,-1) + ",\"id\":sequence('ProcessAccess_idseq').next()}"    
+  
   var stmt = 'INSERT INTO '+ classname + ' CONTENT ' + jsonstring
   var r = db.command(stmt);
   
   switch(classname) {
 
       // ProcessCreate-[ParentOf:ParentProcessGuid,Hostname]->ProcessCreate
-    case "ProcessCreate": // ID 1
+    /*case "ProcessCreate": // ID 1
           stmt = 'CREATE EDGE ParentOf FROM \
                   (SELECT FROM ProcessCreate WHERE ProcessGuid = ? AND Hostname = ? LIMIT 1) TO ?'
           try{
@@ -97,7 +100,7 @@
           catch(err){
               //print(err)
           }
-          break;
+          break; */
 
   // the following are linked via [ProcessGuid + Hostname] index specific to ProcessCreate class
     case "ProcessTerminate"://ID5: ProcessCreate-[Terminated]->ProcessTerminate     	
