@@ -15,6 +15,7 @@ var fileQueue = []
 // https://stackoverflow.com/questions/14031763/doing-a-cleanup-action-just-before-node-js-exits
 process.stdin.resume();//so the program will not close instantly
 function exitHandler(options, err) {
+    console.log('cleaning up...')
     db.close().then(function(){
         process.exit();
     })
