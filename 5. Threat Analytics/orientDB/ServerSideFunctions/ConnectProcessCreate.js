@@ -31,7 +31,7 @@ if (r.length > 0) {   // step 5 - edge creation
     for (var i = 0; i < r.length; i++) {
         try {
             print(Date() + ' Processing ParentOf for ' + r[i].getProperty('Image'))
-            db.command('CREATE EDGE ParentOf FROM (SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessGuid = ?) TO ?',
+            db.command('CREATE EDGE ParentOf FROM (SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessGuid = ?) TO ? RETRY 3 WAIT 500',
                         r[i].getProperty('Hostname'), r[i].getProperty('ParentProcessGuid'), r[i].getProperty('@rid'))
         }
         catch (err) {
