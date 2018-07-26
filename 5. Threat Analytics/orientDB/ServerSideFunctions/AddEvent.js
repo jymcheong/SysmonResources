@@ -90,18 +90,6 @@
   
   switch(classname) {
 
-      // ProcessCreate-[ParentOf:ParentProcessGuid,Hostname]->ProcessCreate
-    /*case "ProcessCreate": // ID 1
-          stmt = 'CREATE EDGE ParentOf FROM \
-                  (SELECT FROM ProcessCreate WHERE ProcessGuid = ? AND Hostname = ? LIMIT 1) TO ?'
-          try{
-              db.command(stmt,e['ParentProcessGuid'], e['Hostname'],r[0].getProperty('@rid'))
-          }
-          catch(err){
-              //print(err)
-          }
-          break; */
-
   // the following are linked via [ProcessGuid + Hostname] index specific to ProcessCreate class
     case "ProcessTerminate"://ID5: ProcessCreate-[Terminated]->ProcessTerminate     	
     case "PipeCreated":	    //ID17: ProcessCreate-[CreatedPipe]->PipeCreated	
@@ -119,8 +107,10 @@
           try{
               db.command(stmt,e['ProcessGuid'],e['Hostname'],r[0].getProperty('@rid'))
           }
-          catch(err){ // usually when source vertex is not found
-            //print(err)
+          catch(err){ 
+              stmt = 'INSERT INTO Orphans SET classname = ?, rid = ? '
+              db.command(stmt,classname,r[0].getProperty('@rid'))
+              print(err)
           }        
           break;
 
@@ -145,7 +135,8 @@
              db.command(stmt,e['Hostname'],e['SourceProcessGuid'],r[0].getProperty('@rid'))
           }
           catch(err){
-            //print(err)
+              stmt = 'INSERT INTO Orphans SET classname = ?, rid = ? '
+              db.command(stmt,classname,r[0].getProperty('@rid'))
           }
           // CreateRemoteThread-[RemoteThreadFor:TargetProcessId]->ProcessCreate
           stmt = 'CREATE EDGE RemoteThreadFor FROM ? TO \
@@ -154,7 +145,8 @@
              db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['TargetProcessId'])
           }
           catch(err){
-            //print(err)
+              stmt = 'INSERT INTO Orphans SET classname = ?, rid = ? '
+              db.command(stmt,classname,r[0].getProperty('@rid'))
           }
           break;
 
@@ -168,7 +160,8 @@
                 db.command(stmt,e['Hostname'],e['FromProcessId'],r[0].getProperty('@rid'))
               }
               catch(err){
-                //print(err)
+                stmt = 'INSERT INTO Orphans SET classname = ?, rid = ? '
+                db.command(stmt,classname,r[0].getProperty('@rid'))
               }
               stmt = 'CREATE EDGE SwitchedTo FROM ? TO \
                       (SELECT FROM ProcessCreate WHERE Hostname = ? AND \
@@ -177,7 +170,8 @@
                 db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['ToProcessId'])
               }
               catch(err){
-                //print(err)
+                stmt = 'INSERT INTO Orphans SET classname = ?, rid = ? '
+                db.command(stmt,classname,r[0].getProperty('@rid'))
               }
           }
           else { // other UAT actions
@@ -188,7 +182,8 @@
               db.command(stmt,r[0].getProperty('@rid'),e['Hostname'],e['ProcessId'])
             }
             catch(err){
-              //print(err)
+              stmt = 'INSERT INTO Orphans SET classname = ?, rid = ? '
+              db.command(stmt,classname,r[0].getProperty('@rid'))
             }
           }
           break;
