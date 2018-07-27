@@ -5,7 +5,7 @@
  */
 var db = orient.getDatabase();
 
-// step 1.1 - find the last record time
+// step 1 - find orphans that have existing ProcessCreate parents
 var r = db.query('SELECT FROM ProcessCreate WHERE ParentImage <> "System" AND \
 				in("ParentOf").size() = 0 AND ToBeProcessed = false AND ParentProcessGuid in (Select ProcessGuid from processcreate)');
 
