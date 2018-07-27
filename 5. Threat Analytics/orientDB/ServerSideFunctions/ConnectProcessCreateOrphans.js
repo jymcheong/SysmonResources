@@ -6,8 +6,7 @@
 var db = orient.getDatabase();
 
 // step 1.1 - find the last record time
-r = null
-r = db.query('SELECT FROM ProcessCreate WHERE ParentImage <> "System" AND in("ParentOf").size() = 0 \
+var r = db.query('SELECT FROM ProcessCreate WHERE ParentImage <> "System" AND in("ParentOf").size() = 0 \
              AND ToBeProcessed = false AND ParentProcessGuid in (Select ProcessGuid from processcreate)');
 if (r.length == 0) { // step 1.2
     return 
