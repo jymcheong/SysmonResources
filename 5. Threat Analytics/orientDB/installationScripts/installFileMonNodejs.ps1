@@ -25,3 +25,5 @@ npm install event-stream
 npm install orientjs
 
 node filemonitor.js
+
+#TODO - Create Scheduled Task to run filemonitor.js 

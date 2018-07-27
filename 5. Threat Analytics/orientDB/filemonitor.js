@@ -6,7 +6,7 @@ var OrientDB = require('orientjs');
 var server = OrientDB({host: 'myorientdb', port: 2424});
 var db = server.use({name: 'DataFusion', username: ODB_User, password: ODB_pass, useToken : false});
 // End ODB stuff -------------------------
-// Use npm local install XXX instead of global, especially in Windoze!
+// Use npm install to install local modules instead of global in Windoze!
 var fs = require('fs'), es = require('event-stream'); //install first: npm i event-stream
 var lineCount = 0
 var rowCount = 0
@@ -41,7 +41,7 @@ fs.readdir(directory_to_monitor, function(err, items) {
 
 setInterval(function(){ db.query('select RunEdgeConnection()') },4000)
 
-startFileMonitor() // starts directory monitoring for rotated logs
+startFileMonitor() 
 //processFile('/tmp/events.txt') // test single file
 
 //https://stackoverflow.com/questions/16010915/parsing-huge-logfiles-in-node-js-read-in-line-by-line
@@ -89,7 +89,7 @@ function processFile(filepath) {
 function processLine(eventline) {
     try {
         if(eventline.length > 0) {
-            JSON.parse(eventline) //to test if it is valid JSON            
+            JSON.parse(eventline.trim()) //to test if it is valid JSON            
             stmt = "select AddEvent(:data)"
             lineCount++
             db.query(stmt,{params:{data:escape(eventline)}})
@@ -99,6 +99,7 @@ function processLine(eventline) {
         }
     }
     catch(err) {
+        console.log('line length: ' + eventline.length)
         console.log('invalid JSON line:')
         console.log(eventline)
         throw err
@@ -115,7 +116,6 @@ function startFileMonitor() {
             for(i = 0, len = events.length; i < len; i++){
                 elem = events[i]
                 if(elem['action'] == 3) { // only interested with file renamed
-                    console.log(elem)
                     var newfile = "" + elem['directory'] + "/" + elem['newFile']
                     // expecting 'rotated' in the nxlog log file
                     if(newfile.indexOf('rotated') > -1){ 
@@ -136,5 +136,3 @@ function startFileMonitor() {
             return watcher.start();
         })
 }
-
-

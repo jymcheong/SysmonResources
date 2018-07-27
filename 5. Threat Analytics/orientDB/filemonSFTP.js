@@ -1,5 +1,5 @@
 const directory_to_monitor = "/home/docker/winevents";
-// Start ODB stuff -----------------------
+// Start ODB stuff ---CHANGE IT TO SUIT YOUR ENVIRONMENT!---
 var ODB_User = 'root'
 var ODB_pass = 'Password1234'
 var OrientDB = require('orientjs');
@@ -15,6 +15,7 @@ var fileQueue = []
 // https://stackoverflow.com/questions/14031763/doing-a-cleanup-action-just-before-node-js-exits
 process.stdin.resume();//so the program will not close instantly
 function exitHandler(options, err) {
+    console.log('cleaning up...')
     db.close().then(function(){
         process.exit();
     })
@@ -122,7 +123,6 @@ function startFileMonitor() {
                     // expecting 'rotated' in the nxlog log file
                     if(newfile.indexOf('rotated') > -1){ 
                         fileQueue.push(newfile)
-			//processFile(fileQueue.shift());
                         if(fileQueue.length > 0) setTimeout(function(){ processFile(fileQueue.shift()); }, 500)
                     }
                 }
@@ -139,6 +139,3 @@ function startFileMonitor() {
             return watcher.start();
         })
 }
-
-
-

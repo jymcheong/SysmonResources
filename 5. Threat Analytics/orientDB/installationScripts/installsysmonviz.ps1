@@ -57,3 +57,5 @@ $filemonscript = $filemonscript -replace 'C:/Windows/Datafusion/logs', 'C:/sysmo
 $filemonscript | Set-Content "$p\filemonitor.js"
 
 node filemonitor.js
+
+#TODO - Create Scheduled Task to run filemonitor.js 
