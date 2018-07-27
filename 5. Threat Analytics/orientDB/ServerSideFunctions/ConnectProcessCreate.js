@@ -46,5 +46,3 @@ db.command('UPDATE ProcessCreate SET ToBeProcessed = false WHERE ToBeProcessed =
 // step 7 - update function status
 db.command('UPDATE FunctionStatus SET status = "stopped" WHERE name = "ConnectProcessCreate"')
 print(Date() + ' changed ConnectProcessCreate status to stopped...')
-
-return 0

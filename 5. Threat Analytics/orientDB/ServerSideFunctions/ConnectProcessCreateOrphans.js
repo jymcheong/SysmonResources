@@ -6,17 +6,15 @@
 var db = orient.getDatabase();
 
 // step 1.1 - find the last record time
-var r = db.query('SELECT FROM ProcessCreate WHERE ParentImage <> "System" AND in("ParentOf").size() = 0 \
-             AND ToBeProcessed = false AND ParentProcessGuid in (Select ProcessGuid from processcreate)');
-if (r.length == 0) { // step 1.2
-    return 
-}
+var r = db.query('SELECT FROM ProcessCreate WHERE ParentImage <> "System" AND \
+				in("ParentOf").size() = 0 AND ToBeProcessed = false AND ParentProcessGuid in (Select ProcessGuid from processcreate)');
 
-if (r.length > 0) {   // step 2.1 - edge creation
+if (r.length > 0) {   // step 2 - edge creation
     for (var i = 0; i < r.length; i++) {
-        try { // step 2.2
+        try {
             print("\n"+ Date() + ' Processing ParentOf for ' + r[i].getProperty('Image'))
-            db.command('CREATE EDGE ParentOf FROM (SELECT FROM ProcessCreate WHERE Hostname = ? AND ProcessGuid = ?) TO ? RETRY 3 WAIT 500',
+            db.command('CREATE EDGE ParentOf FROM (SELECT FROM ProcessCreate WHERE Hostname = ? \
+						AND ProcessGuid = ?) TO ? RETRY 3 WAIT 500',
                         r[i].getProperty('Hostname'), r[i].getProperty('ParentProcessGuid'), r[i].getProperty('@rid'))
         }
         catch (err) {
