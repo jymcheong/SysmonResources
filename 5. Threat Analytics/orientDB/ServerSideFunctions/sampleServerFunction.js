@@ -1,6 +1,5 @@
 /**
- *
- * EXPORT command does not save server functions out
+ * Use ODB Web Admin > Functions view to see server side implementation
  * Here's a basic javascript example. 
  * Need to turn 'on' javascript language since it is disabled by default due to security
  * Paste the whole thing into Function Management script editor & so on to 'install' 
