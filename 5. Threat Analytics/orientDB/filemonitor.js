@@ -38,7 +38,9 @@ fs.readdir(directory_to_monitor, function(err, items) {
     }
     processFile(fileQueue.shift())
 });
-//
+
+setInterval(function(){ db.query('select RunEdgeConnection()') },4000)
+
 startFileMonitor() // starts directory monitoring for rotated logs
 //processFile('/tmp/events.txt') // test single file
 

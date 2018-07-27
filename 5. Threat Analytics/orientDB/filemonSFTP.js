@@ -38,6 +38,7 @@ fs.readdir(directory_to_monitor, function(err, items) {
     processFile(fileQueue.shift())
 });
 
+setInterval(function(){ db.query('select RunEdgeConnection()') },4000)
 
 startFileMonitor() 
 //processFile('/tmp/events.txt') // test single file
