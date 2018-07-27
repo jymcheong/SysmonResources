@@ -7,6 +7,7 @@ sudo chmod 755 /var/sftp
 sudo chown uploader:uploader /var/sftp/uploads
  
 # disable existing SFTP Subsystem configuration
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 sudo sed -i.bak 's/^Subsystem/#Subsystem/' /etc/ssh/sshd_config
 # configure SSHD to provide SFTP only, no SSH shell
 sudo echo "Subsystem sftp internal-sftp -l INFO" >> /etc/ssh/sshd_config 
