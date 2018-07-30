@@ -1527,3 +1527,7 @@
 5. Threat Analytics/orientDB/node_modules/wrappy/wrappy.js
 5. Threat Analytics/orientDB/testfile.js
 5. Threat Analytics/orientDB/filemonitor.sync-conflict-20180712-190116-NFVD4QJ.js
+.sync/ID
+.sync/IgnoreList
+.sync/root_acl_entry
+.sync/StreamsList
