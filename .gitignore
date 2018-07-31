@@ -1,4 +1,6 @@
-
+.*
+.sync/
+!/.gitignore
 *.json
 *.tmp
 5. Threat Analytics/orientDB/node_modules/nsfw/build/binding.Makefile
