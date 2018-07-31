@@ -85,6 +85,7 @@
 		<!--DATA: UtcTime, ProcessGuid, ProcessId, Image, ImageLoaded, Hashes, Signed, Signature, SignatureStatus-->
 		<ImageLoad onmatch="exclude">
 			<Image condition="is">C:\Windows\Sysmon.exe</Image>
+			<Image condition="is">C:\Windows\Sysmon64.exe</Image>
 			<Image condition="is">C:\Windows\DataFusion\installers\Sysmon.exe</Image>
 			<ImageLoaded condition="is">C:\Windows\System32\wbem\unsecapp.exe</ImageLoaded>
 		</ImageLoad>
