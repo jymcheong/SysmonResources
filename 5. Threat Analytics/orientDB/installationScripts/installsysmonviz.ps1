@@ -33,7 +33,7 @@ $arg = '/c msiexec /i nxlog.msi INSTALLDIR="' + $nxlogpath + '" /qb'
 Start-Process -FilePath "$env:comspec" -Verb runAs -Wait -ArgumentList $arg
 $nxlogpath = $nxlogpath -replace "nxlog" , ""
 New-Item -Force -ItemType directory -Path "$nxlogpath\logs"
-ii "$nxlogpath\logs" # use explorer to open logs folder, you should see logs rotated
+$logpath = "$nxlogpath\logs"
 
 # copies custom nxlog
 $confcontents = Get-Content "$p\nxlog.conf"
@@ -45,4 +45,5 @@ $confcontents |  Set-Content $nxlogpath
 $scpath = $env:WinDir + "\system32\sc.exe"
 Start-Process -FilePath $scpath -Wait -ArgumentList "start nxlog"
 
+ii $logpath # use explorer to open logs folder, you should see logs rotated
 
