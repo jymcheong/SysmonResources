@@ -14,6 +14,15 @@ Start-BitsTransfer -Source "https://raw.githubusercontent.com/jymcheong/SysmonRe
 $shell = New-Object -ComObject Shell.Application
 $zip = $shell.NameSpace("$p\node8win32.zip"); foreach($item in $zip.items()) { $shell.Namespace($p).copyhere($item) }
 
+if(Test-Path C:\Windows\DataFusion\logs) {
+    $logpath = "C:\Windows\DataFusion\logs"
+}
+if(Test-Path C:\sysmonviz\logs) {
+    $logpath = "C:\sysmonviz\logs"
+}
+$confcontents = Get-Content "$p\filemonitor.js"
+$confcontents = $confcontents -replace 'TARGETDIR', $logpath 
+$confcontents |  Set-Content "$p\filemonitor.js"
 # move the script into the extracted folder
 Move-Item $p\filemonitor.js $p\node8win32
 
