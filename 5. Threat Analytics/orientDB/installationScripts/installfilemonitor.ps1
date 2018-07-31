@@ -20,9 +20,10 @@ if(Test-Path C:\Windows\DataFusion\logs) {
 if(Test-Path C:\sysmonviz\logs) {
     $logpath = "C:\sysmonviz\logs"
 }
-$confcontents = Get-Content "$p\filemonitor.js"
-$confcontents = $confcontents -replace 'TARGETDIR', $logpath 
-$confcontents |  Set-Content "$p\filemonitor.js"
+$filecontents = Get-Content "$p\filemonitor.js"
+$filecontents = $filecontents -replace 'TARGETDIR', $logpath 
+$filecontents = $filecontents -replace 'ODBHOST', $ODBhost 
+$filecontents |  Set-Content "$p\filemonitor.js"
 # move the script into the extracted folder
 Move-Item $p\filemonitor.js $p\node8win32
 
