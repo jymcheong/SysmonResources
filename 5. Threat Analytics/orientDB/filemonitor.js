@@ -14,17 +14,17 @@ var fileQueue = []
 
 // https://stackoverflow.com/questions/14031763/doing-a-cleanup-action-just-before-node-js-exits
 process.stdin.resume();//so the program will not close instantly
-function exitHandler(options, err) {
+function exitHandler(err) {
     console.log('cleaning up...')
     db.close().then(function(){
         process.exit();
     })
 }
-process.on('exit', exitHandler.bind(null,{cleanup:true}));
-process.on('SIGINT', exitHandler.bind(null, {exit:true}));
-process.on('SIGUSR1', exitHandler.bind(null, {exit:true}));
-process.on('SIGUSR2', exitHandler.bind(null, {exit:true}));
-process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
+process.on('exit', exitHandler.bind(null));
+process.on('SIGINT', exitHandler.bind(null));
+process.on('SIGUSR1', exitHandler.bind(null));
+process.on('SIGUSR2', exitHandler.bind(null));
+process.on('uncaughtException', exitHandler.bind(null));
 
 if (fs.existsSync(directory_to_monitor) == false) {
     console.log('Folder to be monitored does not exist! Please change!')
