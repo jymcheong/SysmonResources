@@ -1,4 +1,7 @@
-$ODBhost = $args[0]
+param(
+[Parameter(Position=0)]
+[string]$ODBhost
+)
 # Use admin CMD console & type:  powershell -ExecutionPolicy Bypass -File installsysmonviz.ps1
 
 # Everything will go into this folder on your desktop
