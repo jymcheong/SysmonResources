@@ -1,7 +1,3 @@
-param(
-[Parameter(Position=0)]
-[string]$ODBhost
-)
 # Use admin CMD console & type:  powershell -ExecutionPolicy Bypass -File installsysmonviz.ps1
 
 # Everything will go into this folder on your desktop
@@ -26,7 +22,6 @@ if(Test-Path C:\sysmonviz\logs) {
 }
 $filecontents = Get-Content "$p\filemonitor.js"
 $filecontents = $filecontents -replace 'TARGETDIR', $logpath 
-$filecontents = $filecontents -replace 'ODBHOST', $ODBhost 
 $filecontents |  Set-Content "$p\filemonitor.js"
 # move the script into the extracted folder
 Move-Item $p\filemonitor.js $p\node8win32
