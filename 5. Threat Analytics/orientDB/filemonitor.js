@@ -26,6 +26,11 @@ process.on('SIGUSR1', exitHandler.bind(null, {exit:true}));
 process.on('SIGUSR2', exitHandler.bind(null, {exit:true}));
 process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
 
+if (fs.existsSync(directory_to_monitor) == false) {
+    console.log('Folder to be monitored does not exist! Please change!')
+    process.exit();
+}
+
 // please quickly start this script after VM starts up
 // ODB cannot cope with too many backlog files
 fs.readdir(directory_to_monitor, function(err, items) {
