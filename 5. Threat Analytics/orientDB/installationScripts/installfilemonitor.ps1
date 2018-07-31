@@ -51,3 +51,7 @@ $action.Path = "$TaskCommand"
 $action.Arguments = "$TaskArg"
 #http://msdn.microsoft.com/en-us/library/windows/desktop/aa381365(v=vs.85).aspx
 $rootFolder.RegisterTaskDefinition("$TaskName",$TaskDefinition,6,"System",$null,5)
+
+notepad "$p\node8win32\filemonitor.js"
+Start-Sleep -s 1
+[System.Windows.MessageBox]::Show('PLS CHANGE OrientDB Host string')
