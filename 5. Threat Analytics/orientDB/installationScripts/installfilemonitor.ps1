@@ -15,10 +15,10 @@ $shell = New-Object -ComObject Shell.Application
 $zip = $shell.NameSpace("$p\node8win32.zip"); foreach($item in $zip.items()) { $shell.Namespace($p).copyhere($item) }
 
 if(Test-Path C:\Windows\DataFusion\logs) {
-    $logpath = "C:\Windows\DataFusion\logs"
+    $logpath = "C:/Windows/DataFusion/logs"
 }
 if(Test-Path C:\sysmonviz\logs) {
-    $logpath = "C:\sysmonviz\logs"
+    $logpath = "C:/sysmonviz/logs"
 }
 $filecontents = Get-Content "$p\filemonitor.js"
 $filecontents = $filecontents -replace 'TARGETDIR', $logpath 
