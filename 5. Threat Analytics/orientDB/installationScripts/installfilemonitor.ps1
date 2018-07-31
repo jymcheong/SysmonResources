@@ -1,4 +1,5 @@
 param(
+[Parameter(Position=4)]
 [string]$ODBhost
 )
 # Use admin CMD console & type:  powershell -ExecutionPolicy Bypass -File installsysmonviz.ps1

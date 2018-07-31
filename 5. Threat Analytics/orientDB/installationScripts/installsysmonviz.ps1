@@ -1,4 +1,5 @@
 param(
+[Parameter(Position=4)]
 [string]$ODBhost
 )
 # Use a Admin CMD console & type:  powershell -ExecutionPolicy Bypass -File installsysmonviz.ps1
@@ -50,4 +51,4 @@ Start-Process -FilePath $scpath -Wait -ArgumentList "start nxlog"
 
 ii $logpath # use explorer to open logs folder, you should see logs rotated
 
-powershell -ODBhost $ODBhost -nop -c "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jymcheong/SysmonResources/master/5.%20Threat%20Analytics/orientDB/installationScripts/installfilemonitor.ps1')"
+powershell -nop -c "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jymcheong/SysmonResources/master/5.%20Threat%20Analytics/orientDB/installationScripts/installfilemonitor.ps1')" $ODBhost
