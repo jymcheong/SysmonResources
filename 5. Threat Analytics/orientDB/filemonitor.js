@@ -1,4 +1,4 @@
-const directory_to_monitor = "C:/Windows/Datafusion/logs";
+const directory_to_monitor = "TARGETDIR";
 // Start ODB stuff ---CHANGE IT TO SUIT YOUR ENVIRONMENT!---
 var ODB_User = 'root'
 var ODB_pass = 'Password1234'

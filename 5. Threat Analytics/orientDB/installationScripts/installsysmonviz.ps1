@@ -47,3 +47,6 @@ Start-Process -FilePath $scpath -Wait -ArgumentList "start nxlog"
 
 ii $logpath # use explorer to open logs folder, you should see logs rotated
 
+$confcontents = Get-Content "$p\filemonitor.js"
+$confcontents = $confcontents -replace 'TARGETDIR', $logpath 
+$confcontents |  Set-Content "$p\filemonitor.js"
