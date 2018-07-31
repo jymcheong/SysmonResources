@@ -3,19 +3,30 @@ $nxlogpath = "c:\sysmonviz\nxlog"
 $p = [Environment]::GetFolderPath("Desktop") + "\sysmonviz"
 New-Item -Force -ItemType directory -Path $p
 cd $p
-(New-Object System.Net.WebClient).DownloadFile("https://download.sysinternals.com/files/Sysmon.zip", [Environment]::GetFolderPath("Desktop") + "\sysmonviz\sysmon.zip")
-(New-Object System.Net.WebClient).DownloadFile("https://nxlog.co/system/files/products/files/348/nxlog-ce-2.10.2102.msi", [Environment]::GetFolderPath("Desktop") + "\sysmonviz\nxlog.msi")
-(New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/jymcheong/SysmonResources/master/5.%20Threat%20Analytics/orientDB/configFiles/smconfig.xml", [Environment]::GetFolderPath("Desktop") + "\sysmonviz\smconfig.xml")
-(New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/jymcheong/SysmonResources/master/5.%20Threat%20Analytics/orientDB/configFiles/nxlog.conf", [Environment]::GetFolderPath("Desktop") + "\sysmonviz\nxlog.conf")
-(New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/jymcheong/SysmonResources/master/5.%20Threat%20Analytics/orientDB/filemonitor.js", [Environment]::GetFolderPath("Desktop") + "\sysmonviz\filemonitor.js")
+
+Import-Module BitsTransfer
+Start-BitsTransfer -Source "https://download.sysinternals.com/files/Sysmon.zip" -Destination "$p\sysmon.zip"
+Start-BitsTransfer -Source "https://nxlog.co/system/files/products/files/348/nxlog-ce-2.10.2102.msi" -Destination "$p\nxlog.msi"
+Start-BitsTransfer -Source "https://raw.githubusercontent.com/jymcheong/SysmonResources/master/5.%20Threat%20Analytics/orientDB/configFiles/smconfig.xml" -Destination "$p\smconfig.xml"
+Start-BitsTransfer -Source "https://raw.githubusercontent.com/jymcheong/SysmonResources/master/5.%20Threat%20Analytics/orientDB/configFiles/nxlog.conf" -Destination "$p\nxlog.conf"
+Start-BitsTransfer -Source "https://raw.githubusercontent.com/jymcheong/SysmonResources/master/5.%20Threat%20Analytics/orientDB/filemonitor.js" -Destination "$p\filemonitor.js"
 
 # unzip Sysmon.zip
 $shell = New-Object -ComObject Shell.Application
-$zip = $shell.NameSpace($p + "\Sysmon.zip"); foreach($item in $zip.items()) { $shell.Namespace($p).copyhere($item) }
+$zip = $shell.NameSpace("$p\Sysmon.zip"); foreach($item in $zip.items()) { $shell.Namespace($p).copyhere($item) }
 
 # tries to uninstall sysmon, then installs latest Sysmon
-Start-Process -FilePath "Sysmon.exe" -Wait -ArgumentList "-u"
+If ((Get-Service "Sysmon").Status -eq 'Running') {
+    Start-Process -FilePath "Sysmon.exe" -Wait -ArgumentList "-u"
+}
+If ((Get-Service "Sysmon64").Status -eq 'Running') {
+    Start-Process -FilePath "Sysmon64.exe" -Wait -ArgumentList "-u"
+}
 Start-Process -FilePath "Sysmon.exe" -Wait -ArgumentList "-accepteula -l -n -i $p\smconfig.xml"
+
+# remove existing Nxlog
+$application = Get-WmiObject Win32_Product -filter "Name='NXLog-CE'"
+if($application) { $application.uninstall() }
 
 # installs Nxlog
 $arg = '/c msiexec /i nxlog.msi INSTALLDIR="' + $nxlogpath + '" /qb'
@@ -33,29 +44,5 @@ $confcontents |  Set-Content $nxlogpath
 # starts nxlog service
 $scpath = $env:WinDir + "\system32\sc.exe"
 Start-Process -FilePath $scpath -Wait -ArgumentList "start nxlog"
-$wshell = New-Object -ComObject Wscript.Shell
 
-# install chocolatey 
-Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-choco install nodejs --version 8.2.0 -y
 
-# install nodejs
-choco install microsoft-visual-cpp-build-tools -y 
-
-# make sure nodejs enviroment is correctly setup
-"%PROGRAMFILES%\nodejs\nodevars.bat"
-npm install --global --production windows-build-tools
-npm install --global node-gyp
-
-# something wrong with global in windows... install as local modules
-npm install nsfw
-npm install event-stream
-npm install orientjs
-
-$filemonscript = Get-Content filemonitor.js
-$filemonscript = $filemonscript -replace 'C:/Windows/Datafusion/logs', 'C:/sysmonviz/logs'
-$filemonscript | Set-Content "$p\filemonitor.js"
-
-node filemonitor.js
-
-#TODO - Create Scheduled Task to run filemonitor.js 
