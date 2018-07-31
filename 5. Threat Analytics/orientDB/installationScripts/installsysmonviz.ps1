@@ -1,3 +1,4 @@
+$arg
 param(
 [Parameter(Position=4)]
 [string]$ODBhost
