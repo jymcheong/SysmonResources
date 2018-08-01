@@ -58,3 +58,5 @@ A breakdown of what the script is doing:
 7. Pops up notepad for you to edit filemonitor.js. **Replace ODBHOST with your OrientDB hostname or IP address** 
 
 **After you reboot your Windows client, the filemonitor.js will run & insert Sysmon events into the OrientDB.**
+
+Do take a look at some of the [useful queries in the wiki section](https://github.com/jymcheong/SysmonResources/wiki/Useful-queries).
