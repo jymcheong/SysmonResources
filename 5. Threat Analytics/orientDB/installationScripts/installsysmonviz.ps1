@@ -22,7 +22,7 @@ If ((Get-Service "Sysmon").Status -eq 'Running') {
 If ((Get-Service "Sysmon64").Status -eq 'Running') {
     Start-Process -FilePath "Sysmon64.exe" -Wait -ArgumentList "-u"
 }
-Start-Process -FilePath "Sysmon64.exe" -Wait -ArgumentList "-accepteula -l -n -i $p\smconfig.xml"
+Start-Process -FilePath "$env:comspec" -Verb runAs -Wait -ArgumentList "$p\Sysmon64.exe -accepteula -l -n -i $p\smconfig.xml"
 
 # remove existing Nxlog
 $application = Get-WmiObject Win32_Product -filter "Name='NXLog-CE'"
