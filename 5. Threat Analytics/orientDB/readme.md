@@ -63,4 +63,4 @@ A breakdown of what the script is doing:
 6. Launches another Powershell script to install portable nodeJS for filemonitor.js.
 7. Pops up notepad for you to edit filemonitor.js. **Replace ODBHOST with your OrientDB hostname or IP address** 
 
-**After you reboot your Windows client, the filemonitor.js will run to insert Sysmon events into the graph database.**
+**After you reboot your Windows client, the filemonitor.js will run & insert Sysmon events into the OrientDB.**
