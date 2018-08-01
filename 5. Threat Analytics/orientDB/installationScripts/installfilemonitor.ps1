@@ -55,4 +55,4 @@ $rootFolder.RegisterTaskDefinition("$TaskName",$TaskDefinition,6,"System",$null,
 notepad "$p\node8win32\filemonitor.js"
 Start-Sleep -s 1
 [void][System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms") 
-[System.Windows.Forms]::Show('PLS CHANGE OrientDB Host string')
+[System.Windows.Forms.Messagebox]::Show('PLS CHANGE OrientDB Host string')
