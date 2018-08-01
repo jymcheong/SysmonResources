@@ -17,13 +17,11 @@ Short demo: https://www.youtube.com/watch?v=Ct-hDKOga_E
 
 Much of the database schema was derived from [SwiftOnSecurity's sysmon configuration](https://github.com/SwiftOnSecurity/sysmon-config). 
 
-![](images/visualschema.png) 
-
-[Larger view of the visual](https://coggle.it/diagram/WvvSk9Ze3m6uVsDJ/t/processcreate-id1-utctime-parentcommandline). You can think of "S" as severity or stages of an [Attack Life Cycle](https://jym.sg/#Attack%20Life%20Cycle:%5B%5BAttack%20Life%20Cycle%5D%5D).
-
 ## Getting Started
 
-SysmonViz uses a multi-model database ([OrientDB Community Edition](https://orientdb.com/community/)) as datastore & visualization backend. Much of the functions are implemented within the database server-side functions. **Install the backend first** before proceeding to the target Windows (virtual) machine.  Much of the installations are automated by scripting except the part to change your OrientDB hostname/IP for the *[filemonitor.js](https://github.com/jymcheong/SysmonResources/blob/9c70071e99cd7d304a4623b42a131156ceb6e235/5.%20Threat%20Analytics/orientDB/filemonitor.js#L6)* script. 
+SysmonViz uses a multi-model database ([OrientDB Community Edition](https://orientdb.com/community/)) as datastore & visualization backend. Most functions are implemented within the database server-side functions.
+
+ **Install the backend first** before proceeding to the target Windows (virtual) machine.  Much of the installations are automated by scripting except the part to change your OrientDB hostname/IP for the *[filemonitor.js](https://github.com/jymcheong/SysmonResources/blob/9c70071e99cd7d304a4623b42a131156ceb6e235/5.%20Threat%20Analytics/orientDB/filemonitor.js#L6)* script. 
 
 ### Windows based OrientDB 
 
@@ -45,7 +43,7 @@ Use an **admin CMD console** & paste the following ([review script source](https
 powershell -nop -c "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jymcheong/SysmonResources/master/5.%20Threat%20Analytics/orientDB/installationScripts/installsysmonviz.ps1')"
 ```
 
-**Please ensure that the Windows (to-be-monitored) host can communicate with your OrientDB server. *Eg. Able to visit OrientDB web admin page with the host's browser.***
+**Please ensure that the Windows (to-be-monitored) host can communicate with your OrientDB server. *ie. Able to visit OrientDB web admin page with the host's browser.***
 
 A breakdown of what the script is doing:
 
