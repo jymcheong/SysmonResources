@@ -21,7 +21,7 @@ Much of the database schema was derived from [SwiftOnSecurity's sysmon configura
 
 SysmonViz uses a multi-model database ([OrientDB Community Edition](https://orientdb.com/community/)) as datastore & visualization backend. Most functions are implemented within the database server-side functions.
 
- **Install the backend first** before proceeding to the target Windows (virtual) machine.  Much of the installations are automated by scripting except the part to change your OrientDB hostname/IP for the *[filemonitor.js](https://github.com/jymcheong/SysmonResources/blob/9c70071e99cd7d304a4623b42a131156ceb6e235/5.%20Threat%20Analytics/orientDB/filemonitor.js#L6)* script. 
+**Install the backend first** before proceeding to the client Windows (virtual) machine.  Much of the installations are automated by scripting except the part to change your OrientDB hostname/IP for the *[filemonitor.js](https://github.com/jymcheong/SysmonResources/blob/9c70071e99cd7d304a4623b42a131156ceb6e235/5.%20Threat%20Analytics/orientDB/filemonitor.js#L6)* script. 
 
 ### Windows based OrientDB 
 
