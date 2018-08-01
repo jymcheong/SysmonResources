@@ -5,7 +5,7 @@ I needed a reason to tinker with NodeJS & a graph database & this is a good one.
 
 * [Automated Payload Test Controller](https://github.com/jymcheong/aptc)
 * [Automated Tactics Techniques & Procedures](https://github.com/jymcheong/AutoTTP)
-* [One-way Transport of System Event Logs via SFTP](https://github.com/jymcheong/OneWaySFTP)
+* Hardcoding credentials into script is a bad idea, try to use it with [One-way Transport of System Event Logs via SFTP](https://github.com/jymcheong/OneWaySFTP) for > 1 client Windows to visualize
 
 **SysmonViz is not meant for production**. I have yet to test it on a larger network with high event rate. Sysmon itself also has certain limitations. It is useful to understand what's going on within a Windows host at a "mid-level" granularity as oppose to deep instrumentation down to the APIs or machine instructions level.
 
