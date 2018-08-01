@@ -1,6 +1,4 @@
 $root_pass = 'Password1234'
-cd ~
-cd Desktop
 $p = [Environment]::GetFolderPath("Desktop") + "\orientDBsetup"
 New-Item -Force -ItemType directory -Path $p
 cd $p
