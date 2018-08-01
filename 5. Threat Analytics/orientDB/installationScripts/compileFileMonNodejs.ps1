@@ -1,3 +1,5 @@
+# if you are uncomfortable with the bundled node8win32, you can recompile with this script. 
+# I use chocolatey to mitigate the pain of compiling nodeJS modules below...
 # Use a Admin CMD console & type:  powershell -ExecutionPolicy Bypass -File installsysmonviz.ps1
 $p = [Environment]::GetFolderPath("Desktop") + "\sysmonviz"
 New-Item -Force -ItemType directory -Path $p
