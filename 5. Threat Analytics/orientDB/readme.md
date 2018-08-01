@@ -1,17 +1,11 @@
 # Sysmon Visualization (SysmonViz)
 
 ## Why?
-System Monitor (Sysmon) is a **free** Windows system service and device driver that, once installed on a system, remains resident across system reboots to monitor and log system activity to the Windows event log. **I am thankful to [Microsoft](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon) & [OrientDB](https://orientdb.com/community/) for their generousity.** 
-
-I am also fortunate to be able to evaluate various Endpoint Detection & Response products *but I have yet to come across an Open-source tool that visualize events in near real-time.* Most of the tools based on are off-line imports of log files, which can be tedious. 
-
-SysmonViz would not have been possible without the generous knowledge sharing from various practictioners. It is part of my other projects:
+I needed a reason to tinker with NodeJS & a graph database & this is a good one. Please forgive me if some of the Javascript codes are horrible! It is part of my other projects:
 
 * [Automated Payload Test Controller](https://github.com/jymcheong/aptc)
 * [Automated Tactics Techniques & Procedures](https://github.com/jymcheong/AutoTTP)
 * [One-way Transport of System Event Logs via SFTP](https://github.com/jymcheong/OneWaySFTP)
-
-I needed a reason to tinker with NodeJS & a graph database & this is a good one. Please forgive me if some of the Javascript codes are horrible!
 
 **SysmonViz is not meant for production**. I have yet to test it on a larger network with high event rate. Sysmon itself also has certain limitations. This is more useful to understand what's going on within a Windows host at a "mid-level" granularity as oppose to deep instrumentation down to the APIs or machine instructions level.
 
