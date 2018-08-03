@@ -45,7 +45,7 @@ powershell -nop -c "$odbserver='YOURSERVERIP';iex(New-Object Net.WebClient).Down
 
 Please **REPLACE YOURSERVERIP** with your OrientDB server IP. For example, if your server IP is 192.168.1.10:
 
-`... -nop -c "$odbserver='192.168.1.10';iex....."`
+`... -nop -c "$odbserver='192.168.1.10';iex..."`
 
 Please ensure that the Windows (to-be-monitored) host can communicate with your OrientDB server. ***ie. Able to visit OrientDB web admin page with the host's browser.***
 
