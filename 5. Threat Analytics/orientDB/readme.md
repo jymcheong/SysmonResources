@@ -40,10 +40,12 @@ Please ensure **wget** & **Java** **8+ runtime** are installed. Download the [in
 Use an **admin CMD console** & paste the following ([review script source](https://github.com/jymcheong/SysmonResources/blob/master/5.%20Threat%20Analytics/orientDB/installationScripts/installsysmonviz.ps1)):
 
 ```
-powershell -nop -c "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jymcheong/SysmonResources/master/5.%20Threat%20Analytics/orientDB/installationScripts/installsysmonviz.ps1')"
+powershell -nop -c "$odbserver='YOURSERVERIP';iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jymcheong/SysmonResources/master/5.%20Threat%20Analytics/orientDB/installationScripts/installsysmonviz.ps1')"
 ```
 
-**Please ensure that the Windows (to-be-monitored) host can communicate with your OrientDB server. *ie. Able to visit OrientDB web admin page with the host's browser.***
+Please **REPLACE YOURSERVERIP** with your OrientDB server IP.
+
+Please ensure that the Windows (to-be-monitored) host can communicate with your OrientDB server. ***ie. Able to visit OrientDB web admin page with the host's browser.***
 
 A breakdown of what the script is doing:
 
@@ -53,7 +55,7 @@ A breakdown of what the script is doing:
 4. Pops up the log folder, you should see logs appearing in rotated files; a success indicator
 5. Installs a Windows Task Scheduler to start filemonitor.js **upon startup**.
 6. Launches another Powershell script to install portable nodeJS for filemonitor.js.
-7. Pops up notepad for you to edit filemonitor.js. **Replace ODBHOST with your OrientDB hostname or IP address** 
+7. Pops up notepad for you to ~~edit~~ CHECK filemonitor.js. **CHECK that with your OrientDB hostname or IP address is correct** 
 
 **After you reboot your Windows client, the filemonitor.js will run & insert Sysmon events into the OrientDB.**
 
