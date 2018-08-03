@@ -43,7 +43,9 @@ Use an **admin CMD console** & paste the following ([review script source](https
 powershell -nop -c "$odbserver='YOURSERVERIP';iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jymcheong/SysmonResources/master/5.%20Threat%20Analytics/orientDB/installationScripts/installsysmonviz.ps1')"
 ```
 
-Please **REPLACE YOURSERVERIP** with your OrientDB server IP.
+Please **REPLACE YOURSERVERIP** with your OrientDB server IP. For example, if your server IP is 192.168.1.10:
+
+`... -nop -c "$odbserver='192.168.1.10';iex....."`
 
 Please ensure that the Windows (to-be-monitored) host can communicate with your OrientDB server. ***ie. Able to visit OrientDB web admin page with the host's browser.***
 
