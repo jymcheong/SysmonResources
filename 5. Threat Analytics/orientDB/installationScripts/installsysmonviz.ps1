@@ -16,10 +16,10 @@ $shell = New-Object -ComObject Shell.Application
 $zip = $shell.NameSpace("$p\Sysmon.zip"); foreach($item in $zip.items()) { $shell.Namespace($p).copyhere($item) }
 
 # tries to uninstall sysmon, then installs latest Sysmon
-If ((Get-Service "Sysmon").Status -eq 'Running') {
+If (Get-WmiObject -Class Win32_Service -Filter "Name='Sysmon'") {
     Start-Process -FilePath "Sysmon.exe" -Wait -ArgumentList "-u"
 }
-If ((Get-Service "Sysmon64").Status -eq 'Running') {
+If (Get-WmiObject -Class Win32_Service -Filter "Name='Sysmon64'") {
     Start-Process -FilePath "Sysmon64.exe" -Wait -ArgumentList "-u"
 }
 Start-Process -FilePath "$env:comspec" -Verb runAs -Wait -ArgumentList "/c $p\Sysmon.exe -accepteula -l -n -i $p\smconfig.xml"
