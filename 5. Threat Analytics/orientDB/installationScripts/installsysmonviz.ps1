@@ -1,4 +1,4 @@
-# Use a Admin CMD console & paste:  powershell -nop -c "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jymcheong/SysmonResources/master/5.%20Threat%20Analytics/orientDB/installationScripts/installsysmonviz.ps1')"
+# Use a Admin CMD console & paste:  powershell -nop -c "$odbhost='YOUR_ODB_HOST';iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jymcheong/SysmonResources/master/5.%20Threat%20Analytics/orientDB/installationScripts/installsysmonviz.ps1')"
 $nxlogpath = "c:\sysmonviz\nxlog"
 $p = [Environment]::GetFolderPath("Desktop") + "\sysmonviz"
 New-Item -Force -ItemType directory -Path $p
@@ -47,4 +47,4 @@ Start-Process -FilePath $scpath -Wait -ArgumentList "start nxlog"
 
 ii $logpath # use explorer to open logs folder, you should see logs rotated
 
-powershell -nop -c "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jymcheong/SysmonResources/master/5.%20Threat%20Analytics/orientDB/installationScripts/installfilemonitor.ps1')"
+powershell -nop -c "`$odbserver='$odbserver'; iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jymcheong/SysmonResources/master/5.%20Threat%20Analytics/orientDB/installationScripts/installfilemonitor.ps1')"

@@ -3,7 +3,7 @@ const directory_to_monitor = "TARGETDIR";
 var ODB_User = 'root'
 var ODB_pass = 'Password1234'
 var OrientDB = require('orientjs');
-var server = OrientDB({host: 'ODBHOST', port: 2424});
+var server = OrientDB({host: 'ODBSERVER', port: 2424});
 var db = server.use({name: 'DataFusion', username: ODB_User, password: ODB_pass, useToken : false});
 // End ODB stuff -------------------------
 // Use npm install to install local modules instead of global in Windoze!

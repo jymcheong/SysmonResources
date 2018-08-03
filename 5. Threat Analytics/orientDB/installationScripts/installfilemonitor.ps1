@@ -22,6 +22,7 @@ if(Test-Path C:\sysmonviz\logs) {
 }
 $filecontents = Get-Content "$p\filemonitor.js"
 $filecontents = $filecontents -replace 'TARGETDIR', $logpath 
+$filecontents = $filecontents -replace 'ODBSERVER', $odbserver 
 $filecontents |  Set-Content "$p\filemonitor.js"
 # move the script into the extracted folder
 Move-Item $p\filemonitor.js $p\node8win32
@@ -55,4 +56,4 @@ $rootFolder.RegisterTaskDefinition("$TaskName",$TaskDefinition,6,"System",$null,
 notepad "$p\node8win32\filemonitor.js"
 Start-Sleep -s 1
 [void][System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms") 
-[System.Windows.Forms.Messagebox]::Show('PLS CHANGE OrientDB Host string')
+[System.Windows.Forms.Messagebox]::Show('PLS CHECK OrientDB Host string')
