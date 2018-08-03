@@ -14,11 +14,11 @@ Start-BitsTransfer -Source "https://raw.githubusercontent.com/jymcheong/SysmonRe
 $shell = New-Object -ComObject Shell.Application
 $zip = $shell.NameSpace("$p\node8win32.zip"); foreach($item in $zip.items()) { $shell.Namespace($p).copyhere($item) }
 
-if(Test-Path C:\Windows\DataFusion\logs) {
-    $logpath = "C:/Windows/DataFusion/logs"
-}
 if(Test-Path C:\sysmonviz\logs) {
     $logpath = "C:/sysmonviz/logs"
+}
+if(Test-Path C:\Windows\DataFusion\logs) {
+    $logpath = "C:/Windows/DataFusion/logs"
 }
 $filecontents = Get-Content "$p\filemonitor.js"
 $filecontents = $filecontents -replace 'TARGETDIR', $logpath 
@@ -28,7 +28,7 @@ $filecontents |  Set-Content "$p\filemonitor.js"
 Move-Item $p\filemonitor.js $p\node8win32
 
 # alternatively 
-# SCHTASKS /Create /TN "Rotated Log Monitor" /SC ONSTART /RL HIGHEST /RU "BUILTIN\users" /TR "$p\node8win32\startfilemonitor.bat"
+# SCHTASKS /Create /TN "Rotated Log Monitor" /SC ONSTART /RL HIGHEST /RU "System" /TR "$p\node8win32\startfilemonitor.bat"
 # create a windows scheduled task in Win 7 powershell 2.0 onwards - http://woshub.com/how-to-create-scheduled-task-using-powershell/
 $TaskName = "Rotated Log Monitor"
 $TaskDescription = "Running filemonitor nodejs script from Task Scheduler"
