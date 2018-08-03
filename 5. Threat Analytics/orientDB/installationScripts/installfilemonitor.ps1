@@ -56,6 +56,6 @@ $action.Arguments = "$TaskArg"
 $rootFolder.RegisterTaskDefinition("$TaskName",$TaskDefinition,6,"System",$null,5)
 
 notepad "$p\node8win32\filemonitor.js"
-Start-Sleep -s 1
+Start-Sleep -s 4
 [void][System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms") 
 [System.Windows.Forms.Messagebox]::Show('PLS CHECK OrientDB Host string')
