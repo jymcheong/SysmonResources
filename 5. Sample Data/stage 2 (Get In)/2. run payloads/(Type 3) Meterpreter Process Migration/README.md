@@ -1,6 +1,6 @@
 # Meterpreter Process Migration
 ## Background
-Why bother to migrate the Meterpreter (or any other C2) session? For instance, after exploiting a browser or viewing a weaponized document, a user may close the application, so it is sometimes necessary to quickly migrate before one loses the session.
+Why bother to migrate the Meterpreter (or any other C2) session? For instance, after exploiting a browser or viewing a weaponized document, a user may close the application or the application becomes unstable & crashes, so it is sometimes necessary to quickly migrate before one loses the session.
 
 ## Payload
 I continued with the [Powerpoint mouse-over Rundll32 method](https://github.com/jymcheong/SysmonResources/tree/master/6.%20Sample%20Data/stage%202%20(Get%20In)/2.%20run%20payloads/(Type%202)%20Abuse%20MS%20PPT%20Mouse-over%20Action) but in this case, I turned on my Kali Meterpreter HTTPS listener so as to perform the process migration.
